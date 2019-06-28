@@ -10,11 +10,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class JWTTokenUtil {
 
-    public String createJWT(User user) {
+    private String token;
+
+    public JWTTokenUtil() {
+    }
+
+    private void createJWT(User user) {
 
         byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
-        return Jwts.builder()
+        this.token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
                 .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
                 .setIssuer(SecurityConstants.TOKEN_ISSUER)
@@ -23,5 +28,14 @@ public class JWTTokenUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                 .claim("rol", "USER")
                 .compact();
+    }
+
+    public String getToken(User user) {
+        createJWT(user);
+        return this.token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

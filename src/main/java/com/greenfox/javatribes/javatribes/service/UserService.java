@@ -1,8 +1,12 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.model.User;
+import com.greenfox.javatribes.javatribes.repositories.UserRepository;
+import javassist.NotFoundException;
 
-public interface UserService {
+import java.util.Optional;
 
-    User findUserByUsername(String username);
+public interface UserService{
+
+    User findByCredentials(String username, String password) throws NotFoundException;
 }

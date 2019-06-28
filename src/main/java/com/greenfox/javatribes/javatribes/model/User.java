@@ -16,7 +16,7 @@ public class User {
 
     private String username;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     private String kingdom;
