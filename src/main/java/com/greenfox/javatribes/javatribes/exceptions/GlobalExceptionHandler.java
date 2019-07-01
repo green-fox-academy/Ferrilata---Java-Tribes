@@ -29,14 +29,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .distinct()
                 .collect(Collectors.joining(", "));
 
-        return ResponseEntity.status(HttpStatus.valueOf(401)).body(new ResponseObject("error",
+        return ResponseEntity.status(HttpStatus.valueOf(400)).body(new ResponseObject("error",
                 "Missing parameter(s): " + notValidFields));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(
             EntityNotFoundException ex){
-            return ResponseEntity.status(HttpStatus.valueOf(400)).body(new ResponseObject("error",
+            return ResponseEntity.status(HttpStatus.valueOf(401)).body(new ResponseObject("error",
                     ex.getMessage()));
+    }
+
+    @ExceptionHandler(UsernameAlreadyUsedException.class)
+    public ResponseEntity<Object> handleUsernameAlreadyUsedException(
+            UsernameAlreadyUsedException ex){
+        return ResponseEntity.status(HttpStatus.valueOf(409)).body(new ResponseObject("error",
+                ex.getMessage()));
     }
 }

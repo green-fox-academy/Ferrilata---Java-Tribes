@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
+import com.greenfox.javatribes.javatribes.exceptions.UsernameAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,22 @@ public class UserServiceImpl implements UserService {
         }
 
         return optionalUser.get();
+    }
+
+    @Override
+    public void saveUser(User user) throws UsernameAlreadyUsedException {
+        if(!existsByUsername(user.getUsername()))
+        userRepository.save(user);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) throws UsernameAlreadyUsedException {
+        boolean optionalUser = userRepository.existsByUsername(username);
+
+        if (optionalUser){
+            throw new UsernameAlreadyUsedException("Username already taken, please choose an other one.");
+        }
+
+        return false;
     }
 }
