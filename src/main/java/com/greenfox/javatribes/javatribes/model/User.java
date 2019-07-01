@@ -1,11 +1,11 @@
 package com.greenfox.javatribes.javatribes.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
@@ -14,9 +14,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotNull @NotEmpty
     private String username;
 
-//    @JsonIgnore
+    @NotNull @NotEmpty
     private String password;
 
     private String kingdom;

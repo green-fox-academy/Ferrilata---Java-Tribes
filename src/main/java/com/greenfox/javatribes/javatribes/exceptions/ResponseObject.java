@@ -1,12 +1,22 @@
 package com.greenfox.javatribes.javatribes.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseObject {
 
     private String status;
     private String message;
+
     private String token;
 
     public ResponseObject() {
+    }
+
+    public ResponseObject(String status, String message) {
+        this.status = status;
+        this.message = message;
     }
 
     public ResponseObject(String status, String message, String token) {
