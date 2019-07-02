@@ -1,7 +1,7 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
-import com.greenfox.javatribes.javatribes.exceptions.ResponseObject;
+import com.greenfox.javatribes.javatribes.model.ResponseObject;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
 import com.greenfox.javatribes.javatribes.service.UserService;
