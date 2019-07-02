@@ -36,6 +36,20 @@ public class User {
         this.password = password;
     }
 
+    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password, Set<Authority> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public Set<Authority> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Authority> roles) {
+        this.roles = roles;
+    }
+
     public long getId() {
         return id;
     }
