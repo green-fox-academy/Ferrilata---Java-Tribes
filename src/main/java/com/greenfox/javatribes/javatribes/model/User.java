@@ -1,10 +1,6 @@
 package com.greenfox.javatribes.javatribes.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long id;
 
@@ -24,13 +20,11 @@ public class User {
     @NotNull @NotEmpty
     private String password;
 
-    @OneToOne(cascade =  CascadeType.ALL,
-            mappedBy = "user")
     @JsonUnwrapped
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "kingdom_id")
 //    @JsonFilter("KingdomFilter")
     private Kingdom kingdom;
-
-
 
     public User() {
     }
@@ -45,12 +39,6 @@ public class User {
         this.username = username;
         this.password = password;
     }
-
-    //    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password, Kingdom kingdom) {
-//        this.username = username;
-//        this.password = password;
-//        this.kingdom = kingdom;
-//    }
 
     public long getId() {
         return id;

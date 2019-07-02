@@ -30,19 +30,19 @@ public class RegisterRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> loginUser(@RequestBody @Valid RegisterObject registerObject) throws UsernameAlreadyUsedException, JsonProcessingException {
+    public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws UsernameAlreadyUsedException, JsonProcessingException {
 
-        Kingdom newKingdom = new Kingdom(registerObject.getKingdom());
-        User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), newKingdom);
+        User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), new Kingdom(registerObject.getKingdom()));
         userService.saveUser(newUser);
 
+            return ResponseEntity.status(HttpStatus.valueOf(200)).body(newUser);
+    }
+}
+
+//IF WE WANT TO USE JSON FILTER
 //        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
 //        filterProvider.addFilter("KingdomFilter", SimpleBeanPropertyFilter.filterOutAllExcept("kingdomId"));
 //        ObjectMapper mapper = new ObjectMapper();
 //        mapper.setFilterProvider(filterProvider);
 //        String jsonData = mapper.writerWithDefaultPrettyPrinter()
 //                .writeValueAsString(newUser);
-
-            return ResponseEntity.status(HttpStatus.valueOf(200)).body(newUser);
-    }
-}

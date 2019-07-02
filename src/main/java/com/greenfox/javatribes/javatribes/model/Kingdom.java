@@ -6,20 +6,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "kingdoms")
 public class Kingdom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "kingdom_id")
     @JsonProperty("kingdomId")
     private long Id;
 
+    @JsonIgnore
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
     @JsonIgnore
+    @OneToOne(mappedBy = "kingdom")
     private User user;
 
     public Kingdom() {
