@@ -1,7 +1,8 @@
 package com.greenfox.javatribes.javatribes.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -10,10 +11,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long id;
 
@@ -23,7 +25,11 @@ public class User {
     @NotNull @NotEmpty
     private String password;
 
-    private String kingdom;
+    @JsonUnwrapped
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "kingdom_id")
+//    @JsonFilter("KingdomFilter")
+    private Kingdom kingdom;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade=CascadeType.ALL, orphanRemoval = true)
@@ -35,7 +41,13 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, Kingdom kingdom) {
+        this.username = username;
+        this.password = password;
+        this.kingdom = kingdom;
+    }
+
+    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password) {
         this.username = username;
         this.password = password;
         this.roles = new HashSet<>(Arrays.asList(new Authorities("USER", this)));
@@ -81,11 +93,11 @@ public class User {
         this.password = password;
     }
 
-    public String getKingdom() {
+    public Kingdom getKingdom() {
         return kingdom;
     }
 
-    public void setKingdom(String kingdom) {
+    public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
     }
 
