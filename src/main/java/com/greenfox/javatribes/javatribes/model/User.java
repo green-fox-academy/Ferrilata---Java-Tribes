@@ -1,17 +1,17 @@
 package com.greenfox.javatribes.javatribes.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private long id;
 
     @NotNull @NotEmpty
@@ -20,12 +20,22 @@ public class User {
     @NotNull @NotEmpty
     private String password;
 
-    private String kingdom;
+    @JsonUnwrapped
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "kingdom_id")
+//    @JsonFilter("KingdomFilter")
+    private Kingdom kingdom;
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, Kingdom kingdom) {
+        this.username = username;
+        this.password = password;
+        this.kingdom = kingdom;
+    }
+
+    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password) {
         this.username = username;
         this.password = password;
     }
@@ -54,11 +64,11 @@ public class User {
         this.password = password;
     }
 
-    public String getKingdom() {
+    public Kingdom getKingdom() {
         return kingdom;
     }
 
-    public void setKingdom(String kingdom) {
+    public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
     }
 }
