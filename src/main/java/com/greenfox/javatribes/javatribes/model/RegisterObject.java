@@ -11,7 +11,7 @@ public class RegisterObject {
     @NotNull @NotEmpty
     private String username;
 
-    @NotNull @NotEmpty
+    @NotNull
     private String kingdom;
 
     public RegisterObject() {

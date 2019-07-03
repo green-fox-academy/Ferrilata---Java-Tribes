@@ -32,6 +32,10 @@ public class RegisterRestController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws UsernameAlreadyUsedException, JsonProcessingException {
 
+        if(registerObject.getKingdom().isEmpty()) {
+            registerObject.setKingdom(registerObject.getUsername() + "'s kingdom");
+        }
+
         User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), new Kingdom(registerObject.getKingdom()));
         userService.saveUser(newUser);
 
