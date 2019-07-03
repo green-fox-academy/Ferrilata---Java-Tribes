@@ -4,6 +4,7 @@ import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
 import com.greenfox.javatribes.javatribes.exceptions.UsernameAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -44,4 +45,16 @@ public class UserServiceImpl implements UserService {
 
         return false;
     }
+
+    public User findByUsername(String username) throws EntityNotFoundException{
+
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        if (!optionalUser.isPresent()){
+            throw new EntityNotFoundException("No such user - wrong username.");
+        }
+
+        return optionalUser.get();
+    }
+
 }

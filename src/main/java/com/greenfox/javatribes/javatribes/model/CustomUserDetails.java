@@ -1,39 +1,52 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class CustomUserDetails extends User implements UserDetails {
 
-    public CustomUserDetails(final User user) {
+    public CustomUserDetails(User user) {
         super(user);
     }
 
+    @Override
+    public String getUsername() {
+        return super.getUsername();
+    }
+
+    @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

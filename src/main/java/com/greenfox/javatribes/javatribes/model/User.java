@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,9 +26,11 @@ public class User {
     private String kingdom;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Authority> roles;
+    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL, orphanRemoval = true)
+    private Set<Authorities> roles;
+
+    public User(User user) {
+    }
 
     public User() {
     }
@@ -34,19 +38,22 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.roles = new HashSet<>(Arrays.asList(new Authorities("USER", this)));
     }
 
-    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password, Set<Authority> roles) {
+    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password, Set<Authorities> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;
+//        this.roles = new HashSet<>(Arrays.asList(new Authorities("USER", this)));
+
     }
 
-    public Set<Authority> getRoles() {
+    public Set<Authorities> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Authority> roles) {
+    public void setRoles(Set<Authorities> roles) {
         this.roles = roles;
     }
 
@@ -81,4 +88,6 @@ public class User {
     public void setKingdom(String kingdom) {
         this.kingdom = kingdom;
     }
+
+
 }
