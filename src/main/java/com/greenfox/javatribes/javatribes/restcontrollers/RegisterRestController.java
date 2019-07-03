@@ -1,10 +1,7 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
-import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
-import com.greenfox.javatribes.javatribes.exceptions.ResponseObject;
 import com.greenfox.javatribes.javatribes.exceptions.UsernameAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +27,6 @@ public class RegisterRestController {
             userService.saveUser(user);
 
             return ResponseEntity.status(HttpStatus.valueOf(200)).body(user);
+
     }
 }
