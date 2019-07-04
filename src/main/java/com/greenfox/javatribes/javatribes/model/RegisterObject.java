@@ -23,6 +23,12 @@ public class RegisterObject {
         this.kingdom = kingdom;
     }
 
+    public RegisterObject(String password, String username) {
+        this.password = password;
+        this.username = username;
+
+    }
+
     public String getPassword() {
         return password;
     }

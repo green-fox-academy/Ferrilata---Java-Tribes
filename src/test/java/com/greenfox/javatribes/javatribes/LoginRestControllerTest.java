@@ -58,7 +58,7 @@ public class LoginRestControllerTest {
     }
 
     @Test
-    public void unsuccessfulLoginUserTestWithEntityNotFoundException() throws Exception {
+    public void unsuccessfulLoginUserTestThrowsEntityNotFoundException() throws Exception {
 
         User user = new User("Juraj", "GreenFox");
 
