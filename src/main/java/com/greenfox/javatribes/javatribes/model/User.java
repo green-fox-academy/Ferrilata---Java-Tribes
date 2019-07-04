@@ -1,5 +1,9 @@
 package com.greenfox.javatribes.javatribes.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

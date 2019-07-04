@@ -2,10 +2,11 @@ package com.greenfox.javatribes.javatribes.security;
 
 import com.greenfox.javatribes.javatribes.model.User;
 import io.jsonwebtoken.*;
-import java.util.Date;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class JWTTokenUtil {
