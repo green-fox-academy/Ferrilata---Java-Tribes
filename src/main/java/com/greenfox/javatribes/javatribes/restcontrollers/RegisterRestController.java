@@ -1,10 +1,7 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.greenfox.javatribes.javatribes.exceptions.UsernameAlreadyUsedException;
+import com.greenfox.javatribes.javatribes.exceptions.IdentityAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.RegisterObject;
 import com.greenfox.javatribes.javatribes.model.User;
@@ -30,7 +27,7 @@ public class RegisterRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws UsernameAlreadyUsedException, JsonProcessingException {
+    public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws IdentityAlreadyUsedException, JsonProcessingException {
 
         User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), new Kingdom(registerObject.getKingdom()));
         userService.saveUser(newUser);

@@ -1,12 +1,12 @@
 package com.greenfox.javatribes.javatribes.exceptions;
 
-public class UsernameAlreadyUsedException extends Exception {
+public class IdentityAlreadyUsedException extends Throwable {
 
     private static final long serialVersionUID = 1L;
 
     private String message;
 
-    public UsernameAlreadyUsedException(String message) {
+    public IdentityAlreadyUsedException(String message) {
         this.message = message;
     }
 
