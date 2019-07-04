@@ -1,3 +1,2 @@
-INSERT INTO USER (user_id, username, password, kigdom) VALUES (1, 'fooname', 'pass123', 'foodom');
-INSERT INTO USER (ID, USERNAME, PASSWORD, KINGDOM) VALUES (2, 'dogname', 'pass456', 'dogdom');
-INSERT INTO USER (ID, USERNAME, PASSWORD, KINGDOM) VALUES (3, 'admin', 'admin', 'admindom');
+INSERT INTO ROLES (role_id, name) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO ROLES (role_id, name) VALUES (2, 'ROLE_USER');

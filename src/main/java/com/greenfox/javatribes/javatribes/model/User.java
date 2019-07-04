@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -26,14 +24,21 @@ public class User {
     private String password;
 
     @JsonUnwrapped
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "kingdom_id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "kingdom_id")
 //    @JsonFilter("KingdomFilter")
     private Kingdom kingdom;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL, orphanRemoval = true)
-    private Set<Authorities> roles;
+    @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id"))
+    private Collection<Role> roles;
 
     public User(User user) {
     }
@@ -45,28 +50,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.kingdom = kingdom;
+        this.kingdom.setUser(this);
+        this.roles = new ArrayList<>();
     }
 
-    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password) {
-        this.username = username;
-        this.password = password;
-        this.roles = new HashSet<>(Arrays.asList(new Authorities("USER", this)));
-    }
-
-    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password, Set<Authorities> roles) {
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-//        this.roles = new HashSet<>(Arrays.asList(new Authorities("USER", this)));
-
-    }
-
-    public Set<Authorities> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Authorities> roles) {
-        this.roles = roles;
+    public void addRole(Role role){
+        this.roles.add(role);
+        role.addUser(this);
     }
 
     public long getId() {
@@ -101,5 +91,11 @@ public class User {
         this.kingdom = kingdom;
     }
 
+    public Collection<Role> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 }

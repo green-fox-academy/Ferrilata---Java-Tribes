@@ -4,6 +4,7 @@ import com.greenfox.javatribes.javatribes.model.CustomUserDetails;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import com.greenfox.javatribes.javatribes.service.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -22,29 +23,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //@EnableJpaRepositories(basePackageClasses = UserRepository.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private CustomUserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Qualifier("customUserDetailsServiceImpl")
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-    public SecurityConfiguration(CustomUserDetailsServiceImpl userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/").permitAll().and()
-                .authorizeRequests().antMatchers("/console/**").permitAll();
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
+    @Bean
+    public PasswordEncoder passwordEncoder () {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(encoder());
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                    .antMatchers("/login").permitAll()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/tribes/**").hasRole("USER")
+                    .anyRequest().permitAll()
+                .and()
+                .formLogin().disable()
+                .csrf().disable();
+//        http.headers().frameOptions().disable();
     }
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .userDetailsService(userDetailsService)
+//                .passwordEncoder(encoder);
+//    }
+
+
 }
