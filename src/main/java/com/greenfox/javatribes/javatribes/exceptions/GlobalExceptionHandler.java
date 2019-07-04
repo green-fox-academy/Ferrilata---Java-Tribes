@@ -41,9 +41,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     ex.getMessage()));
     }
 
-    @ExceptionHandler(UsernameAlreadyUsedException.class)
-    public ResponseEntity<Object> handleUsernameAlreadyUsedException(
-            UsernameAlreadyUsedException ex){
+    @ExceptionHandler(IdentityAlreadyUsedException.class)
+    public ResponseEntity<Object> handleIdentityAlreadyUsedException(
+            IdentityAlreadyUsedException ex){
         return ResponseEntity.status(HttpStatus.valueOf(409)).body(new ResponseObject("error",
                 ex.getMessage()));
     }
