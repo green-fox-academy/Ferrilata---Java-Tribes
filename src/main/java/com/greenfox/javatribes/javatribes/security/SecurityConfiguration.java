@@ -45,12 +45,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/login").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/tribes/**").hasRole("USER")
                     .anyRequest().permitAll()
                 .and()
-                .formLogin().disable()
+                .formLogin()
+                .and()
                 .csrf().disable();
 //        http.headers().frameOptions().disable();
     }

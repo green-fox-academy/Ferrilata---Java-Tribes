@@ -39,6 +39,8 @@ public class RegisterRestController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws UsernameAlreadyUsedException, JsonProcessingException {
 
+
+
         Role userRole = roleRepository.findByName("ROLE_USER");
 
         User newUser = new User(registerObject.getUsername(),
