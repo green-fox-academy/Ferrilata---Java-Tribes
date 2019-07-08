@@ -2,11 +2,13 @@ package com.greenfox.javatribes.javatribes;
 
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.TestUtil;
+import com.greenfox.javatribes.javatribes.restcontrollers.KingdomController;
 import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
 import com.greenfox.javatribes.javatribes.service.KingdomService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-//@WebMvcTest(KiningdomController.class)
+@WebMvcTest(KingdomController.class)
 public class KingdomRestControllerTest {
 
     @Autowired
