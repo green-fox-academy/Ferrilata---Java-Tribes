@@ -47,4 +47,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.valueOf(409)).body(new ResponseObject("error",
                 ex.getMessage()));
     }
+
+    @ExceptionHandler(KingdomNotFoundException.class)
+    public ResponseEntity<Object> handleKingdomNotFoundException(
+            KingdomNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.valueOf(404)).body(new ResponseObject("error",
+                ex.getMessage()));
+    }
 }

@@ -1,6 +1,6 @@
 package com.greenfox.javatribes.javatribes.service;
 
-import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
+import com.greenfox.javatribes.javatribes.exceptions.KingdomNotFoundException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ public class KingdomServiceImpl implements KingdomService {
 
 
     @Override
-    public Kingdom findById(Long Id) throws EntityNotFoundException {
+    public Kingdom findById(Long Id) throws KingdomNotFoundException {
 
         Optional<Kingdom> optionalKingdom = kingdomRepository.findById(Id);
 
         if (!optionalKingdom.isPresent()){
-            throw new EntityNotFoundException("No such user - wrong username or password.");
+            throw new KingdomNotFoundException("There is no kingdom with this Id. Please enter a different Id.");
         }
 
         return optionalKingdom.get();
