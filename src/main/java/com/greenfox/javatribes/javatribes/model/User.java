@@ -17,30 +17,34 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String username;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String password;
 
     @JsonUnwrapped
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "kingdom_id")
-//    @JsonFilter("KingdomFilter")
     private Kingdom kingdom;
+//
+//    @Column(name = "Enabled", length = 1, nullable = false)
+//    private boolean enabled;
 
     @JsonIgnore
     @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id"))
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
     public User(User user) {
+        this.username = getUsername();
+        this.password = getPassword();
+        this.kingdom = getKingdom();
+        this.roles = getRoles();
+        this.id = getId();
+
     }
 
     public User() {
@@ -98,4 +102,12 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+//
+//    public boolean isEnabled() {
+//        return enabled;
+//    }
+//
+//    public void setEnabled(boolean enabled) {
+//        this.enabled = enabled;
+//    }
 }

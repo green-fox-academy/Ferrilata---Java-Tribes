@@ -4,7 +4,8 @@ import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
 import com.greenfox.javatribes.javatribes.exceptions.UsernameAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -16,6 +17,8 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+
 
     @Override
     public User findByUsernameAndPassword(String username, String password) throws EntityNotFoundException{

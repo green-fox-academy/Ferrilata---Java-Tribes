@@ -13,47 +13,62 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+import javax.sql.DataSource;
+
 @EnableWebSecurity
 @Configuration
-//@EnableJpaRepositories(basePackageClasses = UserRepository.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Qualifier("customUserDetailsServiceImpl")
+    private CustomUserDetailsServiceImpl userDetailsService;
     @Autowired
-    private UserDetailsService userDetailsService;
+    private DataSource dataSource;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Bean
-    public PasswordEncoder passwordEncoder () {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+//    public SecurityConfiguration(PasswordEncoder passwordEncoder, UserDetailsService customUserDetailsService, DataSource dataSource) {
+//        this.passwordEncoder = passwordEncoder;
+//        this.customUserDetailsService = customUserDetailsService;
+//        this.dataSource = dataSource;
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
+//        auth.userDetailsService(userDetailsService);
+//        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder());
+        auth.inMemoryAuthentication().withUser("fooname").password("pass123").roles("USER");
+
+        System.out.println(passwordEncoder.encode("pass123"));
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/tribes/**").hasRole("USER")
+                    .antMatchers("/admin/**").authenticated()
+                    .antMatchers("/tribes/**").authenticated()
                     .anyRequest().permitAll()
                 .and()
                 .formLogin()
+                .successForwardUrl("/tribes/")
                 .and()
                 .csrf().disable();
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        http.headers().frameOptions().disable();
     }
+
+
 //
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {

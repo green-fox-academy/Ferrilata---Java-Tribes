@@ -2,7 +2,9 @@ package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.repositories.RoleRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RoleServiceImpl implements RoleService {
 
     RoleRepository roleRepository;

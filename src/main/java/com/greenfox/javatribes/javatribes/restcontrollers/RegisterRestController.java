@@ -1,50 +1,57 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.greenfox.javatribes.javatribes.exceptions.UsernameAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.RegisterObject;
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.repositories.RoleRepository;
 import com.greenfox.javatribes.javatribes.service.KingdomService;
+import com.greenfox.javatribes.javatribes.service.RoleService;
 import com.greenfox.javatribes.javatribes.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 public class RegisterRestController {
 
     private UserService userService;
     private KingdomService kingdomService;
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
-    public RegisterRestController(UserService userService, KingdomService kingdomService, RoleRepository roleRepository) {
+//    @Autowired
+//    @Qualifier("register")
+//    private PasswordEncoder passwordEncoder2;
+//
+//    @Bean
+//    @Qualifier("register")
+//    public PasswordEncoder PasswordEncoder2() {
+//        return new BCryptPasswordEncoder();
+//    }
+
+    public RegisterRestController(UserService userService, KingdomService kingdomService, RoleService roleService) {
         this.userService = userService;
         this.kingdomService = kingdomService;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws UsernameAlreadyUsedException, JsonProcessingException {
+    public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws UsernameAlreadyUsedException {
 
-
-
-        Role userRole = roleRepository.findByName("ROLE_USER");
+//        userService.encodePassword(registerObject.getPassword());
+        Role userRole = roleService.findByName("ROLE_USER");
 
         User newUser = new User(registerObject.getUsername(),
-                                registerObject.getPassword(),
+                                new BCryptPasswordEncoder().encode(registerObject.getPassword()),
+//                                registerObject.getPassword(),
                                 new Kingdom(registerObject.getKingdom()));
         newUser.addRole(userRole);
         userRole.addUser(newUser);
