@@ -2,10 +2,7 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.greenfox.javatribes.javatribes.model.building.Barracks;
-import com.greenfox.javatribes.javatribes.model.building.Farm;
-import com.greenfox.javatribes.javatribes.model.building.Mine;
-import com.greenfox.javatribes.javatribes.model.building.Townhall;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,7 +11,7 @@ public class Kingdom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "kingdom_id")
+    //@Column(name = "kingdom_id")
     @JsonProperty("kingdomId")
     private long Id;
 
@@ -25,21 +22,8 @@ public class Kingdom {
     @OneToOne(mappedBy = "kingdom")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "townhall_id")
-    private Townhall townhall;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @Column(name = "mine_id")
-    private List<Mine> mineList;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @Column(name = "farm_id")
-    private List<Farm> farmList;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @Column(name = "barracks_id")
-    private List<Barracks> barracksList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kingdom")
+    private List<Building> buildings;
 
     public Kingdom() {
 

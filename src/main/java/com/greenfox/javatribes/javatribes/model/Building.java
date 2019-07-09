@@ -1,18 +1,23 @@
-package com.greenfox.javatribes.javatribes.model.building;
+package com.greenfox.javatribes.javatribes.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-public abstract class Building {
+public class Building {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private String type;
     private int level = 1;
-    private int hp;
+    private int hp = 0;
     private long startedAt = new Timestamp(System.currentTimeMillis()).getTime();
     private long finishedAt = new Timestamp(startedAt + (30 * 60 * 1000)).getTime();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "kingdom_id")
+    private Kingdom kingdom;
 
     public long getId() {
         return id;
@@ -20,6 +25,14 @@ public abstract class Building {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getLevel() {
