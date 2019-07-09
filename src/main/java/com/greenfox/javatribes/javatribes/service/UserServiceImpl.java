@@ -4,7 +4,6 @@ import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
 import com.greenfox.javatribes.javatribes.exceptions.IdentityAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private KingdomRepository kingdomRepository;
 
-    public UserServiceImpl(UserRepository userRepository, KingdomRepository kingdomRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.kingdomRepository = kingdomRepository;
     }
 
     @Override
@@ -47,9 +44,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) throws UserIdNotFoundException {
+
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        if(!optionalUser.isPresent()) {
+            throw new UserIdNotFoundException("UserId not found");
+        }
+
+        return optionalUser.get();
+
+    }
+
+    @Override
     public void saveUser(User user) throws IdentityAlreadyUsedException {
         if(!existsByUsername(user.getUsername()) && !existsByKingdomName(user.getKingdom().getName()));
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+
+        userRepository.save(user);
+
     }
 
     @Override

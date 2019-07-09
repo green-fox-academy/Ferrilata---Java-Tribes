@@ -2,9 +2,7 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
-import com.greenfox.javatribes.javatribes.model.ResponseObject;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
 import com.greenfox.javatribes.javatribes.service.KingdomService;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -13,36 +11,38 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-public class KingdomController {
+public class KingdomRestController {
 
     @Autowired
     KingdomService kingdomService;
-    UserService userService;
-    User authUser;
     @Autowired
-    UserRepository repo;
+    UserService userService;
+
+    /*@Autowired
+    UserRepository repo;*/
 
     private JWTTokenUtil jwtTokenUtil;
 
     @GetMapping("/kingdom")
-    public ResponseEntity<Object> displayKingdom(JWTTokenUtil jwtTokenUtil) {
+    public ResponseEntity<Object> displayKingdom(@RequestBody @Valid User user) throws UserIdNotFoundException {
 
-        Kingdom kingdom = new Kingdom ("Gondor");
-
+        Kingdom kingdom = userService.findByUsername(user.getUsername()).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
+
     }
 
     @GetMapping("/kingdom/{userId}")
     public ResponseEntity<Object> displayKingdomByUserId(@PathVariable long userId) throws UserIdNotFoundException {
 
         Kingdom kingdom = userService.findById(userId).getKingdom();
-
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
     }
 
-    @GetMapping("/user/{userId}")
+    /*@GetMapping("/user/{userId}")
     public ResponseEntity<Object> displayUserById(@PathVariable long userId) throws UserIdNotFoundException {
 
        User user = userService.findById(userId);
@@ -58,37 +58,38 @@ public class KingdomController {
 
         return name;
 
-    }
+    }*/
 
-    @GetMapping("/users")
+    /*@GetMapping("/users")
     public ResponseEntity<Object> displayAllUsers() throws UserIdNotFoundException {
 
         Iterable<User> userList = repo.findAll();
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(userList);
 
-    }
+    }*/
 
-    @GetMapping("/kingdomId/{id}")
+    /*@GetMapping("/kingdomId/{id}")
     public ResponseEntity<Object> displayKingdomById(@PathVariable long id) throws UserIdNotFoundException {
 
         Kingdom kingdom = kingdomService.findById(id);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
-    }
+    }*/
 
     @PutMapping("/kingdom")
-    public ResponseEntity<Object> updateKingdom (@RequestParam (required = false) String name, @RequestParam (required = false) int locationX, @RequestParam (required = false) int locationY) {
+    public ResponseEntity<Object> updateKingdom (@RequestBody @Valid User user,
+                                                 @RequestParam(required = false) String name,
+                                                 @RequestParam (required = false) int locationX,
+                                                 @RequestParam (required = false) int locationY) throws UserIdNotFoundException {
 
-        Kingdom kingdom = new Kingdom ();
-        kingdom.setName(name);
-        kingdom.setLocationX(locationX);
-        kingdom.setLocationY(locationY);
-        kingdomService.saveKingdom(kingdom);
+        userService.findByUsername(user.getUsername()).getKingdom().setName(name);
+        userService.findByUsername(user.getUsername()).getKingdom().setLocationX(locationX);
+        userService.findByUsername(user.getUsername()).getKingdom().setLocationY(locationY);
+        userService.updateUser(userService.findByUsername(user.getUsername()));
 
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(new ResponseObject("ok",
-                null, jwtTokenUtil.getToken(authUser)));
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body("ok");
 
     }
 

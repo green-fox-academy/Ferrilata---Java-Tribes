@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes;
 
 import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
+import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.TestUtil;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.LoginRestController;
@@ -40,7 +41,7 @@ public class LoginRestControllerTest {
     @Test
     public void successfulLoginUserTest() throws Exception {
 
-        User user = new User("Juraj", "GreenFox");
+        User user = new User("Juraj", "GreenFox",new Kingdom(""));
 
         when(userService.findByUsernameAndPassword("Juraj", "GreenFox")).thenReturn(user);
 
@@ -60,7 +61,7 @@ public class LoginRestControllerTest {
     @Test
     public void unsuccessfulLoginUserTestThrowsEntityNotFoundException() throws Exception {
 
-        User user = new User("Juraj", "GreenFox");
+        User user = new User("Juraj", "GreenFox",new Kingdom(""));
 
         when(userService.findByUsernameAndPassword("Juraj", "GreenFox")).thenThrow(new EntityNotFoundException("No such user - wrong username or password."));
 

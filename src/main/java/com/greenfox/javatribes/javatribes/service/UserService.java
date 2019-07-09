@@ -11,9 +11,13 @@ public interface UserService{
 
     User findById (long id) throws UserIdNotFoundException;
 
+    User findByUsername (String username) throws UserIdNotFoundException;
+
     Boolean existsByUsername(String username) throws IdentityAlreadyUsedException;
 
     void saveUser(User user) throws IdentityAlreadyUsedException;
+
+    void updateUser(User user);
 
     boolean existsByKingdomName(String name) throws IdentityAlreadyUsedException;
 

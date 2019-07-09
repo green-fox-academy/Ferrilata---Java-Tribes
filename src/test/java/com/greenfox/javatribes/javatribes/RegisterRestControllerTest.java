@@ -92,7 +92,7 @@ public class RegisterRestControllerTest {
     public void unsuccessfulRegisterUserTestThrowsIdentityAlreadyUsedException () throws Exception, IdentityAlreadyUsedException {
 
         RegisterObject registerObject = new RegisterObject("Juraj","GreenFox","kingdom");
-        User user = new User("Juraj","GreenFox");
+        User user = new User("Juraj", "GreenFox",new Kingdom(""));
 
         doThrow(new IdentityAlreadyUsedException("Username already taken, please choose an other one.")).when(userService).saveUser(user);
         when(userService.existsByUsername(anyString())).thenThrow(new IdentityAlreadyUsedException("Username already taken, please choose an other one."));

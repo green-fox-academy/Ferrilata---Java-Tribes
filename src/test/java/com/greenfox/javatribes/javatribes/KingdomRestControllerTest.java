@@ -3,7 +3,8 @@ package com.greenfox.javatribes.javatribes;
 import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.TestUtil;
-import com.greenfox.javatribes.javatribes.restcontrollers.KingdomController;
+import com.greenfox.javatribes.javatribes.model.User;
+import com.greenfox.javatribes.javatribes.restcontrollers.KingdomRestController;
 import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
 import com.greenfox.javatribes.javatribes.service.KingdomService;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(KingdomController.class)
+@WebMvcTest(KingdomRestController.class)
 
 public class KingdomRestControllerTest {
 
@@ -37,17 +38,23 @@ public class KingdomRestControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
+    private User user;
+    @MockBean
     private JWTTokenUtil jwtTokenUtil;
-
 
     @Test
     public void successfulGetKingdomTest() throws Exception {
 
-        Kingdom kingdom;
+        Kingdom testKingdom = new Kingdom ("Mordor");
+        testKingdom.setLocationX(1);
+        testKingdom.setLocationY(5);
+
+        User newUser = new User("Juraj", "GreenFox",new Kingdom("Gondor"));
+        when(userService.findByUsername(user.getUsername()).getKingdom()).thenReturn(testKingdom);
 
         RequestBuilder request = get("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(jwtTokenUtil));
+                .content(TestUtil.convertObjectToJsonBytes(newUser));
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -57,42 +64,38 @@ public class KingdomRestControllerTest {
     }
 
     @Test
-    public void successfulGetKingdomByIdTest() throws Exception {
+    public void successfulGetKingdomByUserIdTest() throws Exception {
 
-        Kingdom kingdom = new Kingdom("myKingdom");
+        Kingdom testKingdom = new Kingdom ("Mordor");
+        testKingdom.setLocationX(1);
+        testKingdom.setLocationY(5);
 
-        RequestBuilder request = get("/kingdom")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .param("userId","1");
+        when(userService.findById(anyLong())).thenReturn(new User("Juraj", "GreenFox",testKingdom));
+
+        RequestBuilder request = get("/kingdom/{id}",1L)
+                                    .contentType(TestUtil.APPLICATION_JSON_UTF8);
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("")) //should return kingdom object by id
+                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"id\":0,\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }
-
-    //Test returning 404 error message endpoint for trying to find non-existing kingdom will be created
 
     @Test
     public void unsuccessfulGetKingdomByIdTest() throws Exception {
 
-        Kingdom kingdom;
-
         when(userService.findById(anyLong())).thenThrow(new UserIdNotFoundException("UserId not found"));
 
-        RequestBuilder request = get("/kingdom")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .param("userId","1");
+        RequestBuilder request = get("/kingdom/{id}",1L)
+                .contentType(TestUtil.APPLICATION_JSON_UTF8);
 
         ResultActions resultActions = mockMvc.perform(request)
-                .andExpect(status().is(405))
-                .andExpect(content().string("{\"status\":\"error\",\"message\":\"\"UserId not found\"\"}"))
+                .andExpect(status().is(404))
+                .andExpect(content().string("{\"status\":\"error\",\"message\":\"UserId not found\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }
-
-
 
     @Test
     public void successfulPutKingdomTest() throws Exception {
