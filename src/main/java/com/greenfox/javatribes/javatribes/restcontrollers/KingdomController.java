@@ -51,6 +51,15 @@ public class KingdomController {
 
     }
 
+    @GetMapping("/username/{userId}")
+    public String displayUserNameByUserId(@PathVariable long userId) throws UserIdNotFoundException {
+
+        String name = userService.findById(userId).getUsername();
+
+        return name;
+
+    }
+
     @GetMapping("/users")
     public ResponseEntity<Object> displayAllUsers() throws UserIdNotFoundException {
 

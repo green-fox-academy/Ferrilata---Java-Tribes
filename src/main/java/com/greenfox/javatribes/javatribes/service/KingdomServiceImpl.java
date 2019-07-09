@@ -17,9 +17,9 @@ public class KingdomServiceImpl implements KingdomService {
     }
 
     @Override
-    public Kingdom findById(long Id) throws UserIdNotFoundException {
+    public Kingdom findById(long id) throws UserIdNotFoundException {
 
-        Optional<Kingdom> optionalKingdom = kingdomRepository.findById(Id);
+        Optional<Kingdom> optionalKingdom = kingdomRepository.findById(id);
 
         if(!optionalKingdom.isPresent()) {
             throw new UserIdNotFoundException("UserId not found");

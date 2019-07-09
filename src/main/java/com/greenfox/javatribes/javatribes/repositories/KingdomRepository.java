@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface KingdomRepository extends CrudRepository<Kingdom, Long> {
 
-    Optional<Kingdom> findById (long Id);
+    Optional<Kingdom> findById (long id);
 
 }

@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(long Id) throws UserIdNotFoundException {
+    public User findById(long id) throws UserIdNotFoundException {
 
-        Optional<User> optionalUser = userRepository.findById(Id);
+        Optional<User> optionalUser = userRepository.findById(id);
 
         if(!optionalUser.isPresent()) {
             throw new UserIdNotFoundException("UserId not found");

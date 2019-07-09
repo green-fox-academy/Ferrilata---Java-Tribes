@@ -9,7 +9,7 @@ public interface UserService{
 
     User findByUsernameAndPassword(String username, String password) throws EntityNotFoundException;
 
-    User findById (long Id) throws UserIdNotFoundException;
+    User findById (long id) throws UserIdNotFoundException;
 
     Boolean existsByUsername(String username) throws IdentityAlreadyUsedException;
 
