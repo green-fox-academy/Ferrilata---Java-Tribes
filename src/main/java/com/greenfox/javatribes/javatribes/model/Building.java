@@ -11,7 +11,7 @@ public class Building {
     private long id;
     private String type;
     private int level = 1;
-    private int hp = 0;
+    private int hp;
     private long startedAt = new Timestamp(System.currentTimeMillis()).getTime();
     private long finishedAt = new Timestamp(startedAt + (30 * 60 * 1000)).getTime();
 
