@@ -38,7 +38,7 @@ public class KingdomController {
 
         Kingdom kingdom = userService.findById(userId).getKingdom();
 
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(userService.findById(userId).getKingdom());
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
     }
 

@@ -1,6 +1,5 @@
 package com.greenfox.javatribes.javatribes.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import javax.persistence.*;
@@ -15,7 +14,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long id;
+    private long Id;
 
     @NotNull
     @NotEmpty
@@ -43,7 +42,7 @@ public class User {
         this.password = getPassword();
         this.kingdom = getKingdom();
         this.roles = getRoles();
-        this.id = getId();
+        this.Id = getId();
 
     }
 
@@ -64,11 +63,11 @@ public class User {
     }
 
     public long getId() {
-        return id;
+        return Id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public String getUsername() {
