@@ -1,9 +1,10 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
-import com.greenfox.javatribes.javatribes.exceptions.KingdomNotFoundException;
+import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.ResponseObject;
 import com.greenfox.javatribes.javatribes.model.User;
+import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
 import com.greenfox.javatribes.javatribes.service.KingdomService;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -17,21 +18,50 @@ public class KingdomController {
 
     @Autowired
     KingdomService kingdomService;
-    UserService userservice;
+    UserService userService;
     User authUser;
+    @Autowired
+    UserRepository repo;
 
     private JWTTokenUtil jwtTokenUtil;
 
-    @GetMapping("/kingdom/")
+    @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(JWTTokenUtil jwtTokenUtil) {
 
-        Kingdom kingdom = new Kingdom ();
+        Kingdom kingdom = new Kingdom ("Gondor");
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
     }
 
-    @GetMapping("/kingdom/{id}")
-    public ResponseEntity<Object> displayKingdomById(@PathVariable long id) throws KingdomNotFoundException {
+    @GetMapping("/kingdom/{userId}")
+    public ResponseEntity<Object> displayKingdomByUserId(@PathVariable long userId) throws UserIdNotFoundException {
+
+        Kingdom kingdom = userService.findById(userId).getKingdom();
+
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(userService.findById(userId).getKingdom());
+
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Object> displayUserById(@PathVariable long userId) throws UserIdNotFoundException {
+
+       User user = userService.findById(userId);
+
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(user);
+
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<Object> displayAllUsers() throws UserIdNotFoundException {
+
+        Iterable<User> userList = repo.findAll();
+
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(userList);
+
+    }
+
+    @GetMapping("/kingdomId/{id}")
+    public ResponseEntity<Object> displayKingdomById(@PathVariable long id) throws UserIdNotFoundException {
 
         Kingdom kingdom = kingdomService.findById(id);
 
@@ -52,6 +82,5 @@ public class KingdomController {
                 null, jwtTokenUtil.getToken(authUser)));
 
     }
-
 
 }

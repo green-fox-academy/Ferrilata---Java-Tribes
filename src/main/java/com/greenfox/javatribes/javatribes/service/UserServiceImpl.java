@@ -2,10 +2,12 @@ package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
 import com.greenfox.javatribes.javatribes.exceptions.IdentityAlreadyUsedException;
+import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -29,6 +31,19 @@ public class UserServiceImpl implements UserService {
         }
 
         return optionalUser.get();
+    }
+
+    @Override
+    public User findById(long Id) throws UserIdNotFoundException {
+
+        Optional<User> optionalUser = userRepository.findById(Id);
+
+        if(!optionalUser.isPresent()) {
+            throw new UserIdNotFoundException("UserId not found");
+        }
+
+        return optionalUser.get();
+
     }
 
     @Override

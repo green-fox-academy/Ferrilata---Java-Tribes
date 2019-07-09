@@ -2,11 +2,14 @@ package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
 import com.greenfox.javatribes.javatribes.exceptions.IdentityAlreadyUsedException;
+import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.User;
 
 public interface UserService{
 
     User findByUsernameAndPassword(String username, String password) throws EntityNotFoundException;
+
+    User findById (long Id) throws UserIdNotFoundException;
 
     Boolean existsByUsername(String username) throws IdentityAlreadyUsedException;
 

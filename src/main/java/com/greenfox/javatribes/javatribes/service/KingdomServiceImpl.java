@@ -1,6 +1,6 @@
 package com.greenfox.javatribes.javatribes.service;
 
-import com.greenfox.javatribes.javatribes.exceptions.KingdomNotFoundException;
+import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,13 @@ public class KingdomServiceImpl implements KingdomService {
         this.kingdomRepository = kingdomRepository;
     }
 
-
     @Override
-    public Kingdom findById(Long Id) throws KingdomNotFoundException {
+    public Kingdom findById(long Id) throws UserIdNotFoundException {
 
         Optional<Kingdom> optionalKingdom = kingdomRepository.findById(Id);
 
-        if (!optionalKingdom.isPresent()){
-            throw new KingdomNotFoundException("There is no kingdom with this Id. Please enter a different Id.");
+        if(!optionalKingdom.isPresent()) {
+            throw new UserIdNotFoundException("UserId not found");
         }
 
         return optionalKingdom.get();

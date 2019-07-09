@@ -18,7 +18,8 @@ public class Kingdom {
     private String name;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "kingdom")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private int locationX;
