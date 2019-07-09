@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes;
 
-import com.greenfox.javatribes.javatribes.exceptions.UsernameAlreadyUsedException;
+
+import com.greenfox.javatribes.javatribes.exceptions.IdentityAlreadyUsedException;
 import com.greenfox.javatribes.javatribes.model.TestUtil;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.RegisterRestController;
@@ -72,13 +73,13 @@ public class RegisterRestControllerTest {
     }
 
     @Test
-    public void unsuccessfulRegisterUserTestWithUsernameAlreadyUsedException () throws Exception {
+    public void unsuccessfulRegisterUserTestWithUsernameAlreadyUsedException () throws Exception, IdentityAlreadyUsedException {
 
         User user = new User("Juraj","GreenFox");
 
-        doThrow(new UsernameAlreadyUsedException("Username already taken, please choose an other one.")).doNothing().when(userService).saveUser(user);
+        doThrow(new IdentityAlreadyUsedException("Username already taken, please choose an other one.")).doNothing().when(userService).saveUser(user);
 
-        when(userService.existsByUsername("Juraj")).thenThrow(new UsernameAlreadyUsedException("Username already taken, please choose an other one."));
+        when(userService.existsByUsername("Juraj")).thenThrow(new IdentityAlreadyUsedException("Username already taken, please choose an other one."));
 
         RequestBuilder request = post("/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
