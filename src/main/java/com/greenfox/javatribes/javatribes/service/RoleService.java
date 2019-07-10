@@ -6,4 +6,5 @@ import com.greenfox.javatribes.javatribes.repositories.RoleRepository;
 public interface RoleService {
 
     Role findByName(String name);
+    void addRole(Role role);
 }

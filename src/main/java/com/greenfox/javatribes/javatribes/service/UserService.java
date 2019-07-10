@@ -14,5 +14,4 @@ public interface UserService {
 
     void saveUser(User user) throws UsernameAlreadyUsedException;
 
-    User findByUsername(String username) throws EntityNotFoundException;
 }

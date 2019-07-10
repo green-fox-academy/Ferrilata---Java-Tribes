@@ -1,17 +1,14 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
-import com.greenfox.javatribes.javatribes.model.ResponseObject;
+import com.greenfox.javatribes.javatribes.dto.ResponseObject;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
 import com.greenfox.javatribes.javatribes.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +42,10 @@ public class LoginRestController {
             User authUser = userService.findByUsernameAndPassword(user.getUsername(),
                     user.getPassword());
 
+            Authentication auth = SecurityContextHolder.getContext()
+                .getAuthentication();
+            System.out.println(auth);
+
             return ResponseEntity.status(HttpStatus.valueOf(200)).body(new ResponseObject("ok",
                     null, jwtTokenUtil.getToken(authUser)));
     }
@@ -52,6 +53,9 @@ public class LoginRestController {
 //    THIS ENDPOINT IS CREATED ONLY FOR AUTHENTICATION TESTING PURPOSES
     @GetMapping("/tribes")
     public String initialEndpointAfterLogin (){
+
+
+
         return "YOU ARE PLAYING NOW";
     }
 }

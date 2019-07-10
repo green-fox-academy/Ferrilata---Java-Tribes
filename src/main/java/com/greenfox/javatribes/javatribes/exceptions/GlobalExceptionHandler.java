@@ -1,6 +1,6 @@
 package com.greenfox.javatribes.javatribes.exceptions;
 
-import com.greenfox.javatribes.javatribes.model.ResponseObject;
+import com.greenfox.javatribes.javatribes.dto.ResponseObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
