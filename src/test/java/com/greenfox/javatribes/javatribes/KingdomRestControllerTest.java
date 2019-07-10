@@ -5,8 +5,6 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.TestUtil;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.KingdomRestController;
-import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
-import com.greenfox.javatribes.javatribes.service.KingdomService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +17,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -33,42 +32,34 @@ public class KingdomRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-    @MockBean
-    private KingdomService kingdomService;
+
     @MockBean
     private UserService userService;
-    @MockBean
-    private JWTTokenUtil jwtTokenUtil;
 
+    Kingdom testKingdom = new Kingdom("Mordor",1,5);
+    User testUser = new User("Juraj", "GreenFox",testKingdom);
+
+    //this end point should eventually return kingdom of the active (logged in) user (based on token verification?)
     @Test
     public void successfulGetKingdomTest() throws Exception {
 
-        Kingdom testKingdom = new Kingdom ("Mordor");
-        testKingdom.setLocationX(1);
-        testKingdom.setLocationY(5);
-
-        User user = new User("Juraj", "GreenFox",new Kingdom("Gondor"));
-        when(userService.findByUsername(user.getUsername()).getKingdom()).thenReturn(new Kingdom ("Mordor"));
+        when(userService.findByUsername(anyString())).thenReturn(testUser);
 
         RequestBuilder request = get("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(user));
+                .content(TestUtil.convertObjectToJsonBytes(testUser));
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("")); //should return selected kingdom object by token
+                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"id\":0,\"kingdomId\":0}"));
 
     }
 
     @Test
     public void successfulGetKingdomByUserIdTest() throws Exception {
 
-        Kingdom testKingdom = new Kingdom ("Mordor");
-        testKingdom.setLocationX(1);
-        testKingdom.setLocationY(5);
-
-        when(userService.findById(anyLong())).thenReturn(new User("Juraj", "GreenFox",testKingdom));
+        when(userService.findById(anyLong())).thenReturn(testUser);
 
         RequestBuilder request = get("/kingdom/{id}",1L)
                                     .contentType(TestUtil.APPLICATION_JSON_UTF8);
@@ -81,7 +72,7 @@ public class KingdomRestControllerTest {
     }
 
     @Test
-    public void unsuccessfulGetKingdomByIdTest() throws Exception {
+    public void unsuccessfulGetKingdomByUserIdTest() throws Exception {
 
         when(userService.findById(anyLong())).thenThrow(new UserIdNotFoundException("UserId not found"));
 
@@ -98,22 +89,18 @@ public class KingdomRestControllerTest {
     @Test
     public void successfulPutKingdomTest() throws Exception {
 
-        Kingdom Gondor = new Kingdom("Gondor");
-
-        User user = new User("Juraj", "GreenFox",Gondor);
+        when(userService.findByUsername(anyString())).thenReturn(testUser);
 
         RequestBuilder request = put("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                //.content(TestUtil.convertObjectToJsonBytes(jwtTokenUtil))
-                .content(TestUtil.convertObjectToJsonBytes(user))
+                .content(TestUtil.convertObjectToJsonBytes(testUser))
                 .param("name","Juraj")
                 .param("locationX","10")
                 .param("locationY","10");
 
-
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                //.andExpect(content().string("")) //should return selected kingdom object by token in modified form
+                .andExpect(content().string("{\"locationX\":10,\"locationY\":10,\"id\":0,\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }

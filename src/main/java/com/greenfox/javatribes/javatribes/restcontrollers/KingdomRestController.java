@@ -3,8 +3,6 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 import com.greenfox.javatribes.javatribes.exceptions.UserIdNotFoundException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.security.JWTTokenUtil;
-import com.greenfox.javatribes.javatribes.service.KingdomService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,16 +14,15 @@ import javax.validation.Valid;
 @RestController
 public class KingdomRestController {
 
-    @Autowired
-    KingdomService kingdomService;
+    /*@Autowired
+    KingdomService kingdomService;*/
     @Autowired
     UserService userService;
 
-    /*@Autowired
-    UserRepository repo;*/
+    //token not used at the moment. might be used in future version of the code.
+    //private JWTTokenUtil jwtTokenUtil;
 
-    private JWTTokenUtil jwtTokenUtil;
-
+    //this end point should eventually return kingdom of the active (logged in) user (based on token verification?)
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(@RequestBody @Valid User user) throws UserIdNotFoundException {
 
@@ -78,6 +75,7 @@ public class KingdomRestController {
 
     }*/
 
+    //this end point should eventually edit name and location of kingdom of the active (logged in) user (based on token verification?)
     @PutMapping("/kingdom")
     public ResponseEntity<Object> updateKingdom (@RequestBody @Valid User user,
                                                  @RequestParam(required = false) String name,
@@ -89,7 +87,9 @@ public class KingdomRestController {
         userService.findByUsername(user.getUsername()).getKingdom().setLocationY(locationY);
         userService.updateUser(userService.findByUsername(user.getUsername()));
 
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body("ok");
+        Kingdom modifiedKingdom = userService.findByUsername(user.getUsername()).getKingdom();
+
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
 
     }
 

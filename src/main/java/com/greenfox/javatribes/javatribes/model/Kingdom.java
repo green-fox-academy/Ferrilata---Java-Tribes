@@ -32,6 +32,8 @@ public class Kingdom {
         this.name = name;
     }
 
+    public Kingdom(String name, int locationX, int locationY) { this.name = name; this.locationX = locationX; this.locationY = locationY;}
+
     public long getId() {
         return Id;
     }
