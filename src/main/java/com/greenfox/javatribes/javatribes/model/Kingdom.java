@@ -20,11 +20,11 @@ public class Kingdom {
     private String name;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "kingdom")
+    @OneToOne//(mappedBy = "kingdom")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kingdom")
-    private List<Building> buildings;
+    @OneToMany(mappedBy = "kingdom")//(fetch = FetchType.LAZY, mappedBy = "kingdom")
+    private List<Building> buildings = new ArrayList<Building>();
 
     public Kingdom() {
 

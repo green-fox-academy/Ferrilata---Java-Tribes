@@ -1,5 +1,8 @@
 package com.greenfox.javatribes.javatribes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.greenfox.javatribes.javatribes.repositories.BuildingRepository;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,13 +14,26 @@ public class Building {
     private long id;
     private String type;
     private int level = 1;
-    private int hp;
+    private int hp = 0;
     private long startedAt = new Timestamp(System.currentTimeMillis()).getTime();
     private long finishedAt = new Timestamp(startedAt + (30 * 60 * 1000)).getTime();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "kingdom_id")
+    @JsonIgnore
+    @ManyToOne()//(fetch = FetchType.LAZY)
     private Kingdom kingdom;
+
+    public Building() {
+
+    }
+
+    public Building(String type, int level, int hp, long startedAt, long finishedAt, Kingdom kingdom) {
+        this.type = type;
+        this.level = level;
+        this.hp = hp;
+        this.startedAt = startedAt;
+        this.finishedAt = finishedAt;
+        this.kingdom = kingdom;
+    }
 
     public long getId() {
         return id;
@@ -65,5 +81,13 @@ public class Building {
 
     public void setFinishedAt(long finishedAt) {
         this.finishedAt = finishedAt;
+    }
+
+    public Kingdom getKingdom() {
+        return kingdom;
+    }
+
+    public void setKingdom(Kingdom kingdom) {
+        this.kingdom = kingdom;
     }
 }

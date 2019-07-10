@@ -25,12 +25,13 @@ public class User {
     private String password;
 
     @JsonUnwrapped
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JoinColumn(name = "kingdom_id")
 //    @JsonFilter("KingdomFilter")
     private Kingdom kingdom;
 
     public User() {
+
     }
 
     public User(String username, String password, Kingdom kingdom) {
