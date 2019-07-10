@@ -1,4 +1,4 @@
-package com.greenfox.javatribes.javatribes.model;
+package com.greenfox.javatribes.javatribes.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,6 +24,9 @@ public class User {
 
     @NotNull @NotEmpty
     private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
 
     @JsonUnwrapped
     @OneToOne(cascade = CascadeType.ALL)
@@ -74,5 +78,13 @@ public class User {
 
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
