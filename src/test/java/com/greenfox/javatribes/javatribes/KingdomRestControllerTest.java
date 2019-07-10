@@ -86,6 +86,7 @@ public class KingdomRestControllerTest {
 
     }
 
+    //this end point should eventually edit name and location of kingdom of the active (logged in) user (based on token verification?)
     @Test
     public void successfulPutKingdomTest() throws Exception {
 

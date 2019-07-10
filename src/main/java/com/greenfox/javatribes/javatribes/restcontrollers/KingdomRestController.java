@@ -14,8 +14,6 @@ import javax.validation.Valid;
 @RestController
 public class KingdomRestController {
 
-    /*@Autowired
-    KingdomService kingdomService;*/
     @Autowired
     UserService userService;
 
@@ -38,42 +36,6 @@ public class KingdomRestController {
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
     }
-
-    /*@GetMapping("/user/{userId}")
-    public ResponseEntity<Object> displayUserById(@PathVariable long userId) throws UserIdNotFoundException {
-
-       User user = userService.findById(userId);
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(user);
-
-    }
-
-    @GetMapping("/username/{userId}")
-    public String displayUserNameByUserId(@PathVariable long userId) throws UserIdNotFoundException {
-
-        String name = userService.findById(userId).getUsername();
-
-        return name;
-
-    }*/
-
-    /*@GetMapping("/users")
-    public ResponseEntity<Object> displayAllUsers() throws UserIdNotFoundException {
-
-        Iterable<User> userList = repo.findAll();
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(userList);
-
-    }*/
-
-    /*@GetMapping("/kingdomId/{id}")
-    public ResponseEntity<Object> displayKingdomById(@PathVariable long id) throws UserIdNotFoundException {
-
-        Kingdom kingdom = kingdomService.findById(id);
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
-
-    }*/
 
     //this end point should eventually edit name and location of kingdom of the active (logged in) user (based on token verification?)
     @PutMapping("/kingdom")
