@@ -39,10 +39,10 @@ public class KingdomRestController {
 
     //this end point should eventually edit name and location of kingdom of the active (logged in) user (based on token verification?)
     @PutMapping("/kingdom")
-    public ResponseEntity<Object> updateKingdom (@RequestBody @Valid User user,
-                                                 @RequestParam(required = false) String name,
-                                                 @RequestParam (required = false) int locationX,
-                                                 @RequestParam (required = false) int locationY) throws UserIdNotFoundException {
+    public ResponseEntity<Object> updateKingdom(@RequestBody @Valid User user,
+                                                @RequestParam(required = false) String name,
+                                                @RequestParam(required = false) int locationX,
+                                                @RequestParam(required = false) int locationY) throws UserIdNotFoundException {
 
         userService.findByUsername(user.getUsername()).getKingdom().setName(name);
         userService.findByUsername(user.getUsername()).getKingdom().setLocationX(locationX);

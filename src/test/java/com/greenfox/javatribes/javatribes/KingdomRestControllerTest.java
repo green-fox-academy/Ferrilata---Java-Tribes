@@ -36,8 +36,8 @@ public class KingdomRestControllerTest {
     @MockBean
     private UserService userService;
 
-    Kingdom testKingdom = new Kingdom("Mordor",1,5);
-    User testUser = new User("Juraj", "GreenFox",testKingdom);
+    Kingdom testKingdom = new Kingdom("Mordor", 1, 5);
+    User testUser = new User("Juraj", "GreenFox", testKingdom);
 
     //this end point should eventually return kingdom of the active (logged in) user (based on token verification?)
     @Test
@@ -61,8 +61,8 @@ public class KingdomRestControllerTest {
 
         when(userService.findById(anyLong())).thenReturn(testUser);
 
-        RequestBuilder request = get("/kingdom/{id}",1L)
-                                    .contentType(TestUtil.APPLICATION_JSON_UTF8);
+        RequestBuilder request = get("/kingdom/{id}", 1L)
+                .contentType(TestUtil.APPLICATION_JSON_UTF8);
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -76,7 +76,7 @@ public class KingdomRestControllerTest {
 
         when(userService.findById(anyLong())).thenThrow(new UserIdNotFoundException("UserId not found"));
 
-        RequestBuilder request = get("/kingdom/{id}",1L)
+        RequestBuilder request = get("/kingdom/{id}", 1L)
                 .contentType(TestUtil.APPLICATION_JSON_UTF8);
 
         ResultActions resultActions = mockMvc.perform(request)
@@ -95,9 +95,9 @@ public class KingdomRestControllerTest {
         RequestBuilder request = put("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(testUser))
-                .param("name","Juraj")
-                .param("locationX","10")
-                .param("locationY","10");
+                .param("name", "Juraj")
+                .param("locationX", "10")
+                .param("locationY", "10");
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())

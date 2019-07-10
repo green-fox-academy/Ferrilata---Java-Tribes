@@ -5,7 +5,6 @@ import com.greenfox.javatribes.javatribes.exceptions.IdentityAlreadyUsedExceptio
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.RegisterObject;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.service.KingdomService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +18,9 @@ import javax.validation.Valid;
 public class RegisterRestController {
 
     private UserService userService;
-    private KingdomService kingdomService;
 
-    public RegisterRestController(UserService userService, KingdomService kingdomService) {
+    public RegisterRestController(UserService userService) {
         this.userService = userService;
-        this.kingdomService = kingdomService;
     }
 
     @PostMapping("/register")

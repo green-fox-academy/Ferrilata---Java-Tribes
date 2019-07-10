@@ -31,23 +31,23 @@ public class LoginRestControllerTest {
     MockMvc mockMvc;
     @MockBean
     private UserService userService;
+
+    //token not used at the moment. might be used in future version of the code.
     @MockBean
     private JWTTokenUtil jwtTokenUtil;
-    @MockBean
-    private User authUser;
-    @MockBean
-    private EntityNotFoundException exception;
+    /*@MockBean
+    private User authUser;*/
+
+    User testUser = new User("Juraj", "GreenFox", new Kingdom(""));
 
     @Test
     public void successfulLoginUserTest() throws Exception {
 
-        User user = new User("Juraj", "GreenFox",new Kingdom(""));
-
-        when(userService.findByUsernameAndPassword("Juraj", "GreenFox")).thenReturn(user);
+        when(userService.findByUsernameAndPassword("Juraj", "GreenFox")).thenReturn(testUser);
 
         RequestBuilder request = post("/login")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(user));
+                .content(TestUtil.convertObjectToJsonBytes(testUser));
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -61,13 +61,11 @@ public class LoginRestControllerTest {
     @Test
     public void unsuccessfulLoginUserTestThrowsEntityNotFoundException() throws Exception {
 
-        User user = new User("Juraj", "GreenFox",new Kingdom(""));
-
         when(userService.findByUsernameAndPassword("Juraj", "GreenFox")).thenThrow(new EntityNotFoundException("No such user - wrong username or password."));
 
         RequestBuilder request = post("/login")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(user));
+                .content(TestUtil.convertObjectToJsonBytes(testUser));
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().is(401))
