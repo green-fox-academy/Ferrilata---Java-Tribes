@@ -1,4 +1,4 @@
-package com.greenfox.javatribes.javatribes.model;
+package com.greenfox.javatribes.javatribes.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

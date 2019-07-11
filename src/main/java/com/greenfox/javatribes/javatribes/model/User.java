@@ -4,10 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import javax.persistence.ElementCollection;
 
 @Entity
 @Table(name = "users")
@@ -21,13 +26,17 @@ public class User {
     @NotNull @NotEmpty
     private String username;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull @NotEmpty
     private String password;
+
+    @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     @JsonUnwrapped
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "kingdom_id")
-//    @JsonFilter("KingdomFilter")
     private Kingdom kingdom;
 
     public User() {
@@ -74,5 +83,13 @@ public class User {
 
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

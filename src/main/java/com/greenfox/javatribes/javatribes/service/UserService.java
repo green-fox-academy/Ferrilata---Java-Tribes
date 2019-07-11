@@ -1,17 +1,18 @@
 package com.greenfox.javatribes.javatribes.service;
 
-import com.greenfox.javatribes.javatribes.exceptions.EntityNotFoundException;
-import com.greenfox.javatribes.javatribes.exceptions.IdentityAlreadyUsedException;
+import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.User;
 
 public interface UserService{
 
-    User findByUsernameAndPassword(String username, String password) throws EntityNotFoundException;
+    Boolean existsByUsername(String username) throws CustomException;
 
-    Boolean existsByUsername(String username) throws IdentityAlreadyUsedException;
+    boolean existsByKingdomName(String name) throws CustomException;
 
-    void saveUser(User user) throws IdentityAlreadyUsedException;
+    User findByUsername(String username);
 
-    boolean existsByKingdomName(String name) throws IdentityAlreadyUsedException;
+    String login(String username, String password) throws CustomException;
+
+    void register(User user) throws CustomException;
 
 }
