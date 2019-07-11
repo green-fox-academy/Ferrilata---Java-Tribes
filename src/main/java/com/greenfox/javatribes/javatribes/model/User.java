@@ -31,7 +31,9 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     private List<Role> roles;
 
     @JsonUnwrapped
