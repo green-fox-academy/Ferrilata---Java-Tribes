@@ -41,7 +41,6 @@ public class UserRestControllerTestRegister {
     @MockBean
     AuthenticationManager manager;
 
-
     RegisterObject registerObjectWithKingdomname = new RegisterObject("Juraj", "GreenFox", "kingdom");
     RegisterObject registerObjectWithoutKingdomname = new RegisterObject("Juraj", "GreenFox", "");
 
