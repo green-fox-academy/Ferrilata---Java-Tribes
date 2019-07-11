@@ -2,7 +2,6 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
-import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @RestController
 public class KingdomRestController {
@@ -37,19 +35,18 @@ public class KingdomRestController {
 
     }
 
-    //this end point should eventually edit name and location of kingdom of the active (logged in) user (based on token verification?)
     @PutMapping("/kingdom")
-    public ResponseEntity<Object> updateKingdom(@RequestBody @Valid User user,
+    public ResponseEntity<Object> updateKingdom(HttpServletRequest httpServletRequest,
                                                 @RequestParam(required = false) String name,
                                                 @RequestParam(required = false) int locationX,
                                                 @RequestParam(required = false) int locationY) {
 
-        userService.findByUsername(user.getUsername()).getKingdom().setName(name);
-        userService.findByUsername(user.getUsername()).getKingdom().setLocationX(locationX);
-        userService.findByUsername(user.getUsername()).getKingdom().setLocationY(locationY);
-        userService.updateUser(userService.findByUsername(user.getUsername()));
+        userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom().setName(name);
+        userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom().setLocationX(locationX);
+        userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom().setLocationY(locationY);
+        userService.updateUser(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))));
 
-        Kingdom modifiedKingdom = userService.findByUsername(user.getUsername()).getKingdom();
+        Kingdom modifiedKingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
 
