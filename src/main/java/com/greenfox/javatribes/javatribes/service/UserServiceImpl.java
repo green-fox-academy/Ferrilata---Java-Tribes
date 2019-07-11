@@ -54,6 +54,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(User user) {
+
+        userRepository.save(user);
+
+    }
+
+    @Override
     public Boolean existsByUsername(String username) throws CustomException {
         boolean optionalUser = userRepository.existsByUsername(username);
 
@@ -81,6 +88,19 @@ public class UserServiceImpl implements UserService {
             throw new CustomException("No such user - wrong username.", HttpStatus.valueOf(401));
         }
         return optionalUser.get();
+    }
+
+    @Override
+    public User findById(long id) throws CustomException {
+
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if(!optionalUser.isPresent()) {
+            throw new CustomException("UserId not found!", HttpStatus.valueOf(404));
+        }
+
+        return optionalUser.get();
+
     }
 
 }

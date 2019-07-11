@@ -9,11 +9,10 @@ import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
+
 import javax.validation.Valid;
 
 @RestController
@@ -46,12 +45,6 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(newUser);
     }
 
-//    ENDPOINT FOR TESTING PURPOSE ONLY
-    @GetMapping("/kingdom")
-    public String getMyKingdomName(HttpServletRequest httpServletRequest){
-       return userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest)))
-                .getKingdom().getName();
-    }
 }
 
 //IF WE WANT TO USE JSON FILTER
