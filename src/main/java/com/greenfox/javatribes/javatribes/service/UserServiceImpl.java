@@ -3,7 +3,6 @@ package com.greenfox.javatribes.javatribes.service;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -48,47 +46,20 @@ public class UserServiceImpl implements UserService {
 
         if (!existsByUsername(user.getUsername()) && !existsByKingdomName(user.getKingdom().getName())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            if (user.getRoles() == null){
+            if (user.getRoles() == null) {
                 user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
             }
             userRepository.save(user);
-//            return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
-//        } else {
-//            throw new CustomException("Unable to register new user", HttpStatus.valueOf(409));
-//    }
-//
-//        } else {
-//            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
-//        }
         }
     }
-
-//    @Override
-//    public User findByUsernameAndPassword(String username, String password) throws CustomException{
-//
-//        Optional<User> optionalUser = userRepository.findByUsernameAndPassword(username, password);
-//
-//        if (!optionalUser.isPresent()){
-//            throw new CustomException("No such user - wrong username or password.", HttpStatus.valueOf(401));
-//        }
-//
-//        return optionalUser.get();
-//    }
-
-//    @Override
-//    public void saveUser(User user){
-//        if(!existsByUsername(user.getUsername()) && !existsByKingdomName(user.getKingdom().getName()));
-//        userRepository.save(user);
-//    }
 
     @Override
     public Boolean existsByUsername(String username) throws CustomException {
         boolean optionalUser = userRepository.existsByUsername(username);
 
-        if (optionalUser){
+        if (optionalUser) {
             throw new CustomException("Username already taken, please choose an other one.", HttpStatus.valueOf(409));
         }
-
         return false;
     }
 
@@ -102,14 +73,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username) throws CustomException{
+    public User findByUsername(String username) throws CustomException {
 
         Optional<User> optionalUser = userRepository.findByUsername(username);
 
-        if (!optionalUser.isPresent()){
+        if (!optionalUser.isPresent()) {
             throw new CustomException("No such user - wrong username.", HttpStatus.valueOf(401));
         }
-
         return optionalUser.get();
     }
 

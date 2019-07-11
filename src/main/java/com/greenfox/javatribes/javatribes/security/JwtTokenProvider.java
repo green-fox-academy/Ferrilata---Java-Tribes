@@ -25,33 +25,13 @@ public class JwtTokenProvider {
 
   private byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
-//  @Value("${security.jwt.token.secret-key:secret-key}")
-//  private String secretKey;
-//
-//  @Value("${security.jwt.token.expire-length:3600000}")
-//  private long validityInMilliseconds = 3600000; // 1h
-
   @Autowired
   private MyUserDetails myUserDetails;
-
-//  @PostConstruct
-//  protected void init() {
-//    secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-//  }
 
   public String createToken(String username, List<Role> roles) {
 
     Claims claims = Jwts.claims().setSubject(username);
     claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
-
-
-
-//    return Jwts.builder()//
-//        .setClaims(claims)//
-//        .setIssuedAt(now)//
-//        .setExpiration(validity)//
-//        .signWith(SignatureAlgorithm.HS512, secretKey)//
-//        .compact();
 
     return Jwts.builder()
             .setClaims(claims)
@@ -59,26 +39,9 @@ public class JwtTokenProvider {
             .setHeaderParam("type", SecurityConstants.TOKEN_TYPE)
             .setIssuer(SecurityConstants.TOKEN_ISSUER)
             .setAudience(SecurityConstants.TOKEN_AUDIENCE)
-//            .setSubject(user.getUsername())
             .setExpiration(new Date(System.currentTimeMillis() + 3600000))
-//            .claim("rol", "USER")
             .compact();
   }
-
-//  private void createJWT(User user) {
-//
-//    byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
-//
-//    this.token = Jwts.builder()
-//            .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
-//            .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
-//            .setIssuer(SecurityConstants.TOKEN_ISSUER)
-//            .setAudience(SecurityConstants.TOKEN_AUDIENCE)
-//            .setSubject(user.getUsername())
-//            .setExpiration(new Date(System.currentTimeMillis() + 864000000))
-//            .claim("rol", "USER")
-//            .compact();
-//  }
 
   public Authentication getAuthentication(String token) {
     UserDetails userDetails = myUserDetails.loadUserByUsername(getUsername(token));

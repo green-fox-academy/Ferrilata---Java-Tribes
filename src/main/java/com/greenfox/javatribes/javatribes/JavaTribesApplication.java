@@ -23,7 +23,7 @@ public class JavaTribesApplication implements CommandLineRunner{
     }
 
 
-
+//    DB POPULATION JUST FOR TESTING PURPOSES
     @Override
     public void run(String... args) throws Exception {
 

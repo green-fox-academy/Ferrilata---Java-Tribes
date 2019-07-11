@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -31,8 +30,6 @@ public class UserRestController {
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody @Valid User user) throws CustomException {
 
-//        User authUser = userService.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(new ResponseObject("ok",
                 null, userService.login(user.getUsername(), user.getPassword())));
     }
@@ -49,6 +46,7 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(newUser);
     }
 
+//    ENDPOINT FOR TESTING PURPOSE ONLY
     @GetMapping("/kingdom")
     public String getMyKingdomName(HttpServletRequest httpServletRequest){
        return userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest)))
