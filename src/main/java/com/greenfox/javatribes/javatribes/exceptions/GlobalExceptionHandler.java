@@ -39,7 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Object> handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
-        res.sendError(ex.getHttpStatus().value(), ex.getMessage());
+//        res.sendError(ex.getHttpStatus().value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.valueOf(ex.getHttpStatus().value())).body(new ResponseObject("error",
                 ex.getMessage()));
     }

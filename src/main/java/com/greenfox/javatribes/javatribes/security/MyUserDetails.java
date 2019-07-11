@@ -1,7 +1,9 @@
 package com.greenfox.javatribes.javatribes.security;
 
-import murraco.model.User;
-import murraco.repository.UserRepository;
+import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.User;
+import com.greenfox.javatribes.javatribes.repositories.UserRepository;
+import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,15 +14,15 @@ import org.springframework.stereotype.Service;
 public class MyUserDetails implements UserDetailsService {
 
   @Autowired
-  private UserRepository userRepository;
+  private UserService userService;
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    final User user = userRepository.findByUsername(username);
+  public UserDetails loadUserByUsername(String username) throws CustomException {
+    final User user = userService.findByUsername(username);
 
-    if (user == null) {
-      throw new UsernameNotFoundException("User '" + username + "' not found");
-    }
+//    if (user == null) {
+//      throw new UsernameNotFoundException("User '" + username + "' not found");
+//    }
 
     return org.springframework.security.core.userdetails.User//
         .withUsername(username)//

@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import javax.persistence.ElementCollection;
 
 @Entity
 @Table(name = "users")
@@ -26,7 +27,7 @@ public class User {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
+    private List<Role> roles;
 
     @JsonUnwrapped
     @OneToOne(cascade = CascadeType.ALL)

@@ -9,10 +9,12 @@ import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -29,10 +31,10 @@ public class UserRestController {
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody @Valid User user) throws CustomException {
 
-        User authUser = userService.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+//        User authUser = userService.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(new ResponseObject("ok",
-                null, jwtTokenProvider.createToken(authUser.getUsername(), authUser.getRoles())));
+                null, userService.login(user.getUsername(), user.getPassword())));
     }
 
     @PostMapping("/register")
@@ -42,9 +44,15 @@ public class UserRestController {
             registerObject.setKingdom(registerObject.getUsername() + "'s kingdom");
         }
         User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), new Kingdom(registerObject.getKingdom()));
-        userService.saveUser(newUser);
+        userService.register(newUser);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(newUser);
+    }
+
+    @GetMapping("/kingdom")
+    public String getMyKingdomName(HttpServletRequest httpServletRequest){
+       return userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest)))
+                .getKingdom().getName();
     }
 }
 
