@@ -84,7 +84,7 @@ public class UserRestControllerTestRegister {
     @Test
     public void unsuccessfulRegisterUserTestThrowsIdentityAlreadyUsedException() throws Exception {
 
-        doThrow(new CustomException("Username already taken, please choose an other one.",HttpStatus.valueOf(409))).when(userService).register(anyObject());
+        doThrow(new CustomException("Username already taken, please choose an other one.", HttpStatus.valueOf(409))).when(userService).register(anyObject());
 
         RequestBuilder request = post("/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
