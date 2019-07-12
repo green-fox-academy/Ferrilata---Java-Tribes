@@ -14,13 +14,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(KingdomRestController.class)
+@WebAppConfiguration
 public class KingdomRestControllerTest {
 
     @Autowired
@@ -43,14 +45,17 @@ public class KingdomRestControllerTest {
 
     Kingdom testKingdom = new Kingdom("Mordor", 1, 5);
     User testUser = new User("Juraj", "GreenFox", testKingdom);
+    String testToken = "This is my secret sacred Token!";
 
     @Test
+    @WithMockUser
     public void successfulGetKingdomTest() throws Exception {
 
-        when(userService.findByUsername(anyString())).thenReturn(testUser);
+        when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = get("/kingdom")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8);
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(testToken));
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -60,6 +65,7 @@ public class KingdomRestControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void successfulGetKingdomByUserIdTest() throws Exception {
 
         when(userService.findById(anyLong())).thenReturn(testUser);
@@ -75,6 +81,7 @@ public class KingdomRestControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void unsuccessfulGetKingdomByUserIdTest() throws Exception {
 
         when(userService.findById(anyLong())).thenThrow(new CustomException("UserId not found", HttpStatus.valueOf(404)));
@@ -89,11 +96,11 @@ public class KingdomRestControllerTest {
 
     }
 
-    //this end point should eventually edit name and location of kingdom of the active (logged in) user (based on token verification?)
     @Test
+    @WithMockUser
     public void successfulPutKingdomTest() throws Exception {
 
-        when(userService.findByUsername(anyString())).thenReturn(testUser);
+        when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = put("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
