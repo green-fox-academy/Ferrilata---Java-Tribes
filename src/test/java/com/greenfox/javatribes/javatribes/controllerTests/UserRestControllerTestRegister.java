@@ -1,4 +1,4 @@
-package com.greenfox.javatribes.javatribes;
+package com.greenfox.javatribes.javatribes.controllerTests;
 
 import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
@@ -45,7 +45,7 @@ public class UserRestControllerTestRegister {
     RegisterObject registerObjectWithoutKingdomname = new RegisterObject("Juraj", "GreenFox", "");
 
     String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\"}";
-    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}";
+    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}";
 
     @Test
     public void successfulRegisterUserTestWithKingdomNameInput() throws Exception {
@@ -55,7 +55,7 @@ public class UserRestControllerTestRegister {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();
@@ -72,7 +72,7 @@ public class UserRestControllerTestRegister {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithoutKingdomname)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();

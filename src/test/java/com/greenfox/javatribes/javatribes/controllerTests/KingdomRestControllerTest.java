@@ -1,4 +1,4 @@
-package com.greenfox.javatribes.javatribes;
+package com.greenfox.javatribes.javatribes.controllerTests;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
