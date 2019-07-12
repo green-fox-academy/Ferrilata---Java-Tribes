@@ -11,8 +11,12 @@ public interface UserService{
 
     User findByUsername(String username);
 
+    User findById (long id);
+
     String login(String username, String password) throws CustomException;
 
     void register(User user) throws CustomException;
+
+    void updateUser(User user);
 
 }
