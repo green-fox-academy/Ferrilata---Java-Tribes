@@ -2,7 +2,7 @@ package com.greenfox.javatribes.javatribes.controllerTests;
 
 import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
-import com.greenfox.javatribes.javatribes.model.TestUtil;
+import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.restcontrollers.UserRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
