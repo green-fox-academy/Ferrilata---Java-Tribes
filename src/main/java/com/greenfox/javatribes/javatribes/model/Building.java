@@ -17,7 +17,8 @@ public class Building {
     private long finishedAt = new java.sql.Timestamp(startedAt + (30 * 60 * 1000)).getTime();
 
     @JsonIgnore
-    @ManyToOne()//(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
     public Building() {

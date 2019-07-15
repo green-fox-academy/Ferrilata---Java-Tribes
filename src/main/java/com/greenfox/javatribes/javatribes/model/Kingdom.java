@@ -19,10 +19,11 @@ public class Kingdom {
     private String name;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "kingdom")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "kingdom")//(fetch = FetchType.LAZY, mappedBy = "kingdom")
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)//(fetch = FetchType.LAZY, mappedBy = "kingdom")
     private List<Building> buildings;
 
     @OneToMany(mappedBy = "kingdom")//(fetch = FetchType.LAZY, mappedBy = "kingdom")
