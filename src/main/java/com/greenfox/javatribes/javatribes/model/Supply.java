@@ -6,34 +6,23 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "supply")
 public class Supply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String type;  // wood + food
+    private String type;  // gold + food
     private int amount = 1;
     private int generation;
-    private long startedAt = new Timestamp(System.currentTimeMillis()).getTime();
-    private long finishedAt = new Timestamp(startedAt + (30 * 60 * 1000)).getTime();
+    private long updateAt = new Timestamp(System.currentTimeMillis()).getTime();
 
     public Supply() {
     }
 
     @JsonIgnore
-    @OneToOne (fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "kingdom")
     private Kingdom kingdom;
-
-    public Supply(String type, int amount, int generation, long startedAt, long finishedAt, Kingdom kingdom) {
-        this.type = type;
-        this.amount = amount;
-        this.generation = generation;
-        this.startedAt = startedAt;
-        this.finishedAt = finishedAt;
-        this.kingdom = kingdom;
-    }
 
     public Long getId() {
         return id;
@@ -67,20 +56,12 @@ public class Supply {
         this.generation = generation;
     }
 
-    public long getStartedAt() {
-        return startedAt;
+    public long getUpdateAt() {
+        return updateAt;
     }
 
-    public void setStartedAt(long startedAt) {
-        this.startedAt = startedAt;
-    }
-
-    public long getFinishedAt() {
-        return finishedAt;
-    }
-
-    public void setFinishedAt(long finishedAt) {
-        this.finishedAt = finishedAt;
+    public void setUpdateAt(long updateAt) {
+        this.updateAt = updateAt;
     }
 
     public Kingdom getKingdom() {
@@ -88,6 +69,14 @@ public class Supply {
     }
 
     public void setKingdom(Kingdom kingdom) {
+        this.kingdom = kingdom;
+    }
+
+    public Supply(String type, int amount, int generation, long updateAt, Kingdom kingdom) {
+        this.type = type;
+        this.amount = amount;
+        this.generation = generation;
+        this.updateAt = updateAt;
         this.kingdom = kingdom;
     }
 }

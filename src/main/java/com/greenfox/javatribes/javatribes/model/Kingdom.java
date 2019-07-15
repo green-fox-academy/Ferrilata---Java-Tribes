@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Kingdom {
@@ -16,6 +18,9 @@ public class Kingdom {
 
     @JsonIgnore
     private String name;
+
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Supply> spplies;
 
     @JsonIgnore
     @OneToOne(mappedBy = "kingdom")
@@ -31,7 +36,11 @@ public class Kingdom {
         this.name = name;
     }
 
-    public Kingdom(String name, int locationX, int locationY) { this.name = name; this.locationX = locationX; this.locationY = locationY;}
+    public Kingdom(String name, int locationX, int locationY) {
+        this.name = name;
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
 
     public long getId() {
         return Id;
