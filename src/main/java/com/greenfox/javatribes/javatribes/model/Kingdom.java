@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,12 +12,14 @@ public class Kingdom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "kingdom_id")
     @JsonProperty("kingdomId")
     private long Id;
 
     @JsonIgnore
     private String name;
+
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Supply> supplies;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
@@ -24,10 +27,10 @@ public class Kingdom {
     private User user;
 
     @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)//(fetch = FetchType.LAZY, mappedBy = "kingdom")
-    private List<Building> buildings;
+    private List<Building> buildings = new ArrayList<>();
 
     @OneToMany(mappedBy = "kingdom")//(fetch = FetchType.LAZY, mappedBy = "kingdom")
-    private List<Troop> troops;
+    private List<Troop> troops  = new ArrayList<>();;
 
     private int locationX;
     private int locationY;
@@ -40,7 +43,11 @@ public class Kingdom {
         this.name = name;
     }
 
-    public Kingdom(String name, int locationX, int locationY) { this.name = name; this.locationX = locationX; this.locationY = locationY;}
+    public Kingdom(String name, int locationX, int locationY) {
+        this.name = name;
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
 
     public long getId() {
         return Id;
@@ -97,5 +104,12 @@ public class Kingdom {
     public void setLocationY(int locationY) {
         this.locationY = locationY;
     }
+  
+  public List<Supply> getSupplies() {
+        return supplies;
+    }
 
+    public void setSupplies(List<Supply> supplies) {
+        this.supplies = supplies;
+    }
 }
