@@ -9,12 +9,12 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    //@Column(name = "user_id")
     private long id;
 
     @NotNull @NotEmpty
@@ -29,8 +29,7 @@ public class User {
     private List<Role> roles;
 
     @JsonUnwrapped
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "kingdom_id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Kingdom kingdom;
 
     public User() {
