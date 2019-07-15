@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Kingdom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "kingdom_id")
+    //@Column(name = "kingdom_id")
     @JsonProperty("kingdomId")
     private long Id;
 
@@ -21,10 +22,17 @@ public class Kingdom {
     @OneToOne(mappedBy = "kingdom")
     private User user;
 
+    @OneToMany(mappedBy = "kingdom")//(fetch = FetchType.LAZY, mappedBy = "kingdom")
+    private List<Building> buildings;
+
+    @OneToMany(mappedBy = "kingdom")//(fetch = FetchType.LAZY, mappedBy = "kingdom")
+    private List<Troop> troops;
+
     private int locationX;
     private int locationY;
 
     public Kingdom() {
+
     }
 
     public Kingdom(String name) {
@@ -55,6 +63,22 @@ public class Kingdom {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Building> getBuildings() {
+        return buildings;
+    }
+
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
+    }
+
+    public List<Troop> getTroops() {
+        return troops;
+    }
+
+    public void setTroops(List<Troop> troops) {
+        this.troops = troops;
     }
 
     public int getLocationX() {
