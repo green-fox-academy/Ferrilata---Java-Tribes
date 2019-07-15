@@ -2,7 +2,6 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "user_id")
+    @Column(name = "user_id")
     private long id;
 
     @NotNull @NotEmpty
@@ -29,7 +28,8 @@ public class User {
     private List<Role> roles;
 
     @JsonUnwrapped
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
     public User() {
@@ -41,7 +41,7 @@ public class User {
         this.kingdom = kingdom;
     }
 
-    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
