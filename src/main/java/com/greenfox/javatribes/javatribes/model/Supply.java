@@ -23,8 +23,14 @@ public class Supply {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-
     public Supply() {
+    }
+
+    public Supply(String type, int amount, int generation) {
+        this.type = type;
+        this.amount = amount;
+        this.generation = generation;
+
     }
 
     public Supply(String type, int amount, int generation, Timestamp updateAt, Kingdom kingdom) {

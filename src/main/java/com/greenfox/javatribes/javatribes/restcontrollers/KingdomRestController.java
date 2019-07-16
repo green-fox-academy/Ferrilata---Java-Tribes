@@ -5,12 +5,17 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Configuration
+@EnableScheduling
 @RestController
 public class KingdomRestController {
 
@@ -18,6 +23,13 @@ public class KingdomRestController {
     UserService userService;
     @Autowired
     JwtTokenProvider jwtTokenProvider;
+
+    @Scheduled(fixedRate = 60000)
+    public void scheduleFixedRateTask() {
+
+        userService.findById(3).getKingdom().getSupplies().get(1).setAmount(userService.findById(1).getKingdom().getSupplies().get(1).getAmount() + userService.findById(1).getKingdom().getSupplies().get(1).getGeneration());
+
+    }
 
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {
