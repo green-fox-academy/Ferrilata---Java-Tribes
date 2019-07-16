@@ -2,32 +2,69 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
+import com.greenfox.javatribes.javatribes.model.Supply;
+import com.greenfox.javatribes.javatribes.model.Timer;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
+import com.greenfox.javatribes.javatribes.service.SupplyService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Configuration
-@EnableScheduling
 @RestController
 public class KingdomRestController {
 
     @Autowired
     UserService userService;
     @Autowired
+    SupplyService supplyService;
+    @Autowired
     JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    Timer timer;
 
-    @Scheduled(fixedRate = 60000)
-    public void scheduleFixedRateTask() {
+    Supply supply = new Supply("gold",5,5);
 
-        userService.findById(3).getKingdom().getSupplies().get(1).setAmount(userService.findById(1).getKingdom().getSupplies().get(1).getAmount() + userService.findById(1).getKingdom().getSupplies().get(1).getGeneration());
+    /*public void scheduleFixedRateTask() {
+
+        supplyService.findById(1).setAmount(supplyService.findById(1).getAmount() + supplyService.findById(1).getGeneration());
+        supplyService.updateSupplies(supplyService.findById(1));
+        supplyService.earnById(1);
+        supply.setAmount(supply.getAmount()+supply.getGeneration());
+
+            }*/
+
+    @PostMapping ("/add/{id}")
+    public void add(long id) {
+
+        supplyService.findById(id).setAmount(supplyService.findById(id).getAmount() + supplyService.findById(id).getGeneration());
+        supplyService.updateSupplies(supplyService.findById(id));
+
+    }
+
+    @PostMapping ("/earn/{id}")
+    public void earn(long id) {
+
+        supplyService.earnById(id);
+
+    }
+
+    @GetMapping("/test")
+    public String displaySupply() {
+
+        String amount = String.valueOf(timer.getTime());
+        return amount;
+
+    }
+
+    @GetMapping("/test/{id}")
+    public String displaySupplbyId(long id) {
+
+        String amount2 = String.valueOf(supplyService.findById(id).getAmount());
+        return amount2;
 
     }
 

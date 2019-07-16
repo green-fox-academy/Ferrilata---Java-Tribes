@@ -1,11 +1,18 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Component
+@Configuration
+@EnableScheduling
 public class Supply {
 
     @Id
@@ -41,7 +48,12 @@ public class Supply {
         this.kingdom = kingdom;
     }
 
+    @Scheduled(fixedRate = 1000)
+    public void increaseTime () {
 
+        this.amount = this.amount + this.generation;
+
+    }
 
     public long getId() {
         return id;

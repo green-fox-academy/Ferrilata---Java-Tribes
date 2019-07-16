@@ -6,4 +6,8 @@ public interface SupplyService {
 
     Supply findById (long id);
 
+    void updateSupplies(Supply supply);
+
+    void earnById(long id);
+
 }
