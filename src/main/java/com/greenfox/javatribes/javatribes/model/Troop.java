@@ -2,29 +2,32 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 public class Troop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "troop_id")
     private long id;
+
     private int level = 1;
     private int hp = 0;
     private int attack;
     private int defense;
-    private long startedAt = new java.sql.Timestamp(System.currentTimeMillis()).getTime();
-    private long finishedAt = new java.sql.Timestamp(startedAt + (30 * 60 * 1000)).getTime();
+    private Timestamp startedAt = new java.sql.Timestamp(System.currentTimeMillis());
+    private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (30 * 60 * 1000));
 
     @JsonIgnore
-    @ManyToOne()//(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
     public Troop() {
-
     }
 
-    public Troop(int level, int hp, int attack, int defense, long startedAt, long finishedAt, Kingdom kingdom) {
+    public Troop(int level, int hp, int attack, int defense, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
         this.level = level;
         this.hp = hp;
         this.attack = attack;
@@ -74,19 +77,19 @@ public class Troop {
         this.defense = defense;
     }
 
-    public long getStartedAt() {
+    public Timestamp getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(long startedAt) {
+    public void setStartedAt(Timestamp startedAt) {
         this.startedAt = startedAt;
     }
 
-    public long getFinishedAt() {
+    public Timestamp getFinishedAt() {
         return finishedAt;
     }
 
-    public void setFinishedAt(long finishedAt) {
+    public void setFinishedAt(Timestamp finishedAt) {
         this.finishedAt = finishedAt;
     }
 

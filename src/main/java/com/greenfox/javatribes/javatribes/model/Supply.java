@@ -10,25 +10,38 @@ public class Supply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String type;  // gold + food
+    @Column(name = "supply_id")
+    private long id;
+
+    private String type;
     private int amount = 1;
     private int generation;
-    private long updateAt = new Timestamp(System.currentTimeMillis()).getTime();
+    private Timestamp updateAt = new Timestamp(System.currentTimeMillis());
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "kingdom_id")
+    private Kingdom kingdom;
+
 
     public Supply() {
     }
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "kingdom")
-    private Kingdom kingdom;
+    public Supply(String type, int amount, int generation, Timestamp updateAt, Kingdom kingdom) {
+        this.type = type;
+        this.amount = amount;
+        this.generation = generation;
+        this.updateAt = updateAt;
+        this.kingdom = kingdom;
+    }
 
-    public Long getId() {
+
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -56,11 +69,11 @@ public class Supply {
         this.generation = generation;
     }
 
-    public long getUpdateAt() {
+    public Timestamp getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(long updateAt) {
+    public void setUpdateAt(Timestamp updateAt) {
         this.updateAt = updateAt;
     }
 
@@ -72,11 +85,5 @@ public class Supply {
         this.kingdom = kingdom;
     }
 
-    public Supply(String type, int amount, int generation, long updateAt, Kingdom kingdom) {
-        this.type = type;
-        this.amount = amount;
-        this.generation = generation;
-        this.updateAt = updateAt;
-        this.kingdom = kingdom;
-    }
+
 }

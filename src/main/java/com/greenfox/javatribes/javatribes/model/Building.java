@@ -2,6 +2,7 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
+import java.sql.Timestamp;
 import static java.lang.System.currentTimeMillis;
 
 @Entity
@@ -9,12 +10,14 @@ public class Building {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "building_id")
     private long id;
+
     private String type;
     private int level = 1;
     private int hp = 0;
-    private long startedAt = new java.sql.Timestamp(currentTimeMillis()).getTime();
-    private long finishedAt = new java.sql.Timestamp(startedAt + (30 * 60 * 1000)).getTime();
+    private Timestamp startedAt = new java.sql.Timestamp(currentTimeMillis());
+    private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (30 * 60 * 1000));
 
     @JsonIgnore
     @ManyToOne
@@ -22,10 +25,9 @@ public class Building {
     private Kingdom kingdom;
 
     public Building() {
-
     }
 
-    public Building(String type, int level, int hp, long startedAt, long finishedAt, Kingdom kingdom) {
+    public Building(String type, int level, int hp, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
         this.type = type;
         this.level = level;
         this.hp = hp;
@@ -66,19 +68,19 @@ public class Building {
         this.hp = hp;
     }
 
-    public long getStartedAt() {
+    public Timestamp getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(long startedAt) {
+    public void setStartedAt(Timestamp startedAt) {
         this.startedAt = startedAt;
     }
 
-    public long getFinishedAt() {
+    public Timestamp getFinishedAt() {
         return finishedAt;
     }
 
-    public void setFinishedAt(long finishedAt) {
+    public void setFinishedAt(Timestamp finishedAt) {
         this.finishedAt = finishedAt;
     }
 

@@ -12,31 +12,29 @@ public class Kingdom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "kingdom_id")
     @JsonProperty("kingdomId")
     private long Id;
 
     @JsonIgnore
     private String name;
-
-    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
-    private List<Supply> supplies;
-
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)//(fetch = FetchType.LAZY, mappedBy = "kingdom")
-    private List<Building> buildings = new ArrayList<>();
-
-    @OneToMany(mappedBy = "kingdom")//(fetch = FetchType.LAZY, mappedBy = "kingdom")
-    private List<Troop> troops  = new ArrayList<>();;
-
     private int locationX;
     private int locationY;
 
-    public Kingdom() {
+    @JsonIgnore
+    @OneToOne(mappedBy = "kingdom")
+    private User user;
 
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Supply> supplies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Building> buildings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Troop> troops = new ArrayList<>();
+
+    public Kingdom() {
     }
 
     public Kingdom(String name) {
@@ -47,6 +45,21 @@ public class Kingdom {
         this.name = name;
         this.locationX = locationX;
         this.locationY = locationY;
+    }
+
+    public void addSupply(Supply supply) {
+        supply.setKingdom(this);
+        this.supplies.add(supply);
+    }
+
+    public void addTroop(Troop troop) {
+        troop.setKingdom(this);
+        this.troops.add(troop);
+    }
+
+    public void addBuilding(Building building) {
+        building.setKingdom(this);
+        this.buildings.add(building);
     }
 
     public long getId() {
@@ -63,6 +76,14 @@ public class Kingdom {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Supply> getSupplies() {
+        return supplies;
+    }
+
+    public void setSupplies(List<Supply> supplies) {
+        this.supplies = supplies;
     }
 
     public User getUser() {
@@ -93,23 +114,15 @@ public class Kingdom {
         return locationX;
     }
 
-    public int getLocationY() {
-        return locationY;
-    }
-
     public void setLocationX(int locationX) {
         this.locationX = locationX;
     }
 
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
-    }
-  
-  public List<Supply> getSupplies() {
-        return supplies;
+    public int getLocationY() {
+        return locationY;
     }
 
-    public void setSupplies(List<Supply> supplies) {
-        this.supplies = supplies;
+    public void setLocationY(int locationY) {
+        this.locationY = locationY;
     }
 }
