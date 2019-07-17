@@ -60,7 +60,7 @@ public class KingdomRestControllerTest {
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"id\":0,\"kingdomId\":0}"));
+                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"supplies\":[],\"buildings\":[],\"troops\":[],\"id\":0,\"kingdomId\":0}"));
 
     }
 
@@ -75,7 +75,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"id\":0,\"kingdomId\":0}"))
+                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"supplies\":[],\"buildings\":[],\"troops\":[],\"id\":0,\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }
@@ -110,7 +110,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"locationX\":10,\"locationY\":10,\"id\":0,\"kingdomId\":0}"))
+                .andExpect(content().string("{\"locationX\":10,\"locationY\":10,\"supplies\":[],\"buildings\":[],\"troops\":[],\"id\":0,\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }
