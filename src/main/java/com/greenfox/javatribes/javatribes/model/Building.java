@@ -18,6 +18,7 @@ public class Building {
     private int hp = 0;
     private Timestamp startedAt = new java.sql.Timestamp(currentTimeMillis());
     private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (30 * 60 * 1000));
+    private boolean isReady = false;
 
     @JsonIgnore
     @ManyToOne
@@ -34,6 +35,7 @@ public class Building {
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.kingdom = kingdom;
+        this.isReady = false;
     }
 
     public long getId() {
