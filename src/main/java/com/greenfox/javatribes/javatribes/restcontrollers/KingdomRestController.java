@@ -26,38 +26,6 @@ public class KingdomRestController {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping ("/earn")
-    public void earn() {
-
-        supplyService.earnById(1);
-
-    }
-
-
-    @PostMapping ("/add/{id}")
-    public void add(long id) {
-
-        supplyService.findById(id).setAmount(supplyService.findById(id).getAmount() + supplyService.findById(id).getGeneration());
-        supplyService.updateSupplies(supplyService.findById(id));
-
-    }
-
-    @PostMapping ("/earn/{id}")
-    public void earn(long id) {
-
-        supplyService.earnById(id);
-
-    }
-
-
-    @GetMapping("/test/{id}")
-    public String displaySupplbyId(long id) {
-
-        String amount2 = String.valueOf(supplyService.findById(id).getAmount());
-        return amount2;
-
-    }
-
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {
 
