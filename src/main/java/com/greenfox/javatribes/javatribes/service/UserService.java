@@ -3,6 +3,8 @@ package com.greenfox.javatribes.javatribes.service;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.User;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserService{
 
     Boolean existsByUsername(String username) throws CustomException;
@@ -14,6 +16,8 @@ public interface UserService{
     User findById (long id);
 
     String login(String username, String password) throws CustomException;
+
+    String identifyUser(HttpServletRequest httpServletRequest);
 
     void register(User user) throws CustomException;
 

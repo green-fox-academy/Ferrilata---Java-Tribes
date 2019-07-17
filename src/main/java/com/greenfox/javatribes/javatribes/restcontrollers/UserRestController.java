@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @RestController
 public class UserRestController {
@@ -42,10 +41,10 @@ public class UserRestController {
             registerObject.setKingdom(registerObject.getUsername() + "'s kingdom");
         }
 
-        Kingdom newKingdom = new Kingdom(registerObject.getKingdom(), new ArrayList<Supply>());
+        Kingdom newKingdom = new Kingdom(registerObject.getKingdom());
 
-        Supply gold = new Supply("gold",5,5,newKingdom);
-        Supply food = new Supply("food",5,5,newKingdom);
+        Supply gold = new Supply("gold",60,0,newKingdom);
+        Supply food = new Supply("food",60,1,newKingdom);
 
         newKingdom.addSupply(gold);
         newKingdom.addSupply(food);

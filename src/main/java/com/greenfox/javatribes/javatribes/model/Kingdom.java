@@ -37,17 +37,11 @@ public class Kingdom {
     public Kingdom() {
     }
 
-    public Kingdom(String name, ArrayList<Supply> supplies) {
-
-
-
-    }
-
     public Kingdom(String name) {
         this.name = name;
         this.supplies = new ArrayList<Supply>();
-        this.supplies.add(new Supply("gold", 5, 5));
-        this.supplies.add(new Supply("food", 5, 5));
+        this.buildings = new ArrayList<Building>();
+        this.troops = new ArrayList<Troop>();
     }
 
     public Kingdom(String name, int locationX, int locationY) {

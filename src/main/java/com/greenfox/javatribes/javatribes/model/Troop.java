@@ -32,7 +32,7 @@ public class Troop {
         this.kingdom = kingdom;
     }
 
-    public Troop(int level, int hp, int attack, int defense, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
+   /* public Troop(int level, int hp, int attack, int defense, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
         this.level = level;
         this.hp = hp;
         this.attack = attack;
@@ -40,7 +40,8 @@ public class Troop {
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.kingdom = kingdom;
-    }
+        this.isReady = isReady;
+    }*/
 
     public long getId() {
         return id;
@@ -104,5 +105,13 @@ public class Troop {
 
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
     }
 }

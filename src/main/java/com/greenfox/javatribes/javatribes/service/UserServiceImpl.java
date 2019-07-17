@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -39,6 +41,11 @@ public class UserServiceImpl implements UserService {
         } catch (AuthenticationException e) {
             throw new CustomException("No such user - wrong username or password.", HttpStatus.valueOf(401));
         }
+    }
+
+    @Override
+    public String identifyUser(HttpServletRequest httpServletRequest) {
+        return jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest));
     }
 
     @Override
