@@ -18,6 +18,7 @@ public class Troop {
     private int defense = 1;
     private Timestamp startedAt = new java.sql.Timestamp(System.currentTimeMillis());
     private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (30 * 60 * 1000));
+    private boolean isReady = false;
 
     @JsonIgnore
     @ManyToOne

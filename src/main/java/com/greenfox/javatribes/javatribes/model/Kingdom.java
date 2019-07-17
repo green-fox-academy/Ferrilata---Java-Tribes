@@ -40,8 +40,8 @@ public class Kingdom {
     public Kingdom(String name) {
         this.name = name;
         this.supplies = new ArrayList<Supply>();
-        this.supplies.add(new Supply("gold",5,5));
-        this.supplies.add(new Supply("food",5,5));
+        this.supplies.add(new Supply("gold", 5, 5));
+        this.supplies.add(new Supply("food", 5, 5));
     }
 
     public Kingdom(String name, int locationX, int locationY) {
@@ -63,6 +63,24 @@ public class Kingdom {
     public void addBuilding(Building building) {
         building.setKingdom(this);
         this.buildings.add(building);
+    }
+
+    public int getGoldAmount() {
+
+        int goldAmount = 0;
+
+        for (Supply supply : supplies) {
+
+            if (supply.getType().equalsIgnoreCase("gold")) {
+
+                goldAmount = supply.getAmount();
+
+            }
+
+        }
+
+        return goldAmount;
+
     }
 
     public long getId() {
