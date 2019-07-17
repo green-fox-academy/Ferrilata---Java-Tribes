@@ -37,6 +37,12 @@ public class Kingdom {
     public Kingdom() {
     }
 
+    public Kingdom(String name, ArrayList<Supply> supplies) {
+
+
+
+    }
+
     public Kingdom(String name) {
         this.name = name;
         this.supplies = new ArrayList<Supply>();
