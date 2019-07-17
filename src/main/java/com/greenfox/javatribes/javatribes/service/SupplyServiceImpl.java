@@ -6,7 +6,9 @@ import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -42,10 +44,18 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
+    @Transactional
     public void earnById(long id) {
 
         findById(id).setAmount(findById(id).getAmount() + findById(id).getGeneration());
         supplyRepository.save(findById(id));
+
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void earnSuppliesEverySecond() {
+
+        earnById(1);
 
     }
 

@@ -2,8 +2,6 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
-import com.greenfox.javatribes.javatribes.model.Supply;
-import com.greenfox.javatribes.javatribes.model.Timer;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.SupplyService;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -12,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,31 +25,6 @@ public class KingdomRestController {
     SupplyService supplyService;
     @Autowired
     JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    Timer timer;
-
-    @Scheduled(fixedRate = 1000)
-    public void scheduleFixedRateTask() {
-
-        int x = 0;
-        supplyService.earnById(1);
-        System.out.println(x);
-        x = x + 1;
-        supply.setAmount(supply.getAmount()+supply.getGeneration());
-
-    }
-
-    Supply supply = new Supply("gold",5,5);
-
-    /*public void scheduleFixedRateTask() {
-
-        supplyService.findById(1).setAmount(supplyService.findById(1).getAmount() + supplyService.findById(1).getGeneration());
-        supplyService.updateSupplies(supplyService.findById(1));
-        supplyService.earnById(1);
-        supply.setAmount(supply.getAmount()+supply.getGeneration());
-
-            }*/
-
 
     @PostMapping ("/earn")
     public void earn() {
@@ -77,13 +49,6 @@ public class KingdomRestController {
 
     }
 
-    @GetMapping("/test")
-    public String displaySupply() {
-
-        String amount = String.valueOf(timer.getTime());
-        return amount;
-
-    }
 
     @GetMapping("/test/{id}")
     public String displaySupplbyId(long id) {
