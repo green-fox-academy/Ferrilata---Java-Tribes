@@ -42,3 +42,10 @@ dependencies {
     runtime 'io.jsonwebtoken:jjwt-jackson:0.10.5'
     compile group: 'org.flywaydb', name: 'flyway-core', version: '5.2.4'
 }
+//
+//flyway {
+//    url = 'jdbc:mysql://localhost/tribes'
+//    user = 'root'
+//    password = 'freak123'
+//    schemas = 'schema'
+//}
