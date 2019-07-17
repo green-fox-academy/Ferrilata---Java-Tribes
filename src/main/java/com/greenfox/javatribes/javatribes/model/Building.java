@@ -28,6 +28,11 @@ public class Building {
     public Building() {
     }
 
+    public Building(String type, Kingdom kingdom) {
+        this.type = type;
+        this.kingdom = kingdom;
+    }
+
     public Building(String type, int level, int hp, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
         this.type = type;
         this.level = level;

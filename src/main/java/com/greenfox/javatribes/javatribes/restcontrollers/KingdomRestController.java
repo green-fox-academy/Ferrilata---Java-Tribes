@@ -1,13 +1,11 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
-import com.greenfox.javatribes.javatribes.service.SupplyService;
-import com.greenfox.javatribes.javatribes.service.TimerService;
-import com.greenfox.javatribes.javatribes.service.TroopService;
-import com.greenfox.javatribes.javatribes.service.UserService;
+import com.greenfox.javatribes.javatribes.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,8 @@ public class KingdomRestController {
     UserService userService;
     @Autowired
     TroopService troopService;
+    @Autowired
+    BuildingService buildingService;
     @Autowired
     SupplyService supplyService;
     @Autowired
@@ -79,6 +79,19 @@ public class KingdomRestController {
         }*/
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
+
+    }
+
+    @PostMapping("kingdom/buildings")
+    public ResponseEntity<Object> buildBuilding(HttpServletRequest httpServletRequest,
+                                                @RequestParam(required = true) String type) {
+
+        Kingdom kingdom = userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom();
+
+        Building building = new Building(type, kingdom);
+        buildingService.constructBuilding(kingdom, building);
+
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
 
     }
 
