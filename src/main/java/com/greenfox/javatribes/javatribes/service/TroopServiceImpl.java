@@ -10,10 +10,10 @@ public class TroopServiceImpl implements TroopService {
     public void trainTroop(Kingdom kingdom) throws CustomException {
 
         if (kingdom.getGoldAmount() < 20) {
-            throw new CustomException("Not enough gold!", HttpStatus.valueOf(400);
+            throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-
+        kingdom.spendGold(20);
 
     }
 }
