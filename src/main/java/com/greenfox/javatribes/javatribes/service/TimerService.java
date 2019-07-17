@@ -1,15 +1,11 @@
 package com.greenfox.javatribes.javatribes.service;
 
-import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.repositories.TroopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Configuration
 @EnableScheduling
@@ -21,17 +17,25 @@ public class TimerService {
     @Autowired
     SupplyService supplyService;
     @Autowired
+    TroopService troopService;
+    @Autowired
     TroopRepository troopRepository;
 
     @Scheduled(fixedRate = 1000)
-    public void scheduleFixedRateTask() {
+    public void scheduleFixedRateResourceEarning() {
 
         supplyService.earnAll();
 
     }
 
+    @Scheduled(fixedRate = 1000)
+    public void scheduledFixedRateTroopFinish() {
 
-    public void finishTroop(Troop troop) {
+        troopService.finishTroops();
+
+    }
+
+    /*public void finishTroop(Kingdom kingdom, Troop troop) {
 
         TimerTask task = new TimerTask() {
 
@@ -47,6 +51,6 @@ public class TimerService {
             Long delay = 100L;
             timer.schedule(task, delay);
 
-    }
+    }*/
 
 }

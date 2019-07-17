@@ -74,15 +74,6 @@ public class KingdomRestController {
         Troop troop = new Troop(kingdom);
         troopService.trainTroop(kingdom, troop);
 
-        //timerService.finishTroop(troop);
-
-        /*@Scheduled(fixedDelay = 30000)
-        public void finishTroop() {
-
-            troop.setReady(true);
-
-        }*/
-
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
 
     }
