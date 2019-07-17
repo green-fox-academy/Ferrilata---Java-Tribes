@@ -12,6 +12,4 @@ public interface SupplyService {
 
     void earnAll();
 
-    //void saveAll();
-
 }

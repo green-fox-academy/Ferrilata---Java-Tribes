@@ -3,17 +3,13 @@ package com.greenfox.javatribes.javatribes.service;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-@Configuration
-@EnableScheduling
 public class SupplyServiceImpl implements SupplyService {
 
     private SupplyRepository supplyRepository;
@@ -51,20 +47,12 @@ public class SupplyServiceImpl implements SupplyService {
 
     }
 
-   /* @Override
-    public void saveAll() {
-
-        supplyRepository.saveAll();
-
-    }*/
-
     @Override
     @Transactional
     public void earnAll() {
 
     supplyRepository.findAll().forEach(supply -> supply.setAmount(supply.getAmount()+supply.getGeneration()));
     supplyRepository.findAll().forEach(supply -> supplyRepository.save(supply));
-    //supplyRepository.saveAll();
 
     }
 
