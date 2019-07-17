@@ -3,6 +3,7 @@ package com.greenfox.javatribes.javatribes.service;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +13,8 @@ import java.util.Optional;
 @Service
 public class SupplyServiceImpl implements SupplyService {
 
-    private SupplyRepository supplyRepository;
-
-    public SupplyServiceImpl(SupplyRepository supplyRepository) {
-        this.supplyRepository = supplyRepository;
-    }
+    @Autowired
+    SupplyRepository supplyRepository;
 
     @Override
     public Supply findById(long id) throws CustomException {

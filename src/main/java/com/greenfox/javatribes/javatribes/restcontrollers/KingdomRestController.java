@@ -2,6 +2,7 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
+import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.SupplyService;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -52,6 +53,16 @@ public class KingdomRestController {
         Kingdom modifiedKingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
+
+    }
+
+    @PostMapping("kingdom/troops")
+    public ResponseEntity<Object> trainTroop(HttpServletRequest httpServletRequest) {
+
+        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
+        Troop troop = new Troop(kingdom);
+
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
 
     }
 

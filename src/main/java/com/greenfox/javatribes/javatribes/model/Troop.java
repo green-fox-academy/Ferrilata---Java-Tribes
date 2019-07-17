@@ -13,9 +13,9 @@ public class Troop {
     private long id;
 
     private int level = 1;
-    private int hp = 0;
-    private int attack;
-    private int defense;
+    private int hp = 1;
+    private int attack = 1;
+    private int defense = 1;
     private Timestamp startedAt = new java.sql.Timestamp(System.currentTimeMillis());
     private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (30 * 60 * 1000));
 
@@ -25,6 +25,10 @@ public class Troop {
     private Kingdom kingdom;
 
     public Troop() {
+    }
+
+    public Troop(Kingdom kingdom) {
+        this.kingdom = kingdom;
     }
 
     public Troop(int level, int hp, int attack, int defense, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
