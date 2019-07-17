@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SupplyRepository extends CrudRepository<Supply, Long> {
+
+    //void saveAll();
+
 }

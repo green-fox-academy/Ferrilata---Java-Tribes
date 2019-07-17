@@ -16,12 +16,8 @@ public class SupplyTimerService {
     @Scheduled(fixedRate = 1000)
     public void scheduleFixedRateTask() {
 
-
-        supplyService.earnById(1);
-
+        supplyService.earnAll();
 
     }
-
-
 
 }

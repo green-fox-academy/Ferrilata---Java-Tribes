@@ -10,4 +10,8 @@ public interface SupplyService {
 
     void earnById(long id);
 
+    void earnAll();
+
+    //void saveAll();
+
 }
