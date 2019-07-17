@@ -7,12 +7,16 @@ import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Configuration
+@EnableScheduling
 @RestController
 public class KingdomRestController {
 
@@ -69,6 +73,7 @@ public class KingdomRestController {
 
         Troop troop = new Troop(kingdom);
         troopService.trainTroop(kingdom, troop);
+
         //timerService.finishTroop(troop);
 
         /*@Scheduled(fixedDelay = 30000)

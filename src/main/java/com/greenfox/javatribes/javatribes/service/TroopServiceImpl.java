@@ -16,6 +16,9 @@ public class TroopServiceImpl implements TroopService {
     private KingdomRepository kingdomRepository;
 
     @Autowired
+    TimerService timerservice;
+
+    @Autowired
     private TroopRepository troopRepository;
 
     @Override
@@ -26,7 +29,10 @@ public class TroopServiceImpl implements TroopService {
         }
 
         kingdom.spendGold(10);
+
         kingdom.addTroop(troop);
+        long id = troop.getId();
+        timerservice.finishTroop(troop);
         kingdomRepository.save(kingdom);
 
     }
