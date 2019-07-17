@@ -13,7 +13,7 @@ public class Supply {
     private long id;
 
     private String type;
-    private int amount = 1;
+    private int amount;
     private int generation;
     private Timestamp updateAt = new Timestamp(System.currentTimeMillis());
 

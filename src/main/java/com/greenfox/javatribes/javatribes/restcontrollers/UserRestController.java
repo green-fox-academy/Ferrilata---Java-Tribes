@@ -4,6 +4,7 @@ import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.dto.ResponseObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
+import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @RestController
 public class UserRestController {
@@ -39,7 +41,16 @@ public class UserRestController {
         if(registerObject.getKingdom().isEmpty()) {
             registerObject.setKingdom(registerObject.getUsername() + "'s kingdom");
         }
-        User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), new Kingdom(registerObject.getKingdom()));
+
+        Kingdom newKingdom = new Kingdom(registerObject.getKingdom(), new ArrayList<Supply>());
+
+        Supply gold = new Supply("gold",5,5,newKingdom);
+        Supply food = new Supply("food",5,5,newKingdom);
+
+        newKingdom.addSupply(gold);
+        newKingdom.addSupply(food);
+
+        User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), newKingdom);
         userService.register(newUser);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(newUser);
