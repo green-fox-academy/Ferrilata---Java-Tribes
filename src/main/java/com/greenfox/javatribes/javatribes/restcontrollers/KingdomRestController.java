@@ -36,7 +36,7 @@ public class KingdomRestController {
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom();
+        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
     }
@@ -55,12 +55,12 @@ public class KingdomRestController {
                                                 @RequestParam(required = false) int locationX,
                                                 @RequestParam(required = false) int locationY) {
 
-        userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom().setName(name);
-        userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom().setLocationX(locationX);
-        userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom().setLocationY(locationY);
-        userService.updateUser(userService.findByUsername(userService.identifyUser(httpServletRequest)));
+        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setName(name);
+        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setLocationX(locationX);
+        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setLocationY(locationY);
+        userService.updateUser(userService.identifyUserFromJWTToken(httpServletRequest));
 
-        Kingdom modifiedKingdom = userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom();
+        Kingdom modifiedKingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
 
@@ -69,7 +69,7 @@ public class KingdomRestController {
     @PostMapping("kingdom/troops")
     public ResponseEntity<Object> trainTroop(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom();
+        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
 
         Troop troop = new Troop(kingdom);
         troopService.trainTroop(kingdom, troop);
@@ -82,7 +82,7 @@ public class KingdomRestController {
     public ResponseEntity<Object> buildBuilding(HttpServletRequest httpServletRequest,
                                                 @RequestParam(required = true) String type) {
 
-        Kingdom kingdom = userService.findByUsername(userService.identifyUser(httpServletRequest)).getKingdom();
+        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
 
         Building building = new Building(type, kingdom);
         buildingService.constructBuilding(kingdom, building);

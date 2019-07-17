@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,9 @@ public interface UserService{
 
     String login(String username, String password) throws CustomException;
 
-    String identifyUser(HttpServletRequest httpServletRequest);
+    User identifyUserFromJWTToken(HttpServletRequest httpServletRequest);
+
+    Kingdom identifyUserKingdomFromJWTToken(HttpServletRequest httpServletRequest);
 
     void register(User user) throws CustomException;
 

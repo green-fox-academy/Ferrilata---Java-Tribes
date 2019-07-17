@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
@@ -44,8 +45,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String identifyUser(HttpServletRequest httpServletRequest) {
-        return jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest));
+    public User identifyUserFromJWTToken(HttpServletRequest httpServletRequest) {
+
+        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get();
+
     }
 
     @Override
@@ -58,6 +61,13 @@ public class UserServiceImpl implements UserService {
             }
             userRepository.save(user);
         }
+    }
+
+    @Override
+    public Kingdom identifyUserKingdomFromJWTToken(HttpServletRequest httpServletRequest) {
+
+        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get().getKingdom();
+
     }
 
     @Override
