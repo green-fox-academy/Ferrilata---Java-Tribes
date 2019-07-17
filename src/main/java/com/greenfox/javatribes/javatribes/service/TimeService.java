@@ -20,7 +20,10 @@ public class TimeService {
     @Scheduled(fixedRate = 1000)
     public void scheduleFixedRateTask() {
 
+        int x = 0;
         supplyService.earnById(1);
+        System.out.println(x);
+        x = x + 1;
         supply.setAmount(supply.getAmount()+supply.getGeneration());
 
     }

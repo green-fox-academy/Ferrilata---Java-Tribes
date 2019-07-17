@@ -3,12 +3,16 @@ package com.greenfox.javatribes.javatribes.service;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Configuration
+@EnableScheduling
 public class SupplyServiceImpl implements SupplyService {
 
     private SupplyRepository supplyRepository;
@@ -22,7 +26,7 @@ public class SupplyServiceImpl implements SupplyService {
 
         Optional<Supply> optionalSupply = supplyRepository.findById(id);
 
-        if(!optionalSupply.isPresent()) {
+        if (!optionalSupply.isPresent()) {
             throw new CustomException("SupplyId not found!", HttpStatus.valueOf(404));
         }
 
@@ -40,8 +44,9 @@ public class SupplyServiceImpl implements SupplyService {
     @Override
     public void earnById(long id) {
 
-        supplyRepository.findById(id).get().setAmount(supplyRepository.findById(id).get().getAmount() + supplyRepository.findById(id).get().getGeneration());
-        supplyRepository.save(supplyRepository.findById(id).get());
+        findById(id).setAmount(findById(id).getAmount() + findById(id).getGeneration());
+        supplyRepository.save(findById(id));
 
     }
+
 }
