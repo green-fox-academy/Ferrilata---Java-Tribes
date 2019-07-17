@@ -13,7 +13,7 @@ public class Troop {
     private long id;
 
     private int level = 1;
-    private int hp = 1;
+    private int hp = 10;
     private int attack = 1;
     private int defense = 1;
     private Timestamp startedAt = new java.sql.Timestamp(System.currentTimeMillis());

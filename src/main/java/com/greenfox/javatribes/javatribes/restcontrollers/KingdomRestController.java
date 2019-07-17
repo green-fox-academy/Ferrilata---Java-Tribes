@@ -5,6 +5,7 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.SupplyService;
+import com.greenfox.javatribes.javatribes.service.TroopService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ public class KingdomRestController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    TroopService troopService;
     @Autowired
     SupplyService supplyService;
     @Autowired
@@ -61,6 +64,8 @@ public class KingdomRestController {
 
         Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
         Troop troop = new Troop(kingdom);
+
+        troopService.trainTroop(kingdom, troop);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
 
