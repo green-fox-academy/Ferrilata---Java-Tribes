@@ -21,12 +21,6 @@ jobs:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
 
-    branches:
-      only:
-        - development
-        - preproduction
-        - master
-
     steps:
       - checkout
 
@@ -51,21 +45,28 @@ jobs:
   deploy:
     docker:
       - image: buildpack-deps:trusty
-      steps:
-        - checkout
-        - run:
-            name: Deploy preproduction to Heroku
-            command: |
-              git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git preproduction
 
-  workflows:
-    version: 2
-    build-deploy:
-      jobs:
-        - build
-        - deploy:
-            requires:
-              - build
-            filters:
-              branches:
-                only: preproduction
+    steps:
+      - checkout
+      - run:
+          name: Deploy preproduction to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git preproduction
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - development
+                - preproduction
+                - master
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: preproduction
