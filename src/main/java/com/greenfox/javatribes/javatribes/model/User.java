@@ -2,6 +2,7 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -16,11 +17,13 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String username;
 
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String password;
 
     @JsonIgnore

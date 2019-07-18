@@ -1,8 +1,10 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 public class Supply {
@@ -14,7 +16,7 @@ public class Supply {
 
     private String type;
     private int amount;
-    private int generation;
+    private int generation = this.generationGenerator();
     private Timestamp updateAt = new Timestamp(System.currentTimeMillis());
 
     @JsonIgnore
@@ -23,6 +25,7 @@ public class Supply {
     private Kingdom kingdom;
 
     public Supply() {
+
     }
 
     public Supply(String type, int amount, int generation) {
@@ -38,6 +41,36 @@ public class Supply {
         this.generation = generation;
         this.kingdom = kingdom;
     }
+
+    public int generationGenerator() {
+
+        int generationPerMinute = 0;
+        List<Building> resourceGenerators = this.kingdom.getBuildings();
+        int foodConsumers = this.kingdom.getTroops().size();
+
+        if (this.type.equalsIgnoreCase("gold")) {
+            for (Building building : resourceGenerators) {
+                if (building.getType().equalsIgnoreCase("mine") ||
+                        building.getType().equalsIgnoreCase("townhall")) {
+                    generationPerMinute = generationPerMinute + 10;
+                }
+            }
+        }
+
+        if (this.type.equalsIgnoreCase("food")) {
+            for (Building building : resourceGenerators) {
+                if (building.getType().equalsIgnoreCase("farm") ||
+                        building.getType().equalsIgnoreCase("townhall")) {
+                    generationPerMinute = generationPerMinute + 10;
+                }
+            }
+            generationPerMinute = generationPerMinute - foodConsumers;
+        }
+
+        return generationPerMinute;
+
+    }
+
 
     public long getId() {
         return id;
@@ -86,6 +119,5 @@ public class Supply {
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
     }
-
 
 }

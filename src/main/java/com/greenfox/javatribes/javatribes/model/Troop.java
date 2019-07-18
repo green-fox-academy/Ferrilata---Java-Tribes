@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
