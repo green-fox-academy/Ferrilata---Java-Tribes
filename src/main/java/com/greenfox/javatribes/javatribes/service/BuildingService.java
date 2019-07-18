@@ -8,4 +8,6 @@ public interface BuildingService {
 
     void constructBuilding(Kingdom kingdom, Building building) throws CustomException;
 
+    void finishBuildings();
+
 }

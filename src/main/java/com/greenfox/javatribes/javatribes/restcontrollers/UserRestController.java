@@ -53,6 +53,7 @@ public class UserRestController {
         userService.register(newUser);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(newUser);
+
     }
 
 }

@@ -1,6 +1,5 @@
 package com.greenfox.javatribes.javatribes.service;
 
-import com.greenfox.javatribes.javatribes.repositories.TroopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,13 +12,11 @@ import org.springframework.stereotype.Service;
 public class TimerService {
 
     @Autowired
-    UserService userService;
-    @Autowired
     SupplyService supplyService;
     @Autowired
     TroopService troopService;
     @Autowired
-    TroopRepository troopRepository;
+    BuildingService buildingService;
 
     @Scheduled(fixedRate = 10000)
     public void scheduleFixedRateResourceEarning() {
@@ -32,6 +29,7 @@ public class TimerService {
     public void scheduledFixedRateTroopFinish() {
 
         troopService.finishTroops();
+        buildingService.finishBuildings();
 
     }
 
