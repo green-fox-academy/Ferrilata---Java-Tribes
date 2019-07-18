@@ -6,7 +6,7 @@ import com.greenfox.javatribes.javatribes.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface UserService{
+public interface UserService {
 
     Boolean existsByUsername(String username) throws CustomException;
 
@@ -14,7 +14,7 @@ public interface UserService{
 
     User findByUsername(String username);
 
-    User findById (long id);
+    User findById(long id);
 
     String login(String username, String password) throws CustomException;
 

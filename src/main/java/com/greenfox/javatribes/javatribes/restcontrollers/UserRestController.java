@@ -37,14 +37,14 @@ public class UserRestController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws CustomException {
 
-        if(registerObject.getKingdom().isEmpty()) {
+        if (registerObject.getKingdom().isEmpty()) {
             registerObject.setKingdom(registerObject.getUsername() + "'s kingdom");
         }
 
         Kingdom newKingdom = new Kingdom(registerObject.getKingdom());
 
-        Supply gold = new Supply("gold",1000,newKingdom);
-        Supply food = new Supply("food",1000,newKingdom);
+        Supply gold = new Supply("gold", 1000, newKingdom);
+        Supply food = new Supply("food", 1000, newKingdom);
 
         newKingdom.addSupply(gold);
         newKingdom.addSupply(food);

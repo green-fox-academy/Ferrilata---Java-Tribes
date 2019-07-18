@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> optionalUser = userRepository.findById(id);
 
-        if(!optionalUser.isPresent()) {
+        if (!optionalUser.isPresent()) {
             throw new CustomException("UserId not found!", HttpStatus.valueOf(404));
         }
 

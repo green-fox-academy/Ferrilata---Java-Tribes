@@ -21,14 +21,14 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public void constructBuilding(Kingdom kingdom, Building building) throws CustomException {
 
-        if     (building.getType().equalsIgnoreCase("")) {
+        if (building.getType().equalsIgnoreCase("")) {
             throw new CustomException("Missing parameter(s): type!", HttpStatus.valueOf(400));
         }
 
-        if     (!(building.getType().equalsIgnoreCase("mine") ||
-                  building.getType().equalsIgnoreCase("farm") ||
-                  building.getType().equalsIgnoreCase("townhall") ||
-                  building.getType().equalsIgnoreCase("barracks") )) {
+        if (!(building.getType().equalsIgnoreCase("mine") ||
+                building.getType().equalsIgnoreCase("farm") ||
+                building.getType().equalsIgnoreCase("townhall") ||
+                building.getType().equalsIgnoreCase("barracks"))) {
 
             throw new CustomException("Invalid building type!", HttpStatus.valueOf(400));
         }
