@@ -45,7 +45,7 @@ public class KingdomBSTRestControllerTest {
     @MockBean
     AuthenticationManager manager;
 
-    List<Building> testBuildings = new ArrayList<Building>(Collections.singleton(new Building("townhall")));
+    List<Building> testBuildings = new ArrayList<Building>(Collections.singleton(new Building("townhal")));
     List<Supply> testSupplies = new ArrayList<Supply>(Collections.singleton(new Supply("gold")));
     List<Troop> testTroops = new ArrayList<Troop>(Collections.singleton(new Troop(1)));
     Kingdom testKingdom = new Kingdom("admins", testBuildings, testSupplies, testTroops);
