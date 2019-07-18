@@ -39,6 +39,7 @@ public class BuildingServiceImpl implements BuildingService {
 
         kingdom.spendGold(5);
         kingdom.addBuilding(building);
+        kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
         kingdomRepository.save(kingdom);
 
     }
