@@ -1,37 +1,23 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
-import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
-import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Configuration
-@EnableScheduling
 @RestController
 public class KingdomRestController {
 
     @Autowired
     UserService userService;
     @Autowired
-    TroopService troopService;
-    @Autowired
-    BuildingService buildingService;
-    @Autowired
-    SupplyService supplyService;
-    @Autowired
     JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    TimerService timerService;
 
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {
@@ -63,31 +49,6 @@ public class KingdomRestController {
         Kingdom modifiedKingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
-
-    }
-
-    @PostMapping("kingdom/troops")
-    public ResponseEntity<Object> trainTroop(HttpServletRequest httpServletRequest) {
-
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
-
-        Troop troop = new Troop(kingdom);
-        troopService.trainTroop(kingdom, troop);
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
-
-    }
-
-    @PostMapping("kingdom/buildings")
-    public ResponseEntity<Object> buildBuilding(HttpServletRequest httpServletRequest,
-                                                @RequestParam(required = true) String type) {
-
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
-
-        Building building = new Building(type, kingdom);
-        buildingService.constructBuilding(kingdom, building);
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
 
     }
 

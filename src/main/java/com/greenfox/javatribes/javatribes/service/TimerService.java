@@ -21,14 +21,14 @@ public class TimerService {
     @Autowired
     TroopRepository troopRepository;
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 10000)
     public void scheduleFixedRateResourceEarning() {
 
         supplyService.earnAll();
 
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 10000)
     public void scheduledFixedRateTroopFinish() {
 
         troopService.finishTroops();

@@ -17,11 +17,11 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public void constructBuilding(Kingdom kingdom, Building building) throws CustomException {
 
-        if (kingdom.getGoldAmount() < 250) {
+        if (kingdom.getGoldAmount() < 5) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdom.spendGold(250);
+        kingdom.spendGold(5);
         kingdom.addBuilding(building);
         kingdomRepository.save(kingdom);
 
