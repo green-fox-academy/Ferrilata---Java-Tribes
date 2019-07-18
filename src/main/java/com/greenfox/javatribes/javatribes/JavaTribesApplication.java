@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes;
 
+import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
@@ -34,8 +35,6 @@ public class JavaTribesApplication implements CommandLineRunner{
         admin.setKingdom(adminKingdom);
         admin.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_ADMIN)));
 
-        userService.register(admin);
-
         Kingdom userKingdom = new Kingdom("user's kingdom");
         User user = new User();
         user.setUsername("user");
@@ -43,6 +42,12 @@ public class JavaTribesApplication implements CommandLineRunner{
         user.setKingdom(userKingdom);
         user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
 
+        Building townhall = new Building();
+        townhall.setType("townhall");
+
+        adminKingdom.addBuilding(townhall);
+
         userService.register(user);
+        userService.register(admin);
     }
 }

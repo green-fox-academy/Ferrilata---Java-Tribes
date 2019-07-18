@@ -52,4 +52,24 @@ public class KingdomRestController {
 
     }
 
+    @GetMapping("/kingdom/buildings")
+    public ResponseEntity<Object> getBuildingsFromKingdom(HttpServletRequest httpServletRequest) {
+
+        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getBuildings());
+    }
+
+    @GetMapping("/kingdom/supplies")
+    public ResponseEntity<Object> getSuppliesFromKingdom(HttpServletRequest httpServletRequest) {
+
+        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getSupplies());
+    }
+
+    @GetMapping("/kingdom/troops")
+    public ResponseEntity<Object> getTroopsFromKingdom(HttpServletRequest httpServletRequest) {
+
+        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getTroops());
+    }
 }
