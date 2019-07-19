@@ -6,7 +6,6 @@ import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +19,9 @@ import javax.validation.Valid;
 public class UserRestController {
 
     private UserService userService;
-    private JwtTokenProvider jwtTokenProvider;
 
-    public UserRestController(UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/login")
