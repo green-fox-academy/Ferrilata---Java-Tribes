@@ -29,7 +29,8 @@ public class KingdomTroopRestController {
     }
 
     @GetMapping("/kingdom/troops/{troopId}")
-    public ResponseEntity<Object> displayKingdomByUserId(HttpServletRequest httpServletRequest, @PathVariable long troopId) throws CustomException {
+    public ResponseEntity<Object> displayKingdomByUserId(HttpServletRequest httpServletRequest,
+                                                         @PathVariable long troopId) throws CustomException {
 
         Troop troop = troopService.findById(troopId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);

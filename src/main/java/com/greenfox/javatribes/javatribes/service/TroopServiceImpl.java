@@ -24,13 +24,13 @@ public class TroopServiceImpl implements TroopService {
     @Override
     public Troop findById(long id) throws CustomException {
 
-            Optional<Troop> optionalTroop = troopRepository.findById(id);
+        Optional<Troop> optionalTroop = troopRepository.findById(id);
 
-            if (!optionalTroop.isPresent()) {
-                throw new CustomException("There is no troop with this Id!", HttpStatus.valueOf(404));
-            }
+        if (!optionalTroop.isPresent()) {
+            throw new CustomException("There is no troop with this Id!", HttpStatus.valueOf(404));
+        }
 
-            return optionalTroop.get();
+        return optionalTroop.get();
 
     }
 
@@ -47,11 +47,11 @@ public class TroopServiceImpl implements TroopService {
             throw new CustomException("Invalid troop level!", HttpStatus.valueOf(400));
         }
 
-        if (troop.getKingdom().getGoldAmount() < (level - troop.getLevel()) * 10) {
+        if (troop.getKingdom().getGoldAmount() < (level - troop.getLevel()) * 5) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        troop.getKingdom().spendGold((level - troop.getLevel()) * 10);
+        troop.getKingdom().spendGold((level - troop.getLevel()) * 5);
         troop.setLevel(level);
         troopRepository.save(troop);
 

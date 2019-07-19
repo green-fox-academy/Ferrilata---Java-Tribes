@@ -9,6 +9,6 @@ public interface SupplyService {
 
     void earnAll();
 
-    Supply findByKingdomAndType (Kingdom kingdom, String type);
+    Supply findByKingdomAndType(Kingdom kingdom, String type);
 
 }

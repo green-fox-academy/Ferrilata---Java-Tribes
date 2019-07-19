@@ -35,11 +35,11 @@ public class BuildingServiceImpl implements BuildingService {
             throw new CustomException("Invalid building type!", HttpStatus.valueOf(400));
         }
 
-        if (kingdom.getGoldAmount() < 5) {
+        if (kingdom.getGoldAmount() < 250) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdom.spendGold(5);
+        kingdom.spendGold(250);
         kingdom.addBuilding(building);
         kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
         kingdomRepository.save(kingdom);
