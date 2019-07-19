@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class SupplyServiceImpl implements SupplyService {
 
     }
 
+
     @Override
     public void updateSupplies(Supply supply) {
 
@@ -54,5 +56,17 @@ public class SupplyServiceImpl implements SupplyService {
 
     }
 
+    @Override
+    public Supply findByKingdomAndType(Kingdom kingdom, String type) {
+
+        Optional<Supply> optionalSupply = supplyRepository.findByKingdomAndType(kingdom, type);
+
+        if (!optionalSupply.isPresent()) {
+            throw new CustomException("There is no such supply type in the kingdom!", HttpStatus.valueOf(404));
+        }
+
+        return optionalSupply.get();
+
+    }
 
 }
