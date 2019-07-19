@@ -6,7 +6,8 @@ public final class SecurityConstants {
 
     // JWT token defaults
     static final String TOKEN_HEADER = "token";
-    static final String TOKEN_PREFIX = "";
+    //    IN CASE OF USING TOKEN PREFIX (IT IS USUAL BUT TRIBES FRONTEND DOES NOT USE PREFIX)
+    //    static final String TOKEN_PREFIX = "Bearer ";
     static final String TOKEN_TYPE = "JWT";
     static final String TOKEN_ISSUER = "tribes-api";
     static final String TOKEN_AUDIENCE = "tribes-app";

@@ -69,5 +69,4 @@ public class JwtTokenProvider {
       throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
 }
