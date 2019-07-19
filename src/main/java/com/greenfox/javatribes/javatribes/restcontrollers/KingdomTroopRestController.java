@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
+import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.service.TroopService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,14 @@ public class KingdomTroopRestController {
 
         Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getTroops());
+
+    }
+
+    @GetMapping("/kingdom/troops/{troopId}")
+    public ResponseEntity<Object> displayKingdomByUserId(HttpServletRequest httpServletRequest, @PathVariable long troopId) throws CustomException {
+
+        Troop troop = troopService.findById(troopId);
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
 
     }
 

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class TroopServiceImpl implements TroopService {
 
@@ -18,6 +20,20 @@ public class TroopServiceImpl implements TroopService {
 
     @Autowired
     private TroopRepository troopRepository;
+
+    @Override
+    public Troop findById(long id) throws CustomException {
+
+            Optional<Troop> optionalTroop = troopRepository.findById(id);
+
+            if (!optionalTroop.isPresent()) {
+                throw new CustomException("There is no troop with this Id!", HttpStatus.valueOf(404));
+            }
+
+            return optionalTroop.get();
+
+    }
+
 
     @Override
     public void trainTroop(Kingdom kingdom, Troop troop) throws CustomException {

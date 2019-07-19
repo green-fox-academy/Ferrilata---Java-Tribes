@@ -6,6 +6,8 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 
 public interface BuildingService {
 
+    Building findById(long id);
+
     void constructBuilding(Kingdom kingdom, Building building) throws CustomException;
 
     void finishBuildings();

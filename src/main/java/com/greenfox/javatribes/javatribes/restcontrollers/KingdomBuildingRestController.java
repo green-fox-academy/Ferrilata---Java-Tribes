@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
+import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.service.BuildingService;
@@ -7,10 +8,7 @@ import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,6 +25,14 @@ public class KingdomBuildingRestController {
 
         Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getBuildings());
+    }
+
+    @GetMapping("/kingdom/buildings/{buildingId}")
+    public ResponseEntity<Object> displayKingdomByUserId(HttpServletRequest httpServletRequest, @PathVariable long buildingId) throws CustomException {
+
+        Building building = buildingService.findById(buildingId);
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
+
     }
 
     @PostMapping("kingdom/buildings")

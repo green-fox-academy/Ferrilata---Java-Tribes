@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
@@ -50,6 +52,19 @@ public class BuildingServiceImpl implements BuildingService {
 
         buildingRepository.findAll().forEach(building -> building.finishProduction());
         buildingRepository.findAll().forEach(building -> buildingRepository.save(building));
+
+    }
+
+    @Override
+    public Building findById(long id) throws CustomException {
+
+        Optional<Building> optionalBuilding = buildingRepository.findById(id);
+
+        if (!optionalBuilding.isPresent()) {
+            throw new CustomException("There is no building with this Id!", HttpStatus.valueOf(404));
+        }
+
+        return optionalBuilding.get();
 
     }
 
