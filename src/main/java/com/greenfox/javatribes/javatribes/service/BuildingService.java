@@ -8,7 +8,7 @@ public interface BuildingService {
 
     Building findById(long id);
 
-    void upgradeBuilding(Building building, int level);
+    void upgradeBuilding(Building building, int level, long id);
 
     void constructBuilding(Kingdom kingdom, Building building) throws CustomException;
 

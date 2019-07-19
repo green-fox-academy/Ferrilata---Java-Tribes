@@ -41,7 +41,7 @@ public class KingdomBuildingRestController {
                                                   @RequestParam int level) throws CustomException {
 
         Building upgradedBuilding = buildingService.findById(buildingId);
-        buildingService.upgradeBuilding(upgradedBuilding, level);
+        buildingService.upgradeBuilding(upgradedBuilding, level, buildingId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedBuilding);
 
     }

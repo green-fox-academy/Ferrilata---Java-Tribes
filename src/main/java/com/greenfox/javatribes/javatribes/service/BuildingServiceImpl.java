@@ -69,7 +69,13 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public void upgradeBuilding(Building building, int level) {
+    public void upgradeBuilding(Building building, int level, long id) {
+
+        Optional<Building> optionalBuilding = buildingRepository.findById(id);
+
+        if (!optionalBuilding.isPresent()) {
+            throw new CustomException("There is no building with this Id!", HttpStatus.valueOf(404));
+        }
 
         if (level < 0) {
             throw new CustomException("Invalid building level!", HttpStatus.valueOf(400));
