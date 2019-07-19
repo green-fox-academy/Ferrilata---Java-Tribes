@@ -30,23 +30,6 @@ public class SupplyServiceImpl implements SupplyService {
 
     }
 
-
-    @Override
-    public void updateSupplies(Supply supply) {
-
-        supplyRepository.save(supply);
-
-    }
-
-    @Override
-    @Transactional
-    public void earnById(long id) {
-
-        findById(id).setAmount(findById(id).getAmount() + findById(id).getGeneration());
-        supplyRepository.save(findById(id));
-
-    }
-
     @Override
     @Transactional
     public void earnAll() {

@@ -7,10 +7,6 @@ public interface SupplyService {
 
     Supply findById(long id);
 
-    void updateSupplies(Supply supply);
-
-    void earnById(long id);
-
     void earnAll();
 
     Supply findByKingdomAndType (Kingdom kingdom, String type);
