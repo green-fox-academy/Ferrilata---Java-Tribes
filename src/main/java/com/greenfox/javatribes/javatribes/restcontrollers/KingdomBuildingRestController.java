@@ -28,10 +28,21 @@ public class KingdomBuildingRestController {
     }
 
     @GetMapping("/kingdom/buildings/{buildingId}")
-    public ResponseEntity<Object> displayKingdomByUserId(HttpServletRequest httpServletRequest, @PathVariable long buildingId) throws CustomException {
+    public ResponseEntity<Object> displayBuildingById(HttpServletRequest httpServletRequest, @PathVariable long buildingId) throws CustomException {
 
         Building building = buildingService.findById(buildingId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
+
+    }
+
+    @PutMapping("/kingdom/buildings/{buildingId}")
+    public ResponseEntity<Object> upgradeBuilding(HttpServletRequest httpServletRequest,
+                                                  @PathVariable long buildingId,
+                                                  @RequestParam int level) throws CustomException {
+
+        Building upgradedBuilding = buildingService.findById(buildingId);
+        buildingService.upgradeBuilding(upgradedBuilding, level);
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedBuilding);
 
     }
 

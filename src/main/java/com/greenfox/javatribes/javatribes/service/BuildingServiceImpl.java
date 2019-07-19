@@ -68,4 +68,21 @@ public class BuildingServiceImpl implements BuildingService {
 
     }
 
+    @Override
+    public void upgradeBuilding(Building building, int level) {
+
+        if (level < 0) {
+            throw new CustomException("Invalid building level!", HttpStatus.valueOf(400));
+        }
+
+        if (building.getKingdom().getGoldAmount() < (level - building.getLevel()) * 100) {
+            throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
+        }
+
+        building.getKingdom().spendGold((level - building.getLevel()) * 100);
+        building.setLevel(level);
+        buildingRepository.save(building);
+
+    }
+
 }

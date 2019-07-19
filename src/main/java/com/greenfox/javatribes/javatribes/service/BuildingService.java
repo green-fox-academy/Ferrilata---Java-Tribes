@@ -8,6 +8,8 @@ public interface BuildingService {
 
     Building findById(long id);
 
+    void upgradeBuilding(Building building, int level);
+
     void constructBuilding(Kingdom kingdom, Building building) throws CustomException;
 
     void finishBuildings();
