@@ -1,7 +1,6 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
-import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +18,8 @@ public class SupplyServiceImpl implements SupplyService {
     SupplyRepository supplyRepository;
     @Autowired
     TimerService timerService;
+    @Autowired
+    BuildingService buildingService;
 
     @Override
     public Supply findById(long id) throws CustomException {
@@ -60,27 +60,21 @@ public class SupplyServiceImpl implements SupplyService {
     @Override
     public void generationRecalculator(Supply supply) {
 
-        int generationPerMinute = 0;
-            List<Building> resourceGenerators = supply.getKingdom().getBuildings();
+            int generationPerMinute = 0;
             int foodConsumers = (int)supply.getKingdom().getTroops().stream().filter(troop -> timerService.finishedTroop(troop)).count();
 
             if (supply.getType().equalsIgnoreCase("gold")) {
-                for (Building building : resourceGenerators) {
-                    if (building.getType().equalsIgnoreCase("mine") ||
-                            building.getType().equalsIgnoreCase("townhall")) {
-                        generationPerMinute = generationPerMinute + 10;
-                    }
-                }
+
+                generationPerMinute = buildingService.finishedBuildingCalculator(supply,"townhall")*10
+                                    + buildingService.finishedBuildingCalculator(supply,"mine")*10;
+
             }
 
             if (supply.getType().equalsIgnoreCase("food")) {
-                for (Building building : resourceGenerators) {
-                    if (building.getType().equalsIgnoreCase("farm") ||
-                            building.getType().equalsIgnoreCase("townhall")) {
-                        generationPerMinute = generationPerMinute + 10;
-                    }
-                }
-                generationPerMinute = generationPerMinute - foodConsumers;
+
+                generationPerMinute = buildingService.finishedBuildingCalculator(supply,"townhall")*10
+                                    + buildingService.finishedBuildingCalculator(supply,"farm")*10
+                                    - foodConsumers;
             }
 
             supply.setGeneration(generationPerMinute);

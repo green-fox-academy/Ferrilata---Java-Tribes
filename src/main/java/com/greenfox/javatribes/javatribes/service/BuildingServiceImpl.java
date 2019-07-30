@@ -3,6 +3,7 @@ package com.greenfox.javatribes.javatribes.service;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
+import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.BuildingRepository;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class BuildingServiceImpl implements BuildingService {
     private KingdomRepository kingdomRepository;
     @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    TimerService timerService;
 
     @Override
     public void constructBuilding(Kingdom kingdom, Building building) throws CustomException {
@@ -65,6 +68,18 @@ public class BuildingServiceImpl implements BuildingService {
         }
 
         return optionalBuilding.get();
+
+    }
+
+    @Override
+    public int finishedBuildingCalculator(Supply supply, String type) {
+
+        int finishedBuildings = (int)supply.getKingdom().getBuildings().stream()
+                                .filter(building -> building.getType().equalsIgnoreCase(type))
+                                .filter(building -> timerService.finishedBuilding(building))
+                                .count();
+
+        return finishedBuildings;
 
     }
 

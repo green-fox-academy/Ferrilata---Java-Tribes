@@ -19,7 +19,7 @@ public class Building {
     private int level = 1;
     private int hp = 0;
     private Timestamp startedAt = new java.sql.Timestamp(currentTimeMillis());
-    private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (30 * 1000));
+    private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (40 * 1000));
 
     @JsonIgnore
     @ManyToOne
