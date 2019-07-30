@@ -18,6 +18,8 @@ public class SupplyServiceImpl implements SupplyService {
 
     @Autowired
     SupplyRepository supplyRepository;
+    @Autowired
+    TimerService timerService;
 
     @Override
     public Supply findById(long id) throws CustomException {
@@ -60,7 +62,7 @@ public class SupplyServiceImpl implements SupplyService {
 
         int generationPerMinute = 0;
             List<Building> resourceGenerators = supply.getKingdom().getBuildings();
-            int foodConsumers = (int)supply.getKingdom().getTroops().stream().filter(troop -> troop.isFinished()).count();
+            int foodConsumers = (int)supply.getKingdom().getTroops().stream().filter(troop -> timerService.finishedTroop(troop)).count();
 
             if (supply.getType().equalsIgnoreCase("gold")) {
                 for (Building building : resourceGenerators) {

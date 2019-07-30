@@ -46,36 +46,6 @@ public class Supply {
         this.kingdom = kingdom;
     }
 
-    /*public void generationRecalculator() {
-
-        int generationPerMinute = 0;
-        List<Building> resourceGenerators = this.kingdom.getBuildings();
-        int foodConsumers = (int)this.kingdom.getTroops().stream().filter(troop -> troop.isFinished()).count();
-
-        if (this.type.equalsIgnoreCase("gold")) {
-            for (Building building : resourceGenerators) {
-                if (building.getType().equalsIgnoreCase("mine") ||
-                        building.getType().equalsIgnoreCase("townhall")) {
-                    generationPerMinute = generationPerMinute + 10;
-                }
-            }
-        }
-
-        if (this.type.equalsIgnoreCase("food")) {
-            for (Building building : resourceGenerators) {
-                if (building.getType().equalsIgnoreCase("farm") ||
-                        building.getType().equalsIgnoreCase("townhall")) {
-                    generationPerMinute = generationPerMinute + 10;
-                }
-            }
-            generationPerMinute = generationPerMinute - foodConsumers;
-        }
-
-        this.setGeneration(generationPerMinute);
-
-    }*/
-
-
     public long getId() {
         return id;
     }

@@ -15,10 +15,6 @@ public class TimerService {
 
     @Autowired
     SupplyService supplyService;
-    @Autowired
-    TroopService troopService;
-    @Autowired
-    BuildingService buildingService;
 
     @Scheduled(fixedRate = 10000)
     public void scheduleFixedRateResourceEarning() {

@@ -99,28 +99,4 @@ public class Building {
         this.kingdom = kingdom;
     }
 
-   /* public boolean isReady() {
-        return isReady;
-    }
-
-    public void setReady(boolean ready) {
-        isReady = ready;
-    }*/
-
-    /*public void finishProduction() {
-
-        Timestamp currentTime = new java.sql.Timestamp(System.currentTimeMillis());
-
-        if (currentTime.getTime() > finishedAt.getTime()) {
-
-            isReady = true;
-
-        }*/
-
-    public boolean isFinished() {
-
-        return System.currentTimeMillis() > finishedAt.getTime();
-
-    }
-
 }

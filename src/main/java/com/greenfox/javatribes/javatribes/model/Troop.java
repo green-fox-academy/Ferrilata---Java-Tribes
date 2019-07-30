@@ -18,7 +18,7 @@ public class Troop {
     private int attack = 1;
     private int defense = 1;
     private Timestamp startedAt = new java.sql.Timestamp(System.currentTimeMillis());
-    private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (10 * 1000));
+    private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (20 * 1000));
 
     @JsonIgnore
     @ManyToOne
@@ -31,17 +31,6 @@ public class Troop {
     public Troop(Kingdom kingdom) {
         this.kingdom = kingdom;
     }
-
-   /* public Troop(int level, int hp, int attack, int defense, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
-        this.level = level;
-        this.hp = hp;
-        this.attack = attack;
-        this.defense = defense;
-        this.startedAt = startedAt;
-        this.finishedAt = finishedAt;
-        this.kingdom = kingdom;
-        this.isReady = isReady;
-    }*/
 
     public long getId() {
         return id;
@@ -106,22 +95,6 @@ public class Troop {
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
     }
-
-    public boolean isFinished() {
-
-        return System.currentTimeMillis() > finishedAt.getTime();
-
-    }
-
-    /*public void finishProduction() {
-
-        Timestamp currentTime = new java.sql.Timestamp(System.currentTimeMillis());
-
-        if (System.currentTimeMillis() > finishedAt.getTime()) {
-
-            isReady = true;
-
-        }*/
 
 }
 
