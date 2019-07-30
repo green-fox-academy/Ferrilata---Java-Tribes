@@ -22,6 +22,7 @@ jobs:
       TERM: dumb
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     branches:
       only:
         - development
@@ -30,6 +31,8 @@ jobs:
 
 =======
 >>>>>>> development
+=======
+>>>>>>> d6cabc5b72370966db50a1bf74a4df244f3b6fce
     steps:
       - checkout
 
@@ -55,6 +58,7 @@ jobs:
     docker:
       - image: buildpack-deps:trusty
 <<<<<<< HEAD
+<<<<<<< HEAD
       steps:
         - checkout
         - run:
@@ -75,6 +79,9 @@ jobs:
                 only: preproduction
 =======
 
+=======
+      
+>>>>>>> d6cabc5b72370966db50a1bf74a4df244f3b6fce
     steps:
       - checkout
       - run:
@@ -99,4 +106,7 @@ workflows:
           filters:
             branches:
               only: preproduction
+<<<<<<< HEAD
 >>>>>>> development
+=======
+>>>>>>> d6cabc5b72370966db50a1bf74a4df244f3b6fce
