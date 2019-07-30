@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,14 +28,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    http.cors();
-    http.csrf().disable();
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    http.authorizeRequests()
-        .antMatchers("/login").permitAll()
-        .antMatchers("/register").permitAll()
-        .anyRequest().authenticated();
-    http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+      http
+              .httpBasic().disable()
+              .cors()
+              .and()
+              .csrf().disable()
+              .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+              .and()
+              .authorizeRequests()
+              .antMatchers("/login*").permitAll()
+              .antMatchers("/register*").permitAll()
+              .anyRequest().authenticated()
+              .and()
+              .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+  }
+
+  @Override
+  public void configure(WebSecurity webSecurity) {
+    webSecurity.ignoring().antMatchers("/login", "/register");
   }
 
   @Override
