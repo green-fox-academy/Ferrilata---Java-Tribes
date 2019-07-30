@@ -2,14 +2,13 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -42,7 +41,7 @@ public class User {
         this.kingdom = kingdom;
     }
 
-    public User(@NotNull @NotEmpty String username, @NotNull @NotEmpty String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
