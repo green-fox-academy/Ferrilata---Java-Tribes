@@ -41,7 +41,7 @@ public class BuildingServiceImpl implements BuildingService {
 
         kingdom.spendGold(250);
         kingdom.addBuilding(building);
-        kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
+        //kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
         kingdomRepository.save(kingdom);
 
     }
@@ -50,7 +50,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Transactional
     public void finishBuildings() {
 
-        buildingRepository.findAll().forEach(building -> building.finishProduction());
+        //buildingRepository.findAll().forEach(building -> building.finishProduction());
         buildingRepository.findAll().forEach(building -> buildingRepository.save(building));
 
     }

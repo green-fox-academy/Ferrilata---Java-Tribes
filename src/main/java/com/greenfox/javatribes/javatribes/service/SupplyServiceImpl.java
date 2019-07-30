@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +36,7 @@ public class SupplyServiceImpl implements SupplyService {
     @Transactional
     public void earnAll() {
 
+        supplyRepository.findAll().forEach(supply -> generationRecalculator(supply));
         supplyRepository.findAll().forEach(supply -> supply.setAmount(supply.getAmount() + supply.getGeneration()));
         supplyRepository.findAll().forEach(supply -> supplyRepository.save(supply));
 
@@ -51,5 +54,35 @@ public class SupplyServiceImpl implements SupplyService {
         return optionalSupply.get();
 
     }
+
+    @Override
+    public void generationRecalculator(Supply supply) {
+
+        int generationPerMinute = 0;
+            List<Building> resourceGenerators = supply.getKingdom().getBuildings();
+            int foodConsumers = (int)supply.getKingdom().getTroops().stream().filter(troop -> troop.isFinished()).count();
+
+            if (supply.getType().equalsIgnoreCase("gold")) {
+                for (Building building : resourceGenerators) {
+                    if (building.getType().equalsIgnoreCase("mine") ||
+                            building.getType().equalsIgnoreCase("townhall")) {
+                        generationPerMinute = generationPerMinute + 10;
+                    }
+                }
+            }
+
+            if (supply.getType().equalsIgnoreCase("food")) {
+                for (Building building : resourceGenerators) {
+                    if (building.getType().equalsIgnoreCase("farm") ||
+                            building.getType().equalsIgnoreCase("townhall")) {
+                        generationPerMinute = generationPerMinute + 10;
+                    }
+                }
+                generationPerMinute = generationPerMinute - foodConsumers;
+            }
+
+            supply.setGeneration(generationPerMinute);
+
+        }
 
 }

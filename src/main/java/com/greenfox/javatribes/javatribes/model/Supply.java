@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 public class Supply {
@@ -17,6 +16,7 @@ public class Supply {
     private String type;
     private int amount;
     private int generation;
+    //might be not needed
     private Timestamp updateAt = new Timestamp(System.currentTimeMillis());
 
     @JsonIgnore
@@ -46,11 +46,11 @@ public class Supply {
         this.kingdom = kingdom;
     }
 
-    public void generationRecalculator() {
+    /*public void generationRecalculator() {
 
         int generationPerMinute = 0;
         List<Building> resourceGenerators = this.kingdom.getBuildings();
-        int foodConsumers = this.kingdom.getTroops().size();
+        int foodConsumers = (int)this.kingdom.getTroops().stream().filter(troop -> troop.isFinished()).count();
 
         if (this.type.equalsIgnoreCase("gold")) {
             for (Building building : resourceGenerators) {
@@ -73,7 +73,7 @@ public class Supply {
 
         this.setGeneration(generationPerMinute);
 
-    }
+    }*/
 
 
     public long getId() {

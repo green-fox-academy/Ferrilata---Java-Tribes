@@ -66,7 +66,7 @@ public class TroopServiceImpl implements TroopService {
 
         kingdom.spendGold(10);
         kingdom.addTroop(troop);
-        kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
+        //kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
         kingdomRepository.save(kingdom);
 
     }
@@ -75,7 +75,7 @@ public class TroopServiceImpl implements TroopService {
     @Transactional
     public void finishTroops() {
 
-        troopRepository.findAll().forEach(troop -> troop.finishProduction());
+        //troopRepository.findAll().forEach(troop -> troop.finishProduction());
         troopRepository.findAll().forEach(troop -> troopRepository.save(troop));
 
     }

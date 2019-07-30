@@ -43,6 +43,7 @@ public class KingdomTroopRestController {
         Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
 
         Troop troop = new Troop(kingdom);
+
         troopService.trainTroop(kingdom, troop);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);

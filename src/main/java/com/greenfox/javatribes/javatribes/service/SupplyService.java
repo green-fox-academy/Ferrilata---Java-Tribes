@@ -11,4 +11,6 @@ public interface SupplyService {
 
     Supply findByKingdomAndType(Kingdom kingdom, String type);
 
+    public void generationRecalculator(Supply supply);
+
 }

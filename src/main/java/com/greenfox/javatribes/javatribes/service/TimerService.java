@@ -1,13 +1,16 @@
 package com.greenfox.javatribes.javatribes.service;
 
+import com.greenfox.javatribes.javatribes.model.Building;
+import com.greenfox.javatribes.javatribes.model.Troop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 @Configuration
 @EnableScheduling
-//@Service
+@Service
 public class TimerService {
 
     @Autowired
@@ -24,30 +27,16 @@ public class TimerService {
 
     }
 
-    @Scheduled(fixedRate = 10000)
-    public void scheduledFixedRateTroopFinish() {
+    public boolean finishedTroop(Troop troop) {
 
-        troopService.finishTroops();
-        buildingService.finishBuildings();
+        return System.currentTimeMillis() > troop.getFinishedAt().getTime();
 
     }
 
-    /*public void finishTroop(Kingdom kingdom, Troop troop) {
+    public boolean finishedBuilding(Building building) {
 
-        TimerTask task = new TimerTask() {
+        return System.currentTimeMillis() > building.getFinishedAt().getTime();
 
-            public void run() {
-
-                troop.setReady(true);
-                troopRepository.save(troop);
-
-            }
-        };
-
-            Timer timer = new Timer("Timer");
-            Long delay = 100L;
-            timer.schedule(task, delay);
-
-    }*/
+    }
 
 }
