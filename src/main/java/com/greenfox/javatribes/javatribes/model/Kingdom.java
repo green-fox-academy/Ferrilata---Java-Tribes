@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Kingdom {
@@ -16,13 +18,21 @@ public class Kingdom {
 
     @JsonIgnore
     private String name;
+    private int locationX;
+    private int locationY;
 
     @JsonIgnore
     @OneToOne(mappedBy = "kingdom")
     private User user;
 
-    private int locationX;
-    private int locationY;
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Supply> supplies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Building> buildings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
+    private List<Troop> troops = new ArrayList<>();
 
     public Kingdom() {
     }
@@ -31,7 +41,33 @@ public class Kingdom {
         this.name = name;
     }
 
-    public Kingdom(String name, int locationX, int locationY) { this.name = name; this.locationX = locationX; this.locationY = locationY;}
+    public Kingdom(String name, List<Building> buildings, List<Supply> supplies, List<Troop> troops) {
+        this.name = name;
+        this.buildings = buildings;
+        this.supplies = supplies;
+        this.troops = troops;
+    }
+
+    public Kingdom(String name, int locationX, int locationY) {
+        this.name = name;
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
+
+    public void addSupply(Supply supply) {
+        supply.setKingdom(this);
+        this.supplies.add(supply);
+    }
+
+    public void addTroop(Troop troop) {
+        troop.setKingdom(this);
+        this.troops.add(troop);
+    }
+
+    public void addBuilding(Building building) {
+        building.setKingdom(this);
+        this.buildings.add(building);
+    }
 
     public long getId() {
         return Id;
@@ -49,6 +85,14 @@ public class Kingdom {
         this.name = name;
     }
 
+    public List<Supply> getSupplies() {
+        return supplies;
+    }
+
+    public void setSupplies(List<Supply> supplies) {
+        this.supplies = supplies;
+    }
+
     public User getUser() {
         return user;
     }
@@ -57,20 +101,35 @@ public class Kingdom {
         this.user = user;
     }
 
-    public int getLocationX() {
-        return locationX;
+    public List<Building> getBuildings() {
+        return buildings;
     }
 
-    public int getLocationY() {
-        return locationY;
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
+    }
+
+    public List<Troop> getTroops() {
+        return troops;
+    }
+
+    public void setTroops(List<Troop> troops) {
+        this.troops = troops;
+    }
+
+    public int getLocationX() {
+        return locationX;
     }
 
     public void setLocationX(int locationX) {
         this.locationX = locationX;
     }
 
+    public int getLocationY() {
+        return locationY;
+    }
+
     public void setLocationY(int locationY) {
         this.locationY = locationY;
     }
-
 }
