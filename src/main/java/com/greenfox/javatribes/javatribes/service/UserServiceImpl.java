@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -55,9 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-
         userRepository.save(user);
-
     }
 
     @Override
@@ -95,12 +94,10 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> optionalUser = userRepository.findById(id);
 
-        if(!optionalUser.isPresent()) {
+        if (!optionalUser.isPresent()) {
             throw new CustomException("UserId not found!", HttpStatus.valueOf(404));
         }
-
         return optionalUser.get();
-
     }
 
 }

@@ -25,6 +25,11 @@ public class Troop {
     private Kingdom kingdom;
 
     public Troop() {
+
+    }
+
+    public Troop(int level) {
+        this.level = level;
     }
 
     public Troop(int level, int hp, int attack, int defense, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {

@@ -54,10 +54,11 @@ public class JwtTokenProvider {
 
   public String resolveToken(HttpServletRequest req) {
     String bearerToken = req.getHeader(SecurityConstants.TOKEN_HEADER);
-    if (bearerToken != null && bearerToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-      return bearerToken.substring(7);
-    }
-    return null;
+
+    //    IN CASE OF USING TOKEN PREFIX (IT IS USUAL BUT TRIBES FRONTEND DOES NOT USE PREFIX)
+    //    if (bearerToken != null && bearerToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+
+    return bearerToken;
   }
 
   public boolean validateToken(String token) {
@@ -68,5 +69,4 @@ public class JwtTokenProvider {
       throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
 }
