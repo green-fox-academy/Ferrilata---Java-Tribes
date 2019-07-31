@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -37,13 +36,17 @@ public class Building {
         this.kingdom = kingdom;
     }
 
-    public Building(String type, int level, int hp, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
+    public Building(String type) {
+        this.type = type;
+    }
+
+    /*public Building(String type, int level, int hp, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
         this.type = type;
         this.level = level;
         this.hp = hp;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.kingdom = kingdom;
-    }
+    }*/
 
 }

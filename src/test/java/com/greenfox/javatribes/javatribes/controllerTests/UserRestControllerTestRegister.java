@@ -1,8 +1,8 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
+import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
-import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.restcontrollers.UserRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -44,8 +44,8 @@ public class UserRestControllerTestRegister {
     RegisterObject registerObjectWithKingdomname = new RegisterObject("Juraj", "GreenFox", "kingdom");
     RegisterObject registerObjectWithoutKingdomname = new RegisterObject("Juraj", "GreenFox", "");
 
-    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\"}";
-    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}";
+    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"supplies\":[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0},{\"id\":0,\"type\":\"food\",\"amount\":1000,\"generation\":0}],\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
+    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}";
 
     @Test
     public void successfulRegisterUserTestWithKingdomNameInput() throws Exception {
@@ -55,12 +55,12 @@ public class UserRestControllerTestRegister {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}"))
+                //.andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"supplies\":[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0,\"updateAt\":"+timeToString+"},{\"id\":0,\"type\":\"food\",\"amount\":1000,\"generation\":0,\"updateAt\":1564579052143}],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();
         JSONAssert.assertEquals(expectedResult1, result.getResponse().getContentAsString(), false);
-        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), true);
+        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), false);
 
     }
 
@@ -68,16 +68,15 @@ public class UserRestControllerTestRegister {
     public void successfulRegisterUserTestWithoutKingdomNameInput() throws Exception {
 
         ResultActions resultActions = mockMvc.perform(post("/register")
-                //.with(csrf())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithoutKingdomname)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"id\":0,\"kingdomId\":0}"))
+                //.andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"supplies\":[],\"buildings\":[],\"troops\":[],\"id\":0,\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();
         JSONAssert.assertEquals(expectedResult1, result.getResponse().getContentAsString(), false);
-        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), true);
+        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), false);
 
     }
 

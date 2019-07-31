@@ -29,7 +29,7 @@ public class KingdomTroopRestController {
     }
 
     @GetMapping("/kingdom/troops/{troopId}")
-    public ResponseEntity<Object> displayKingdomByUserId(HttpServletRequest httpServletRequest,
+    public ResponseEntity<Object> displayTroopById(HttpServletRequest httpServletRequest,
                                                          @PathVariable long troopId) throws CustomException {
 
         Troop troop = troopService.findById(troopId);
@@ -51,7 +51,7 @@ public class KingdomTroopRestController {
     }
 
     @PutMapping("/kingdom/troops/{troopId}")
-    public ResponseEntity<Object> upgradeBuilding(HttpServletRequest httpServletRequest,
+    public ResponseEntity<Object> upgradeTroop(HttpServletRequest httpServletRequest,
                                                   @PathVariable long troopId,
                                                   @RequestParam int level) throws CustomException {
 

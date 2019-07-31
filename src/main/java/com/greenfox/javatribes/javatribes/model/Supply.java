@@ -33,19 +33,11 @@ public class Supply {
     public Supply(String type, int amount, Kingdom kingdom) {
         this.type = type;
         this.amount = amount;
-
-    }
-
-    public Supply(String type, int amount) {
-        this.type = type;
-        this.amount = amount;
-
-    }
-
-    public Supply(String type, int amount, int generation, Kingdom kingdom) {
-        this.type = type;
-        this.amount = amount;
         this.kingdom = kingdom;
+    }
+
+    public Supply(String type) {
+        this.type = type;
     }
 
 }

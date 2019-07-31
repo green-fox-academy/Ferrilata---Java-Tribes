@@ -30,7 +30,7 @@ public class KingdomSupplyRestController {
     }
 
     @GetMapping("/kingdom/supplies/{type}")
-    public ResponseEntity<Object> getSuppliesFromKingdom(HttpServletRequest httpServletRequest,
+    public ResponseEntity<Object> getSuppliesFromKingdomByType(HttpServletRequest httpServletRequest,
                                                          @PathVariable String type) {
 
         Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);

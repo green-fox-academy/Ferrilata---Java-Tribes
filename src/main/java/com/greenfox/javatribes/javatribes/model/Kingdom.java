@@ -47,6 +47,13 @@ public class Kingdom {
         this.troops = new ArrayList<Troop>();
     }
 
+    public Kingdom(String name, List<Building> buildings, List<Supply> supplies, List<Troop> troops) {
+        this.name = name;
+        this.buildings = buildings;
+        this.supplies = supplies;
+        this.troops = troops;
+    }
+
     public Kingdom(String name, int locationX, int locationY) {
         this.name = name;
         this.locationX = locationX;
