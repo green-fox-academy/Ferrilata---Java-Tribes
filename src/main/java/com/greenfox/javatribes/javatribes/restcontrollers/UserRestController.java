@@ -32,7 +32,6 @@ public class UserRestController {
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody @Valid User user) throws CustomException {
 
-        log.error("Something went really wrong, WTF test");
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(new ResponseObject("ok",
                 null, userService.login(user.getUsername(), user.getPassword())));
     }
