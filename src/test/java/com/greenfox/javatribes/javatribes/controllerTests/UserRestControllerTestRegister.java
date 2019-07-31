@@ -44,7 +44,7 @@ public class UserRestControllerTestRegister {
     RegisterObject registerObjectWithKingdomname = new RegisterObject("Juraj", "GreenFox", "kingdom");
     RegisterObject registerObjectWithoutKingdomname = new RegisterObject("Juraj", "GreenFox", "");
 
-    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"supplies\":[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0},{\"id\":0,\"type\":\"food\",\"amount\":1000,\"generation\":0}],\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
+    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}";
     String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}";
 
     @Test
@@ -55,7 +55,7 @@ public class UserRestControllerTestRegister {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname)))
                 .andExpect(status().isOk())
-                //.andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"supplies\":[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0,\"updateAt\":"+timeToString+"},{\"id\":0,\"type\":\"food\",\"amount\":1000,\"generation\":0,\"updateAt\":1564579052143}],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();
@@ -71,7 +71,7 @@ public class UserRestControllerTestRegister {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithoutKingdomname)))
                 .andExpect(status().isOk())
-                //.andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\",\"locationX\":0,\"locationY\":0,\"supplies\":[],\"buildings\":[],\"troops\":[],\"id\":0,\"kingdomId\":0}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();

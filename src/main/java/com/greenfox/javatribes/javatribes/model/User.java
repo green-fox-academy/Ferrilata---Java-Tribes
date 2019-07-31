@@ -1,7 +1,6 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +35,8 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    @JsonUnwrapped
+    //@JsonUnwrapped
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;

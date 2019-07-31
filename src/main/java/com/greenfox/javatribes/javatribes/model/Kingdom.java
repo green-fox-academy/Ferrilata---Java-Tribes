@@ -1,6 +1,5 @@
 package com.greenfox.javatribes.javatribes.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,7 @@ public class Kingdom {
     private int locationX;
     private int locationY;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToOne(mappedBy = "kingdom")
     private User user;
 
@@ -51,6 +50,21 @@ public class Kingdom {
         this.buildings = buildings;
         this.supplies = supplies;
         this.troops = troops;
+    }
+
+    public Kingdom(User user, String name, List<Building> buildings, List<Supply> supplies, List<Troop> troops) {
+        this.user = user;
+        this.name = name;
+        this.buildings = buildings;
+        this.supplies = supplies;
+        this.troops = troops;
+    }
+
+    public Kingdom(User user,String name, int locationX, int locationY) {
+        this.user = user;
+        this.name = name;
+        this.locationX = locationX;
+        this.locationY = locationY;
     }
 
     public Kingdom(String name, int locationX, int locationY) {

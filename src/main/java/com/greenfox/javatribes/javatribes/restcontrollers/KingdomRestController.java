@@ -2,7 +2,6 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
-import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +17,10 @@ public class KingdomRestController {
     UserService userService;
 
     @GetMapping("/kingdom")
-    public ResponseEntity<Object> displayUserWithHisKingdom(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {
 
-        User user = userService.identifyUserFromJWTToken(httpServletRequest);
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(user);
+        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
     }
 
