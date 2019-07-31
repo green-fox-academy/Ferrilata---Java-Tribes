@@ -19,6 +19,8 @@ public class BuildingServiceImpl implements BuildingService {
     @Autowired
     private KingdomRepository kingdomRepository;
     @Autowired
+    private KingdomService kingdomService;
+    @Autowired
     private BuildingRepository buildingRepository;
     @Autowired
     TimerService timerService;
@@ -38,11 +40,11 @@ public class BuildingServiceImpl implements BuildingService {
             throw new CustomException("Invalid building type!", HttpStatus.valueOf(400));
         }
 
-        if (kingdom.getGoldAmount() < 250) {
+        if (kingdomService.getGoldAmount(kingdom) < 250) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdom.spendGold(250);
+        kingdomService.spendGold(kingdom,250);
         kingdom.addBuilding(building);
         //kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
         kingdomRepository.save(kingdom);
@@ -96,11 +98,11 @@ public class BuildingServiceImpl implements BuildingService {
             throw new CustomException("Invalid building level!", HttpStatus.valueOf(400));
         }
 
-        if (building.getKingdom().getGoldAmount() < (level - building.getLevel()) * 100) {
+        if (kingdomService.getGoldAmount(building.getKingdom()) < (level - building.getLevel()) * 100) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        building.getKingdom().spendGold((level - building.getLevel()) * 100);
+        kingdomService.spendGold(building.getKingdom(),(level - building.getLevel()) * 100);
         building.setLevel(level);
         buildingRepository.save(building);
 

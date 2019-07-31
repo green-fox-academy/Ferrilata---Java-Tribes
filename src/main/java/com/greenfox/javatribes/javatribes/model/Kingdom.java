@@ -65,38 +65,6 @@ public class Kingdom {
         this.buildings.add(building);
     }
 
-    public int getGoldAmount() {
-
-        int goldAmount = 0;
-        for (Supply supply : supplies) {
-            if (supply.getType().equalsIgnoreCase("gold")) {
-                goldAmount = supply.getAmount();
-            }
-        }
-        return goldAmount;
-    }
-
-    public int getFoodAmount() {
-
-        int foodAmount = 0;
-        for (Supply supply : supplies) {
-            if (supply.getType().equalsIgnoreCase("food")) {
-                foodAmount = supply.getAmount();
-            }
-        }
-        return foodAmount;
-
-    }
-
-    public void spendGold(int x) {
-
-        for (Supply supply : supplies) {
-            if (supply.getType().equalsIgnoreCase("gold")) {
-                supply.setAmount(supply.getAmount() - x);
-            }
-        }
-    }
-
     public long getId() {
         return Id;
     }
