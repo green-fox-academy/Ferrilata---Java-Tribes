@@ -2,6 +2,9 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +12,9 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "user")
 public class User {
 
@@ -35,8 +41,8 @@ public class User {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-    public User() {
-    }
+    /*public User() {
+    }*/
 
     public User(String username, String password, Kingdom kingdom) {
         this.username = username;
@@ -49,7 +55,7 @@ public class User {
         this.password = password;
     }
 
-    public long getId() {
+    /*public long getId() {
         return id;
     }
 
@@ -87,5 +93,5 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
-    }
+    }*/
 }

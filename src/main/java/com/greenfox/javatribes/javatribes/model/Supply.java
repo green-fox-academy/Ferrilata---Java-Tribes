@@ -1,11 +1,17 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Supply {
 
     @Id
@@ -24,9 +30,8 @@ public class Supply {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-    public Supply() {
-
-    }
+    /*public Supply() {
+    }*/
 
     public Supply(String type, int amount, Kingdom kingdom) {
         this.type = type;
@@ -46,7 +51,7 @@ public class Supply {
         this.kingdom = kingdom;
     }
 
-    public long getId() {
+    /*public long getId() {
         return id;
     }
 
@@ -92,6 +97,6 @@ public class Supply {
 
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
-    }
+    }*/
 
 }

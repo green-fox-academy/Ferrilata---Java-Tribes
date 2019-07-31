@@ -2,12 +2,18 @@ package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Kingdom {
 
     @Id
@@ -34,8 +40,8 @@ public class Kingdom {
     @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
     private List<Troop> troops = new ArrayList<>();
 
-    public Kingdom() {
-    }
+    /*public Kingdom() {
+    }*/
 
     public Kingdom(String name) {
         this.name = name;
@@ -65,7 +71,7 @@ public class Kingdom {
         this.buildings.add(building);
     }
 
-    public long getId() {
+    /*public long getId() {
         return Id;
     }
 
@@ -127,5 +133,5 @@ public class Kingdom {
 
     public void setLocationY(int locationY) {
         this.locationY = locationY;
-    }
+    }*/
 }

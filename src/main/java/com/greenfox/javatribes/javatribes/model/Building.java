@@ -1,6 +1,9 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -8,6 +11,9 @@ import java.sql.Timestamp;
 import static java.lang.System.currentTimeMillis;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Building {
 
     @Id
@@ -26,9 +32,6 @@ public class Building {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-    public Building() {
-    }
-
     public Building(String type, Kingdom kingdom) {
         this.type = type;
         this.kingdom = kingdom;
@@ -43,7 +46,7 @@ public class Building {
         this.kingdom = kingdom;
     }
 
-    public long getId() {
+ /*   public long getId() {
         return id;
     }
 
@@ -67,9 +70,7 @@ public class Building {
         this.level = level;
     }
 
-    public int getHp() {
-        return hp;
-    }
+    public int getHp() { return hp; }
 
     public void setHp(int hp) {
         this.hp = hp;
@@ -97,6 +98,6 @@ public class Building {
 
     public void setKingdom(Kingdom kingdom) {
         this.kingdom = kingdom;
-    }
+    }*/
 
 }
