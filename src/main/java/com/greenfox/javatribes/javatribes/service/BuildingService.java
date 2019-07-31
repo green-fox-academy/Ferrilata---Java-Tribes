@@ -9,12 +9,10 @@ public interface BuildingService {
 
     Building findById(long id);
 
-    int finishedBuildingCalculator (Supply supply, String type);
+    int finishedBuildingCalculator(Supply supply, String type);
 
     void upgradeBuilding(Building building, int level, long id);
 
     void constructBuilding(Kingdom kingdom, Building building) throws CustomException;
-
-    //void finishBuildings();
 
 }

@@ -43,7 +43,7 @@ public class BuildingServiceImpl implements BuildingService {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdomService.spendGold(kingdom,250);
+        kingdomService.spendGold(kingdom, 250);
         kingdom.addBuilding(building);
         kingdomRepository.save(kingdom);
 
@@ -65,10 +65,10 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public int finishedBuildingCalculator(Supply supply, String type) {
 
-        int finishedBuildings = (int)supply.getKingdom().getBuildings().stream()
-                                .filter(building -> building.getType().equalsIgnoreCase(type))
-                                .filter(building -> timerService.finishedBuilding(building))
-                                .count();
+        int finishedBuildings = (int) supply.getKingdom().getBuildings().stream()
+                .filter(building -> building.getType().equalsIgnoreCase(type))
+                .filter(building -> timerService.finishedBuilding(building))
+                .count();
 
         return finishedBuildings;
 
@@ -91,7 +91,7 @@ public class BuildingServiceImpl implements BuildingService {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdomService.spendGold(building.getKingdom(),(level - building.getLevel()) * 100);
+        kingdomService.spendGold(building.getKingdom(), (level - building.getLevel()) * 100);
         building.setLevel(level);
         buildingRepository.save(building);
 

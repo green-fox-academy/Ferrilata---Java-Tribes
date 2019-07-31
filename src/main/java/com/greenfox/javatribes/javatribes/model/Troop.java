@@ -25,8 +25,7 @@ public class Troop {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-    public Troop() {
-    }
+    public Troop() { }
 
     public Troop(Kingdom kingdom) {
         this.kingdom = kingdom;

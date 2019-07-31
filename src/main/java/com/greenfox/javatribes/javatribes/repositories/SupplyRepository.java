@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface SupplyRepository extends CrudRepository<Supply, Long> {
 
-    Optional<Supply> findByKingdomAndType (Kingdom kingdom, String type);
+    Optional<Supply> findByKingdomAndType(Kingdom kingdom, String type);
 
 }

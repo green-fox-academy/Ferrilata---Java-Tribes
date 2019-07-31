@@ -60,25 +60,25 @@ public class SupplyServiceImpl implements SupplyService {
     @Override
     public void generationRecalculator(Supply supply) {
 
-            int generationPerMinute = 0;
-            int foodConsumers = (int)supply.getKingdom().getTroops().stream().filter(troop -> timerService.finishedTroop(troop)).count();
+        int generationPerMinute = 0;
+        int foodConsumers = (int) supply.getKingdom().getTroops().stream().filter(troop -> timerService.finishedTroop(troop)).count();
 
-            if (supply.getType().equalsIgnoreCase("gold")) {
+        if (supply.getType().equalsIgnoreCase("gold")) {
 
-                generationPerMinute = buildingService.finishedBuildingCalculator(supply,"townhall")*10
-                                    + buildingService.finishedBuildingCalculator(supply,"mine")*10;
-
-            }
-
-            if (supply.getType().equalsIgnoreCase("food")) {
-
-                generationPerMinute = buildingService.finishedBuildingCalculator(supply,"townhall")*10
-                                    + buildingService.finishedBuildingCalculator(supply,"farm")*10
-                                    - foodConsumers;
-            }
-
-            supply.setGeneration(generationPerMinute);
+            generationPerMinute = buildingService.finishedBuildingCalculator(supply, "townhall") * 10
+                    + buildingService.finishedBuildingCalculator(supply, "mine") * 10;
 
         }
+
+        if (supply.getType().equalsIgnoreCase("food")) {
+
+            generationPerMinute = buildingService.finishedBuildingCalculator(supply, "townhall") * 10
+                    + buildingService.finishedBuildingCalculator(supply, "farm") * 10
+                    - foodConsumers;
+        }
+
+        supply.setGeneration(generationPerMinute);
+
+    }
 
 }

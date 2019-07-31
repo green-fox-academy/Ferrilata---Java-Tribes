@@ -51,7 +51,7 @@ public class TroopServiceImpl implements TroopService {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdomService.spendGold(troop.getKingdom(),(level - troop.getLevel()) * 5);
+        kingdomService.spendGold(troop.getKingdom(), (level - troop.getLevel()) * 5);
         troop.setLevel(level);
         troopRepository.save(troop);
 
@@ -64,7 +64,7 @@ public class TroopServiceImpl implements TroopService {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdomService.spendGold(kingdom,10);
+        kingdomService.spendGold(kingdom, 10);
         kingdom.addTroop(troop);
         kingdomRepository.save(kingdom);
 

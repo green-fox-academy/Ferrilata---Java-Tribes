@@ -11,8 +11,6 @@ import java.util.List;
 public class KingdomServiceImpl implements KingdomService {
 
     private KingdomRepository kingdomRepository;
- /*   private String type;
-    private Kingdom kingdom;*/
 
     public KingdomServiceImpl(KingdomRepository kingdomRepository) {
         this.kingdomRepository = kingdomRepository;
@@ -30,6 +28,7 @@ public class KingdomServiceImpl implements KingdomService {
                 goldAmount = supply.getAmount();
             }
         }
+
         return goldAmount;
     }
 
@@ -44,8 +43,8 @@ public class KingdomServiceImpl implements KingdomService {
                 foodAmount = supply.getAmount();
             }
         }
-        return foodAmount;
 
+        return foodAmount;
     }
 
     @Override

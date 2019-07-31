@@ -12,6 +12,4 @@ public interface TroopService {
 
     void trainTroop(Kingdom kingdom, Troop troop) throws CustomException;
 
-    //void finishTroops();
-
 }
