@@ -53,7 +53,7 @@ public class KingdomRestControllerTest {
     public void successfulGetKingdomTest() throws Exception {
 
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
-        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
+        when(userService.identifyUserFromJWTToken(anyObject())).thenReturn(testUser);
 
         RequestBuilder request = get("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -62,7 +62,7 @@ public class KingdomRestControllerTest {
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"));
+                .andExpect(content().string("{\"id\":0,\"username\":\"Juraj\",\"password\":\"GreenFox\",\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"));
 
     }
 
@@ -77,7 +77,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
+                .andExpect(content().string("{\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }
@@ -113,7 +113,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"locationX\":10,\"locationY\":10,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
+                .andExpect(content().string("{\"name\":\"Juraj\",\"locationX\":10,\"locationY\":10,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }

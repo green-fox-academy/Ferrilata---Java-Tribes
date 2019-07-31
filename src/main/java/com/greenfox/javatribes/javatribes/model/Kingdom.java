@@ -22,7 +22,6 @@ public class Kingdom {
     @JsonProperty("kingdomId")
     private long Id;
 
-    @JsonIgnore
     private String name;
     private int locationX;
     private int locationY;
