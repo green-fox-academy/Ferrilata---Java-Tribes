@@ -85,4 +85,10 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
+    @Override
+    public String toString() {
+
+        return ("User (id: " + this.getId() + ", username:" + this.getUsername() + ", kingdomName:" + this.getKingdom().getName() + ")");
+    }
 }

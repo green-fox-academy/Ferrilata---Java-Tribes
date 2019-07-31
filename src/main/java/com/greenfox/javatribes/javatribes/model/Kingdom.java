@@ -132,4 +132,10 @@ public class Kingdom {
     public void setLocationY(int locationY) {
         this.locationY = locationY;
     }
+
+    @Override
+    public String toString() {
+
+        return ("Kingdom (id: " + this.getId() + ", name:" + this.getName() + ", Username:" + this.getUser().getUsername() + ")");
+    }
 }

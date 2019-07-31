@@ -1,6 +1,8 @@
 package com.greenfox.javatribes.javatribes.exceptions;
 
 import com.greenfox.javatribes.javatribes.dto.ResponseObject;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -32,12 +35,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .distinct()
                 .collect(Collectors.joining(", "));
 
+        log.error("Validation FAILED, missing parameter(s): " + notValidFields);
         return ResponseEntity.status(HttpStatus.valueOf(400)).body(new ResponseObject("error",
                 "Missing parameter(s): " + notValidFields));
     }
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Object> handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
+        log.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.valueOf(ex.getHttpStatus().value())).body(new ResponseObject("error",
                 ex.getMessage()));
     }
