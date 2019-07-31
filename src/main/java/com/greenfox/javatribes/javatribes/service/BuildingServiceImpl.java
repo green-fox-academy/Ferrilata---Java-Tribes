@@ -9,7 +9,6 @@ import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -46,17 +45,7 @@ public class BuildingServiceImpl implements BuildingService {
 
         kingdomService.spendGold(kingdom,250);
         kingdom.addBuilding(building);
-        //kingdom.getSupplies().forEach(supply -> supply.generationRecalculator());
         kingdomRepository.save(kingdom);
-
-    }
-
-    @Override
-    @Transactional
-    public void finishBuildings() {
-
-        //buildingRepository.findAll().forEach(building -> building.finishProduction());
-        buildingRepository.findAll().forEach(building -> buildingRepository.save(building));
 
     }
 
