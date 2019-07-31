@@ -40,9 +40,6 @@ public class Kingdom {
     @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
     private List<Troop> troops = new ArrayList<>();
 
-    /*public Kingdom() {
-    }*/
-
     public Kingdom(String name) {
         this.name = name;
         this.supplies = new ArrayList<Supply>();
@@ -71,67 +68,4 @@ public class Kingdom {
         this.buildings.add(building);
     }
 
-    /*public long getId() {
-        return Id;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Supply> getSupplies() {
-        return supplies;
-    }
-
-    public void setSupplies(List<Supply> supplies) {
-        this.supplies = supplies;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Building> getBuildings() {
-        return buildings;
-    }
-
-    public void setBuildings(List<Building> buildings) {
-        this.buildings = buildings;
-    }
-
-    public List<Troop> getTroops() {
-        return troops;
-    }
-
-    public void setTroops(List<Troop> troops) {
-        this.troops = troops;
-    }
-
-    public int getLocationX() {
-        return locationX;
-    }
-
-    public void setLocationX(int locationX) {
-        this.locationX = locationX;
-    }
-
-    public int getLocationY() {
-        return locationY;
-    }
-
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
-    }*/
 }

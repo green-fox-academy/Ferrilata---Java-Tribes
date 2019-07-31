@@ -31,75 +31,9 @@ public class Troop {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-    /*public Troop() { }*/
-
     public Troop(Kingdom kingdom) {
         this.kingdom = kingdom;
     }
-
-    /*public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getAttack() {
-        return attack;
-    }
-
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
-    public Timestamp getStartedAt() {
-        return startedAt;
-    }
-
-    public void setStartedAt(Timestamp startedAt) {
-        this.startedAt = startedAt;
-    }
-
-    public Timestamp getFinishedAt() {
-        return finishedAt;
-    }
-
-    public void setFinishedAt(Timestamp finishedAt) {
-        this.finishedAt = finishedAt;
-    }
-
-    public Kingdom getKingdom() {
-        return kingdom;
-    }
-
-    public void setKingdom(Kingdom kingdom) {
-        this.kingdom = kingdom;
-    }*/
 
 }
 
