@@ -7,6 +7,7 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Log4j2
 @RestController
 public class UserRestController {
 
@@ -29,6 +31,7 @@ public class UserRestController {
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody @Valid User user) throws CustomException {
 
+        log.error("Something went really wrong, WTF test");
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(new ResponseObject("ok",
                 null, userService.login(user.getUsername(), user.getPassword())));
     }
