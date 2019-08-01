@@ -1,8 +1,9 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
 import com.greenfox.javatribes.javatribes.model.*;
-import com.greenfox.javatribes.javatribes.restcontrollers.KingdomRestController;
+import com.greenfox.javatribes.javatribes.restcontrollers.KingdomSupplyRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
+import com.greenfox.javatribes.javatribes.service.SupplyService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,15 +30,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(KingdomRestController.class)
+@WebMvcTest(KingdomSupplyRestController.class)
 @WebAppConfiguration
-public class KingdomBSTRestControllerTest {
+public class KingdomSupplyRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
     private UserService userService;
+    @MockBean
+    SupplyService supplyService;
 
     @MockBean
     JwtTokenProvider jwtTokenProvider;
@@ -53,25 +56,10 @@ public class KingdomBSTRestControllerTest {
 
     @Test
     @WithMockUser
-    public void getKingdomBuildingsTest_basic() throws Exception {
-
-        when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
-
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/kingdom/buildings")
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":0,\"type\":\"townhall\",\"level\":1,\"hp\":0}]"))
-                .andReturn();
-    }
-
-    @Test
-    @WithMockUser
     public void getKingdomSuppliesTest_basic() throws Exception {
 
-        when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
+        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
+        //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/kingdom/supplies")
@@ -83,19 +71,5 @@ public class KingdomBSTRestControllerTest {
                 .andReturn();
     }
 
-    @Test
-    @WithMockUser
-    public void getKingdomTroopsTest_basic() throws Exception {
 
-        when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
-
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/kingdom/troops")
-                .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":0,\"level\":1}]"))
-                .andReturn();
-    }
 }

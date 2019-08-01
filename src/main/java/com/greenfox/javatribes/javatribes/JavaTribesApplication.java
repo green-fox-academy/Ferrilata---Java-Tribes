@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @SpringBootApplication
-public class JavaTribesApplication implements CommandLineRunner{
+public class JavaTribesApplication implements CommandLineRunner {
 
     @Autowired
     UserService userService;
@@ -24,7 +24,7 @@ public class JavaTribesApplication implements CommandLineRunner{
     }
 
 
-//    DB POPULATION JUST FOR TESTING PURPOSES
+    //    DB POPULATION JUST FOR TESTING PURPOSES
     @Override
     public void run(String... args) throws Exception {
 

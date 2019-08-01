@@ -1,13 +1,19 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "user")
 public class User {
 
@@ -16,24 +22,24 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String username;
 
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String password;
 
     @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    @JsonUnwrapped
+    //@JsonUnwrapped
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
-
-    public User() {
-    }
 
     public User(String username, String password, Kingdom kingdom) {
         this.username = username;
@@ -46,43 +52,4 @@ public class User {
         this.password = password;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Kingdom getKingdom() {
-        return kingdom;
-    }
-
-    public void setKingdom(Kingdom kingdom) {
-        this.kingdom = kingdom;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
 }

@@ -2,7 +2,6 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
-import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +15,11 @@ public class KingdomRestController {
 
     @Autowired
     UserService userService;
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
+        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
     }
@@ -41,35 +38,15 @@ public class KingdomRestController {
                                                 @RequestParam(required = false) int locationX,
                                                 @RequestParam(required = false) int locationY) {
 
-        userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom().setName(name);
-        userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom().setLocationX(locationX);
-        userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom().setLocationY(locationY);
-        userService.updateUser(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))));
+        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setName(name);
+        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setLocationX(locationX);
+        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setLocationY(locationY);
+        userService.updateUser(userService.identifyUserFromJWTToken(httpServletRequest));
 
-        Kingdom modifiedKingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
+        Kingdom modifiedKingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
 
     }
 
-    @GetMapping("/kingdom/buildings")
-    public ResponseEntity<Object> getBuildingsFromKingdom(HttpServletRequest httpServletRequest) {
-
-        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getBuildings());
-    }
-
-    @GetMapping("/kingdom/supplies")
-    public ResponseEntity<Object> getSuppliesFromKingdom(HttpServletRequest httpServletRequest) {
-
-        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getSupplies());
-    }
-
-    @GetMapping("/kingdom/troops")
-    public ResponseEntity<Object> getTroopsFromKingdom(HttpServletRequest httpServletRequest) {
-
-        Kingdom kingdom = userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).getKingdom();
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getTroops());
-    }
 }
