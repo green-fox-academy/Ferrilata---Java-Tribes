@@ -1,6 +1,5 @@
 package com.greenfox.javatribes.javatribes.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,8 +21,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-  @Autowired
-  private JwtTokenProvider jwtTokenProvider;
+  private final JwtTokenProvider jwtTokenProvider;
+
+  public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
+    this.jwtTokenProvider = jwtTokenProvider;
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {

@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +27,6 @@ public class User {
     @NotEmpty
     private String username;
 
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @NotEmpty
     private String password;
@@ -35,7 +35,6 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    //@JsonUnwrapped
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "kingdom_id")
@@ -52,4 +51,13 @@ public class User {
         this.password = password;
     }
 
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

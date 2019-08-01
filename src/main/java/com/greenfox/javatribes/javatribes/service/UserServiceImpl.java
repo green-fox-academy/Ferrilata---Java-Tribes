@@ -1,12 +1,10 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
-import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,17 +19,18 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                           JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.authenticationManager = authenticationManager;
+    }
 
     @Override
     public String login(String username, String password) throws CustomException {
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User identifyUserFromJWTToken(HttpServletRequest httpServletRequest) {
+    public User getUserFromToken(HttpServletRequest httpServletRequest) {
 
         return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get();
 
@@ -60,13 +59,6 @@ public class UserServiceImpl implements UserService {
             }
             userRepository.save(user);
         }
-    }
-
-    @Override
-    public Kingdom identifyUserKingdomFromJWTToken(HttpServletRequest httpServletRequest) {
-
-        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get().getKingdom();
-
     }
 
     @Override

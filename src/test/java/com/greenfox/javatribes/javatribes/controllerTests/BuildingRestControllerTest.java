@@ -1,7 +1,7 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
 import com.greenfox.javatribes.javatribes.model.*;
-import com.greenfox.javatribes.javatribes.restcontrollers.KingdomBuildingRestController;
+import com.greenfox.javatribes.javatribes.restcontrollers.BuildingRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.BuildingService;
 import com.greenfox.javatribes.javatribes.service.UserService;
@@ -30,9 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(KingdomBuildingRestController.class)
+@WebMvcTest(BuildingRestController.class)
 @WebAppConfiguration
-public class KingdomBuildingRestControllerTest {
+public class BuildingRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;

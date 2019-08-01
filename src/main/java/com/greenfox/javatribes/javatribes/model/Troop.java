@@ -38,15 +38,5 @@ public class Troop {
     public Troop(int level) {
         this.level = level;
     }
-
-    /*public Troop(int level, int hp, int attack, int defense, Timestamp startedAt, Timestamp finishedAt, Kingdom kingdom) {
-        this.level = level;
-        this.hp = hp;
-        this.attack = attack;
-        this.defense = defense;
-        this.startedAt = startedAt;
-        this.finishedAt = finishedAt;
-        this.kingdom = kingdom;
-    }*/
 }
 

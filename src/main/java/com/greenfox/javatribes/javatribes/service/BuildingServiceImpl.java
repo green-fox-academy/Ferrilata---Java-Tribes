@@ -6,7 +6,6 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.BuildingRepository;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +14,17 @@ import java.util.Optional;
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
-    @Autowired
-    private KingdomRepository kingdomRepository;
-    @Autowired
-    private KingdomService kingdomService;
-    @Autowired
-    private BuildingRepository buildingRepository;
-    @Autowired
-    TimerService timerService;
+    private final KingdomRepository kingdomRepository;
+    private final KingdomService kingdomService;
+    private final BuildingRepository buildingRepository;
+    private final TimerService timerService;
+
+    public BuildingServiceImpl(KingdomRepository kingdomRepository, KingdomService kingdomService, BuildingRepository buildingRepository, TimerService timerService) {
+        this.kingdomRepository = kingdomRepository;
+        this.kingdomService = kingdomService;
+        this.buildingRepository = buildingRepository;
+        this.timerService = timerService;
+    }
 
     @Override
     public void constructBuilding(Kingdom kingdom, Building building) throws CustomException {
@@ -65,12 +67,10 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public int finishedBuildingCalculator(Supply supply, String type) {
 
-        int finishedBuildings = (int) supply.getKingdom().getBuildings().stream()
+        return (int) supply.getKingdom().getBuildings().stream()
                 .filter(building -> building.getType().equalsIgnoreCase(type))
-                .filter(building -> timerService.finishedBuilding(building))
+                .filter(timerService::finishedBuilding)
                 .count();
-
-        return finishedBuildings;
 
     }
 

@@ -4,7 +4,6 @@ import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +13,15 @@ import java.util.Optional;
 @Service
 public class SupplyServiceImpl implements SupplyService {
 
-    @Autowired
-    SupplyRepository supplyRepository;
-    @Autowired
-    TimerService timerService;
-    @Autowired
-    BuildingService buildingService;
+    private final SupplyRepository supplyRepository;
+    private final TimerService timerService;
+    private final BuildingService buildingService;
+
+    public SupplyServiceImpl(SupplyRepository supplyRepository, TimerService timerService, BuildingService buildingService) {
+        this.supplyRepository = supplyRepository;
+        this.timerService = timerService;
+        this.buildingService = buildingService;
+    }
 
     @Override
     public Supply findById(long id) throws CustomException {
@@ -38,9 +40,9 @@ public class SupplyServiceImpl implements SupplyService {
     @Transactional
     public void earnAll() {
 
-        supplyRepository.findAll().forEach(supply -> generationRecalculator(supply));
+        supplyRepository.findAll().forEach(this::generationRecalculator);
         supplyRepository.findAll().forEach(supply -> supply.setAmount(supply.getAmount() + supply.getGeneration()));
-        supplyRepository.findAll().forEach(supply -> supplyRepository.save(supply));
+        supplyRepository.findAll().forEach(supplyRepository::save);
 
     }
 
@@ -52,22 +54,19 @@ public class SupplyServiceImpl implements SupplyService {
         if (!optionalSupply.isPresent()) {
             throw new CustomException("There is no such supply type in the kingdom!", HttpStatus.valueOf(404));
         }
-
         return optionalSupply.get();
-
     }
 
     @Override
     public void generationRecalculator(Supply supply) {
 
         int generationPerMinute = 0;
-        int foodConsumers = (int) supply.getKingdom().getTroops().stream().filter(troop -> timerService.finishedTroop(troop)).count();
+        int foodConsumers = (int) supply.getKingdom().getTroops().stream().filter(timerService::finishedTroop).count();
 
         if (supply.getType().equalsIgnoreCase("gold")) {
 
             generationPerMinute = buildingService.finishedBuildingCalculator(supply, "townhall") * 10
                     + buildingService.finishedBuildingCalculator(supply, "mine") * 10;
-
         }
 
         if (supply.getType().equalsIgnoreCase("food")) {
@@ -76,7 +75,6 @@ public class SupplyServiceImpl implements SupplyService {
                     + buildingService.finishedBuildingCalculator(supply, "farm") * 10
                     - foodConsumers;
         }
-
         supply.setGeneration(generationPerMinute);
 
     }

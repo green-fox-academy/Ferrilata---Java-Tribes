@@ -13,26 +13,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class TimerService {
 
-    @Autowired
-    SupplyService supplyService;
+    private final SupplyService supplyService;
+
+    public TimerService(SupplyService supplyService) {
+        this.supplyService = supplyService;
+    }
 
     @Scheduled(fixedRate = 10000)
     public void scheduleFixedRateResourceEarning() {
 
         supplyService.earnAll();
-
     }
 
     public boolean finishedTroop(Troop troop) {
 
         return System.currentTimeMillis() > troop.getFinishedAt().getTime();
-
     }
 
     public boolean finishedBuilding(Building building) {
 
         return System.currentTimeMillis() > building.getFinishedAt().getTime();
-
     }
 
 }

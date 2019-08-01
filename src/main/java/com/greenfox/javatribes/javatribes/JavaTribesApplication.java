@@ -9,20 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @SpringBootApplication
 public class JavaTribesApplication implements CommandLineRunner {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public JavaTribesApplication(UserService userService) {
+        this.userService = userService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(JavaTribesApplication.class, args);
     }
-
 
     //    DB POPULATION JUST FOR TESTING PURPOSES
     @Override

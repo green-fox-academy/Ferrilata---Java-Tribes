@@ -18,9 +18,7 @@ public interface UserService {
 
     String login(String username, String password) throws CustomException;
 
-    User identifyUserFromJWTToken(HttpServletRequest httpServletRequest);
-
-    Kingdom identifyUserKingdomFromJWTToken(HttpServletRequest httpServletRequest);
+    User getUserFromToken(HttpServletRequest httpServletRequest);
 
     void register(User user) throws CustomException;
 

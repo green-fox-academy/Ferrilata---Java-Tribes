@@ -13,13 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class KingdomRestController {
 
-    @Autowired
+    private final
     UserService userService;
+
+    public KingdomRestController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
 
     }
@@ -29,24 +33,21 @@ public class KingdomRestController {
 
         Kingdom kingdom = userService.findById(userId).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
-
     }
 
-    @PutMapping("/kingdom")
+    @PatchMapping("/kingdom")
     public ResponseEntity<Object> updateKingdom(HttpServletRequest httpServletRequest,
                                                 @RequestParam(required = false) String name,
                                                 @RequestParam(required = false) int locationX,
                                                 @RequestParam(required = false) int locationY) {
 
-        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setName(name);
-        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setLocationX(locationX);
-        userService.identifyUserKingdomFromJWTToken(httpServletRequest).setLocationY(locationY);
-        userService.updateUser(userService.identifyUserFromJWTToken(httpServletRequest));
+        userService.getUserFromToken(httpServletRequest).getKingdom().setName(name);
+        userService.getUserFromToken(httpServletRequest).getKingdom().setLocationX(locationX);
+        userService.getUserFromToken(httpServletRequest).getKingdom().setLocationY(locationY);
+        userService.updateUser(userService.getUserFromToken(httpServletRequest));
 
-        Kingdom modifiedKingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        Kingdom modifiedKingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
-
     }
-
 }

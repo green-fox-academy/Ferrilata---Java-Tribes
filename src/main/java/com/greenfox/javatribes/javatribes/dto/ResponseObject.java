@@ -1,17 +1,19 @@
 package com.greenfox.javatribes.javatribes.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseObject {
 
     private String status;
     private String message;
     private String token;
-
-    public ResponseObject() {
-    }
 
     public ResponseObject(String status, String message) {
         this.status = status;
@@ -24,27 +26,4 @@ public class ResponseObject {
         this.token = token;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }

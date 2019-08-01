@@ -25,7 +25,6 @@ public class Kingdom {
     private int locationX;
     private int locationY;
 
-    //@JsonIgnore
     @OneToOne(mappedBy = "kingdom")
     private User user;
 

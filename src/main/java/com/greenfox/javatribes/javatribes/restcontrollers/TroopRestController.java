@@ -13,47 +13,44 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class KingdomTroopRestController {
+public class TroopRestController {
 
-    @Autowired
+    private final
     UserService userService;
-    @Autowired
+    private final
     TroopService troopService;
+
+    public TroopRestController(UserService userService, TroopService troopService) {
+        this.userService = userService;
+        this.troopService = troopService;
+    }
 
     @GetMapping("/kingdom/troops")
     public ResponseEntity<Object> getTroopsFromKingdom(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getTroops());
-
     }
 
     @GetMapping("/kingdom/troops/{troopId}")
-    public ResponseEntity<Object> displayTroopById(HttpServletRequest httpServletRequest,
-                                                         @PathVariable long troopId) throws CustomException {
+    public ResponseEntity<Object> displayTroopById(@PathVariable long troopId) throws CustomException {
 
         Troop troop = troopService.findById(troopId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
-
     }
 
     @PostMapping("kingdom/troops")
     public ResponseEntity<Object> trainTroop(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
-
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Troop troop = new Troop(kingdom);
-
         troopService.trainTroop(kingdom, troop);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
-
     }
 
-    @PutMapping("/kingdom/troops/{troopId}")
-    public ResponseEntity<Object> upgradeTroop(HttpServletRequest httpServletRequest,
-                                                  @PathVariable long troopId,
-                                                  @RequestParam int level) throws CustomException {
+    @PatchMapping("/kingdom/troops/{troopId}")
+    public ResponseEntity<Object> upgradeTroop(@PathVariable long troopId, @RequestParam int level) throws CustomException {
 
         Troop upgradedTroop = troopService.findById(troopId);
         troopService.upgradeTroop(upgradedTroop, level, troopId);

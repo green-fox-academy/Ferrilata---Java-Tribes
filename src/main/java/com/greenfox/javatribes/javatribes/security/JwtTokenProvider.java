@@ -7,7 +7,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,10 +22,14 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
+  private final MyUserDetails myUserDetails;
+
   private byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
-  @Autowired
-  private MyUserDetails myUserDetails;
+  public JwtTokenProvider(MyUserDetails myUserDetails) {
+    this.myUserDetails = myUserDetails;
+  }
+
 
   public String createToken(String username, List<Role> roles) {
 
@@ -53,9 +56,10 @@ public class JwtTokenProvider {
   }
 
   public String resolveToken(HttpServletRequest req) {
+
     String bearerToken = req.getHeader(SecurityConstants.TOKEN_HEADER);
 
-    //    IN CASE OF USING TOKEN PREFIX (IT IS USUAL BUT TRIBES FRONTEND DOES NOT USE PREFIX)
+    //    IN CASE OF USING TOKEN PREFIX (IT IS USUAL BUT FRONTEND DOES NOT USE PREFIX)
     //    if (bearerToken != null && bearerToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
 
     return bearerToken;

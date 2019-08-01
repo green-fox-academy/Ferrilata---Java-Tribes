@@ -10,12 +10,12 @@ import java.util.List;
 @Service
 public class KingdomServiceImpl implements KingdomService {
 
-    private KingdomRepository kingdomRepository;
-
-    public KingdomServiceImpl(KingdomRepository kingdomRepository) {
-        this.kingdomRepository = kingdomRepository;
-    }
-
+//    private KingdomRepository kingdomRepository;
+//
+//    public KingdomServiceImpl(KingdomRepository kingdomRepository) {
+//        this.kingdomRepository = kingdomRepository;
+//    }
+//
 
     @Override
     public int getGoldAmount(Kingdom kingdom) {

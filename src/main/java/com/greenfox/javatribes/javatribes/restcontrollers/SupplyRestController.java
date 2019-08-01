@@ -14,30 +14,32 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class KingdomSupplyRestController {
+public class SupplyRestController {
 
-    @Autowired
+    private final
     UserService userService;
-    @Autowired
+    private final
     SupplyService supplyService;
+
+    public SupplyRestController(UserService userService, SupplyService supplyService) {
+        this.userService = userService;
+        this.supplyService = supplyService;
+    }
 
     @GetMapping("/kingdom/supplies")
     public ResponseEntity<Object> getSuppliesFromKingdom(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getSupplies());
-
     }
 
     @GetMapping("/kingdom/supplies/{type}")
     public ResponseEntity<Object> getSuppliesFromKingdomByType(HttpServletRequest httpServletRequest,
                                                          @PathVariable String type) {
 
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Supply supply = supplyService.findByKingdomAndType(kingdom, type);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(supply);
-
     }
-
 }

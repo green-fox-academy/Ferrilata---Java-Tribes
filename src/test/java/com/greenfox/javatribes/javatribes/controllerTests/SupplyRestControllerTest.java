@@ -1,9 +1,9 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
 import com.greenfox.javatribes.javatribes.model.*;
-import com.greenfox.javatribes.javatribes.restcontrollers.KingdomTroopRestController;
+import com.greenfox.javatribes.javatribes.restcontrollers.SupplyRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
-import com.greenfox.javatribes.javatribes.service.TroopService;
+import com.greenfox.javatribes.javatribes.service.SupplyService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(KingdomTroopRestController.class)
+@WebMvcTest(SupplyRestController.class)
 @WebAppConfiguration
-public class KingdomTroopRestControllerTest {
+public class SupplyRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -40,7 +40,7 @@ public class KingdomTroopRestControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
-    TroopService troopService;
+    SupplyService supplyService;
 
     @MockBean
     JwtTokenProvider jwtTokenProvider;
@@ -56,19 +56,20 @@ public class KingdomTroopRestControllerTest {
 
     @Test
     @WithMockUser
-    public void getKingdomTroopsTest_basic() throws Exception {
+    public void getKingdomSuppliesTest_basic() throws Exception {
 
         when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/kingdom/troops")
+                .get("/kingdom/supplies")
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":0,\"level\":1}]"))
+                .andExpect(content().json("[{\"id\":0,\"type\":\"gold\"}]"))
                 .andReturn();
     }
+
 
 }
