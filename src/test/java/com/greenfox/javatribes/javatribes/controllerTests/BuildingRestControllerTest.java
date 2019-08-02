@@ -56,7 +56,7 @@ public class BuildingRestControllerTest {
     @WithMockUser
     public void getKingdomBuildingsTest_basic() throws Exception {
 
-        when(userService.getUserFromToken(anyObject()).getKingdom()).thenReturn(testKingdom);
+        when(userService.getUserFromToken(anyObject())).thenReturn(testUser);
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = MockMvcRequestBuilders

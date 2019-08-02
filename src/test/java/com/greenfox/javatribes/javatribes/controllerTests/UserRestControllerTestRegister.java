@@ -44,8 +44,8 @@ public class UserRestControllerTestRegister {
     RegisterObject registerObjectWithKingdomname = new RegisterObject("Juraj", "GreenFox", "kingdom");
     RegisterObject registerObjectWithoutKingdomname = new RegisterObject("Juraj", "GreenFox", "");
 
-    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}";
-    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}";
+    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\"}";
+    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\"}";
 
     @Test
     public void successfulRegisterUserTestWithKingdomNameInput() throws Exception {
@@ -55,7 +55,7 @@ public class UserRestControllerTestRegister {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();
@@ -71,7 +71,7 @@ public class UserRestControllerTestRegister {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(registerObjectWithoutKingdomname)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();

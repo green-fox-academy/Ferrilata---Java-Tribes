@@ -24,8 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +44,8 @@ public class KingdomRestControllerTest {
     AuthenticationManager manager;
 
     Kingdom testKingdom0 = new Kingdom("Mordor", 1, 5);
-    User testUser = new User("Juraj", "GreenFox",testKingdom0);
+//    User testUser = new User("Juraj", "GreenFox",testKingdom0);
+    User testUser = new User("Juraj", "GreenFox");
     Kingdom testKingdom = new Kingdom(testUser,"Mordor", 1, 5);
     String testToken = "This is my secret sacred Token!";
 
@@ -53,8 +53,9 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void successfulGetKingdomTest() throws Exception {
 
+        testUser.setKingdom(testKingdom);
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
-        when(userService.getUserFromToken(anyObject()).getKingdom()).thenReturn(testKingdom);
+        when(userService.getUserFromToken(anyObject())).thenReturn(testUser);
 
         RequestBuilder request = get("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -63,7 +64,7 @@ public class KingdomRestControllerTest {
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("{\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"user\":{\"id\":0,\"username\":\"Juraj\",\"password\":\"GreenFox\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"));
+                .andExpect(content().string("{\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"user\":{\"id\":0,\"username\":\"Juraj\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"));
 
     }
 
@@ -71,6 +72,7 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void successfulGetKingdomByUserIdTest() throws Exception {
 
+        testUser.setKingdom(testKingdom);
         when(userService.findById(anyLong())).thenReturn(testUser);
 
         RequestBuilder request = get("/kingdom/{id}", 1L)
@@ -78,7 +80,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"user\":null,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
+                .andExpect(content().string("{\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"user\":{\"id\":0,\"username\":\"Juraj\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }
@@ -101,12 +103,13 @@ public class KingdomRestControllerTest {
 
     @Test
     @WithMockUser
-    public void successfulPutKingdomTest() throws Exception {
+    public void successfulPatchKingdomTest() throws Exception {
 
-        when(userService.getUserFromToken(anyObject()).getKingdom()).thenReturn(testKingdom);
+        testUser.setKingdom(testKingdom);
+        when(userService.getUserFromToken(anyObject())).thenReturn(testUser);
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
-        RequestBuilder request = put("/kingdom")
+        RequestBuilder request = patch("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .param("name", "Juraj")
                 .param("locationX", "10")
@@ -114,7 +117,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"name\":\"Juraj\",\"locationX\":10,\"locationY\":10,\"user\":{\"id\":0,\"username\":\"Juraj\",\"password\":\"GreenFox\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
+                .andExpect(content().string("{\"name\":\"Juraj\",\"locationX\":10,\"locationY\":10,\"user\":{\"id\":0,\"username\":\"Juraj\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }

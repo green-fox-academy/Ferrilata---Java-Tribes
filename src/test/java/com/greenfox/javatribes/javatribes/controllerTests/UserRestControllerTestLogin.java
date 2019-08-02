@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -45,14 +46,15 @@ public class UserRestControllerTestLogin {
     ResponseObject testResponseObject = new ResponseObject();
 
     @Test
-    //@WithMockUser
+    @WithMockUser
     public void successfulLoginUserTest() throws Exception {
 
         when(userService.login("Juraj", "GreenFox")).thenReturn(testToken);
 
         RequestBuilder request = post("/login")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(testUser));
+//                .content(TestUtil.convertObjectToJsonBytes(testUser));
+                .content("{\"username\":\"Juraj\",\"password\":\"GreenFox\"}");
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -68,7 +70,8 @@ public class UserRestControllerTestLogin {
 
         RequestBuilder request = post("/login")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(testUser));
+//                .content(TestUtil.convertObjectToJsonBytes(testUser));
+                .content("{\"username\":\"Juraj\",\"password\":\"GreenFox\"}");
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().is(401))
