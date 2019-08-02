@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import javax.servlet.http.HttpServletRequest;
 
 import com.greenfox.javatribes.javatribes.service.LoggingService;
+import com.greenfox.javatribes.javatribes.service.LoggingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
