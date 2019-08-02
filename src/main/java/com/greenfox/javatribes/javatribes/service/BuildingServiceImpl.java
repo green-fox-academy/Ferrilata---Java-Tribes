@@ -6,6 +6,7 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.BuildingRepository;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +15,14 @@ import java.util.Optional;
 @Service
 public class BuildingServiceImpl implements BuildingService {
 
-    private final KingdomRepository kingdomRepository;
-    private final KingdomService kingdomService;
-    private final BuildingRepository buildingRepository;
-    private final TimerService timerService;
-
-    public BuildingServiceImpl(KingdomRepository kingdomRepository, KingdomService kingdomService, BuildingRepository buildingRepository, TimerService timerService) {
-        this.kingdomRepository = kingdomRepository;
-        this.kingdomService = kingdomService;
-        this.buildingRepository = buildingRepository;
-        this.timerService = timerService;
-    }
+    @Autowired
+    KingdomRepository kingdomRepository;
+    @Autowired
+    KingdomService kingdomService;
+    @Autowired
+    BuildingRepository buildingRepository;
+    @Autowired
+    TimerService timerService;
 
     @Override
     public void constructBuilding(Kingdom kingdom, Building building) throws CustomException {

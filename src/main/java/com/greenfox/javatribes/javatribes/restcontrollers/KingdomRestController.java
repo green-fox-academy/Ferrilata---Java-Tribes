@@ -3,6 +3,7 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.service.UserService;
+import org.hibernate.annotations.NaturalId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class KingdomRestController {
 
-    private final
+    @Autowired
     UserService userService;
-
-    public KingdomRestController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/kingdom")
     public ResponseEntity<Object> displayKingdom(HttpServletRequest httpServletRequest) {

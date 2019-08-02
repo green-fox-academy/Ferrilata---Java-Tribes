@@ -39,7 +39,7 @@ public class Kingdom {
 
     public Kingdom(String name) {
         this.name = name;
-        this.supplies = new ArrayList<Supply>();
+        this.supplies = new ArrayList<>();
         this.buildings = new ArrayList<Building>();
         this.troops = new ArrayList<Troop>();
     }

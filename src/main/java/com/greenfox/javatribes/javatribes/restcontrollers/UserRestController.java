@@ -7,6 +7,7 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +19,9 @@ import javax.validation.Valid;
 @RestController
 public class UserRestController {
 
-    private final
-    UserService userService;
 
-    public UserRestController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody @Valid User user) throws CustomException {

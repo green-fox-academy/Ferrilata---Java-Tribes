@@ -54,7 +54,7 @@ public class KingdomRestControllerTest {
     public void successfulGetKingdomTest() throws Exception {
 
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
-        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
+        when(userService.getUserFromToken(anyObject()).getKingdom()).thenReturn(testKingdom);
 
         RequestBuilder request = get("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -103,7 +103,7 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void successfulPutKingdomTest() throws Exception {
 
-        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
+        when(userService.getUserFromToken(anyObject()).getKingdom()).thenReturn(testKingdom);
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = put("/kingdom")

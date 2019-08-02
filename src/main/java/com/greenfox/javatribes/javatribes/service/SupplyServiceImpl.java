@@ -4,6 +4,7 @@ import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.SupplyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,15 +14,12 @@ import java.util.Optional;
 @Service
 public class SupplyServiceImpl implements SupplyService {
 
-    private final SupplyRepository supplyRepository;
-    private final TimerService timerService;
-    private final BuildingService buildingService;
-
-    public SupplyServiceImpl(SupplyRepository supplyRepository, TimerService timerService, BuildingService buildingService) {
-        this.supplyRepository = supplyRepository;
-        this.timerService = timerService;
-        this.buildingService = buildingService;
-    }
+    @Autowired
+    SupplyRepository supplyRepository;
+    @Autowired
+    TimerService timerService;
+    @Autowired
+    BuildingService buildingService;
 
     @Override
     public Supply findById(long id) throws CustomException {

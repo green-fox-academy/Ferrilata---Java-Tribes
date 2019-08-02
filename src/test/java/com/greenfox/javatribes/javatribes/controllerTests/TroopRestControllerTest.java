@@ -58,7 +58,7 @@ public class TroopRestControllerTest {
     @WithMockUser
     public void getKingdomTroopsTest_basic() throws Exception {
 
-        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
+        when(userService.getUserFromToken(anyObject()).getKingdom()).thenReturn(testKingdom);
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = MockMvcRequestBuilders

@@ -5,6 +5,7 @@ import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.service.BuildingService;
 import com.greenfox.javatribes.javatribes.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class BuildingRestController {
 
-    private final
+    @Autowired
     UserService userService;
-    private final
+    @Autowired
     BuildingService buildingService;
-
-    public BuildingRestController(UserService userService, BuildingService buildingService) {
-        this.userService = userService;
-        this.buildingService = buildingService;
-    }
 
     @GetMapping("/kingdom/buildings")
     public ResponseEntity<Object> getBuildingsFromKingdom(HttpServletRequest httpServletRequest) {

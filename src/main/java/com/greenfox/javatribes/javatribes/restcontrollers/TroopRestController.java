@@ -15,15 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class TroopRestController {
 
-    private final
+    @Autowired
     UserService userService;
-    private final
+    @Autowired
     TroopService troopService;
-
-    public TroopRestController(UserService userService, TroopService troopService) {
-        this.userService = userService;
-        this.troopService = troopService;
-    }
 
     @GetMapping("/kingdom/troops")
     public ResponseEntity<Object> getTroopsFromKingdom(HttpServletRequest httpServletRequest) {

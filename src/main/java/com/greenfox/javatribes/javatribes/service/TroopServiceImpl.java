@@ -5,6 +5,7 @@ import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import com.greenfox.javatribes.javatribes.repositories.TroopRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +14,12 @@ import java.util.Optional;
 @Service
 public class TroopServiceImpl implements TroopService {
 
-    private final KingdomRepository kingdomRepository;
-    private final TroopRepository troopRepository;
-    private final KingdomService kingdomService;
-
-    public TroopServiceImpl(KingdomRepository kingdomRepository, TroopRepository troopRepository, KingdomService kingdomService) {
-        this.kingdomRepository = kingdomRepository;
-        this.troopRepository = troopRepository;
-        this.kingdomService = kingdomService;
-    }
+    @Autowired
+    KingdomRepository kingdomRepository;
+    @Autowired
+    TroopRepository troopRepository;
+    @Autowired
+    KingdomService kingdomService;
 
     @Override
     public Troop findById(long id) throws CustomException {

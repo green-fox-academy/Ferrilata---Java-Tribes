@@ -13,11 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TimerService {
 
-    private final SupplyService supplyService;
-
-    public TimerService(SupplyService supplyService) {
-        this.supplyService = supplyService;
-    }
+    @Autowired
+    SupplyService supplyService;
 
     @Scheduled(fixedRate = 10000)
     public void scheduleFixedRateResourceEarning() {

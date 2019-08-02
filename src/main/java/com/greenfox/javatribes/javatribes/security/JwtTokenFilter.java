@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.security;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

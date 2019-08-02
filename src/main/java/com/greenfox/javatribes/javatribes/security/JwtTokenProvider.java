@@ -7,6 +7,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,14 +23,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-  private final MyUserDetails myUserDetails;
+  @Autowired
+  MyUserDetails myUserDetails;
 
   private byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
-
-  public JwtTokenProvider(MyUserDetails myUserDetails) {
-    this.myUserDetails = myUserDetails;
-  }
-
 
   public String createToken(String username, List<Role> roles) {
 

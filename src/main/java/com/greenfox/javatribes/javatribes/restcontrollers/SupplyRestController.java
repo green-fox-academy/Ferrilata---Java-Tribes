@@ -16,15 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class SupplyRestController {
 
-    private final
+    @Autowired
     UserService userService;
-    private final
+    @Autowired
     SupplyService supplyService;
-
-    public SupplyRestController(UserService userService, SupplyService supplyService) {
-        this.userService = userService;
-        this.supplyService = supplyService;
-    }
 
     @GetMapping("/kingdom/supplies")
     public ResponseEntity<Object> getSuppliesFromKingdom(HttpServletRequest httpServletRequest) {
