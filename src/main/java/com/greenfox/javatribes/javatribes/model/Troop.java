@@ -35,8 +35,8 @@ public class Troop {
         this.kingdom = kingdom;
     }
 
-    public Troop(int level) {
-        this.level = level;
-    }
+//    public Troop(int level) {
+//        this.level = level;
+//    }
 }
 

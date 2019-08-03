@@ -6,6 +6,7 @@ import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.restcontrollers.UserRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -33,7 +34,6 @@ public class UserRestControllerTestRegister {
 
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
     @MockBean
@@ -41,60 +41,38 @@ public class UserRestControllerTestRegister {
     @MockBean
     AuthenticationManager manager;
 
-    RegisterObject registerObjectWithKingdomname = new RegisterObject("Juraj", "GreenFox", "kingdom");
-    RegisterObject registerObjectWithoutKingdomname = new RegisterObject("Juraj", "GreenFox", "");
-
-    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\"}";
-    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\"}";
+    private RegisterObject registerObject = new RegisterObject("user", "password", "");
 
     @Test
-    public void successfulRegisterUserTestWithKingdomNameInput() throws Exception {
-
-        ResultActions resultActions = mockMvc.perform(post("/register")
-                //.with(csrf())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\"}"))
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-
-        MvcResult result = resultActions.andReturn();
-        JSONAssert.assertEquals(expectedResult1, result.getResponse().getContentAsString(), false);
-        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), false);
-
-    }
-
-    @Test
-    public void successfulRegisterUserTestWithoutKingdomNameInput() throws Exception {
+    public void successfulRegisterUserTest() throws Exception {
 
         ResultActions resultActions = mockMvc.perform(post("/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(registerObjectWithoutKingdomname)))
+                .content(TestUtil.convertObjectToJsonBytes(registerObject)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\"}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"user\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
         MvcResult result = resultActions.andReturn();
-        JSONAssert.assertEquals(expectedResult1, result.getResponse().getContentAsString(), false);
-        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), false);
-
+        String expectedResult = "{\"id\":0,\"username\":\"user\"}";
+        JSONAssert.assertEquals(expectedResult, result.getResponse().getContentAsString(), false);
     }
 
     @Test
     public void unsuccessfulRegisterUserTestThrowsIdentityAlreadyUsedException() throws Exception {
 
-        doThrow(new CustomException("Username already taken, please choose an other one.", HttpStatus.valueOf(409))).when(userService).register(anyObject());
+        String errMessage = "Username already taken, please choose an other one.";
+        doThrow(new CustomException(errMessage, HttpStatus.valueOf(409))).when(userService).register(anyObject());
 
         RequestBuilder request = post("/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname));
+                .content(TestUtil.convertObjectToJsonBytes(registerObject));
 
-        ResultActions resultActions = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andExpect(status().is(409))
-                .andExpect(content().string("{\"status\":\"error\",\"message\":\"Username already taken, please choose an other one.\"}"))
+                .andExpect(content().string("{\"status\":\"error\",\"message\":" +
+                        "\"Username already taken, please choose an other one.\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-
     }
-
 }
 

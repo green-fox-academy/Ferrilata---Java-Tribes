@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/kingdom")
 public class BuildingRestController {
 
     @Autowired
@@ -20,41 +21,39 @@ public class BuildingRestController {
     @Autowired
     BuildingService buildingService;
 
-    @GetMapping("/kingdom/buildings")
+    @GetMapping("/buildings")
     public ResponseEntity<Object> getBuildingsFromKingdom(HttpServletRequest httpServletRequest) {
 
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getBuildings());
     }
 
-    @GetMapping("/kingdom/buildings/{buildingId}")
+    @GetMapping("/buildings/{buildingId}")
     public ResponseEntity<Object> displayBuildingById(HttpServletRequest httpServletRequest,
                                                       @PathVariable long buildingId) throws CustomException {
 
-        Building building = buildingService.findById(buildingId);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Building building = buildingService.findByIdAndKingdom(buildingId, kingdom);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
     }
 
-    @PatchMapping("/kingdom/buildings/{buildingId}")
+    @PatchMapping("/buildings/{buildingId}")
     public ResponseEntity<Object> upgradeBuilding(HttpServletRequest httpServletRequest,
                                                   @PathVariable long buildingId,
                                                   @RequestParam int level) throws CustomException {
 
-        Building upgradedBuilding = buildingService.findById(buildingId);
-        buildingService.upgradeBuilding(upgradedBuilding, level, buildingId);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Building upgradedBuilding = buildingService.upgradeBuilding(kingdom, level, buildingId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedBuilding);
     }
 
-    @PostMapping("kingdom/buildings")
-    public ResponseEntity<Object> buildBuilding(HttpServletRequest httpServletRequest,
-                                                @RequestParam(required = true) String type) {
+    @PostMapping("/buildings")
+    public ResponseEntity<Object> newBuilding(HttpServletRequest httpServletRequest,
+                                              @RequestParam String buildingType) {
 
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Building newBuilding = buildingService.constructBuilding(kingdom, buildingType);
 
-        Building building = new Building(type, kingdom);
-        buildingService.constructBuilding(kingdom, building);
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
-
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(newBuilding);
     }
 }

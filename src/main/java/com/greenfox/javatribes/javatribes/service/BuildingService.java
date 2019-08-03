@@ -7,12 +7,12 @@ import com.greenfox.javatribes.javatribes.model.Supply;
 
 public interface BuildingService {
 
-    Building findById(long id);
+    Building findByIdAndKingdom(long id, Kingdom kingdom) throws CustomException;
 
     int finishedBuildingCalculator(Supply supply, String type);
 
-    void upgradeBuilding(Building building, int level, long id);
+    Building upgradeBuilding(Kingdom kingdom, int level, long id);
 
-    void constructBuilding(Kingdom kingdom, Building building) throws CustomException;
+    Building constructBuilding(Kingdom kingdom, String buildingType) throws CustomException;
 
 }

@@ -1,6 +1,8 @@
 package com.greenfox.javatribes.javatribes.service;
 
+import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
@@ -46,20 +48,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) throws CustomException {
+    public User register(RegisterObject registerObject) throws CustomException {
 
-        if (!existsByUsername(user.getUsername()) && !existsByKingdomName(user.getKingdom().getName())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            if (user.getRoles() == null) {
-                user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
+        Kingdom newKingdom = new Kingdom(registerObject.getKingdom());
+        User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), newKingdom);
+
+        if (!existsByUsername(newUser.getUsername()) && !existsByKingdomName(newUser.getKingdom().getName())) {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            if (newUser.getRoles() == null) {
+                newUser.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
             }
-            userRepository.save(user);
+            userRepository.save(newUser);
         }
+        return newUser;
     }
 
     @Override
-    public void updateUser(User user) {
+    public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public Kingdom updateKingdom(Kingdom kingdom, String name, int locationX, int locationY) {
+
+        kingdom.setName(name);
+        kingdom.setLocationX(locationX);
+        kingdom.setLocationY(locationY);
+        userRepository.save(kingdom.getUser());
+
+        return kingdom;
     }
 
     @Override

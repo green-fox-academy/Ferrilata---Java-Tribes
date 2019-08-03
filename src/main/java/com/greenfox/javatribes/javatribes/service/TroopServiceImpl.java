@@ -52,7 +52,6 @@ public class TroopServiceImpl implements TroopService {
         kingdomService.spendGold(troop.getKingdom(), (level - troop.getLevel()) * 5);
         troop.setLevel(level);
         troopRepository.save(troop);
-
     }
 
     @Override
@@ -65,7 +64,5 @@ public class TroopServiceImpl implements TroopService {
         kingdomService.spendGold(kingdom, 10);
         kingdom.addTroop(troop);
         kingdomRepository.save(kingdom);
-
     }
-
 }

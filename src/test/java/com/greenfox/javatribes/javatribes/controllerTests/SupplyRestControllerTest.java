@@ -36,29 +36,25 @@ public class SupplyRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
     @MockBean
     SupplyService supplyService;
-
     @MockBean
     JwtTokenProvider jwtTokenProvider;
-
     @MockBean
     AuthenticationManager manager;
 
-    List<Building> testBuildings = new ArrayList<Building>(Collections.singleton(new Building("townhall")));
-    List<Supply> testSupplies = new ArrayList<Supply>(Collections.singleton(new Supply("gold")));
-    List<Troop> testTroops = new ArrayList<Troop>(Collections.singleton(new Troop(1)));
-    Kingdom testKingdom = new Kingdom("admins", testBuildings, testSupplies, testTroops);
-    User testUser = new User("admin", "admin", testKingdom);
+    private Supply gold = new Supply("gold");
+    private Kingdom testKingdom = new Kingdom("User's Kingdom");
+    private User user = new User("user", "password", testKingdom);
 
     @Test
     @WithMockUser
     public void getKingdomSuppliesTest_basic() throws Exception {
 
-        when(userService.getUserFromToken(anyObject())).thenReturn(testUser);
+        this.testKingdom.addSupply(this.gold);
+        when(userService.getUserFromToken(anyObject())).thenReturn(user);
         //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = MockMvcRequestBuilders

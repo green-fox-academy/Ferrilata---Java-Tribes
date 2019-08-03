@@ -74,7 +74,5 @@ public class SupplyServiceImpl implements SupplyService {
                     - foodConsumers;
         }
         supply.setGeneration(generationPerMinute);
-
     }
-
 }

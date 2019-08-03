@@ -32,10 +32,10 @@ public class Building {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-    public Building(String type, Kingdom kingdom) {
-        this.type = type;
-        this.kingdom = kingdom;
-    }
+//    public Building(String type, Kingdom kingdom) {
+//        this.type = type;
+//        this.kingdom = kingdom;
+//    }
 
     public Building(String type) {
         this.type = type;

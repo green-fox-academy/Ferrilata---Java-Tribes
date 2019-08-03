@@ -19,11 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -46,27 +41,24 @@ public class BuildingRestControllerTest {
     @MockBean
     AuthenticationManager manager;
 
-    List<Building> testBuildings = new ArrayList<Building>(Collections.singleton(new Building("townhall")));
-    List<Supply> testSupplies = new ArrayList<Supply>(Collections.singleton(new Supply("gold")));
-    List<Troop> testTroops = new ArrayList<Troop>(Collections.singleton(new Troop(1)));
-    Kingdom testKingdom = new Kingdom("admins", testBuildings, testSupplies, testTroops);
-    User testUser = new User("admin", "admin", testKingdom);
+    private Building townhall = new Building("townhall");
+    private Kingdom testKingdom = new Kingdom("User's Kingdom");
+    private User user = new User("user", "password", testKingdom);
 
     @Test
     @WithMockUser
     public void getKingdomBuildingsTest_basic() throws Exception {
 
-        when(userService.getUserFromToken(anyObject())).thenReturn(testUser);
-        //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
+        this.testKingdom.addBuilding(this.townhall);
+        when(userService.getUserFromToken(anyObject())).thenReturn(user);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/kingdom/buildings")
                 .accept(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{\"id\":0,\"type\":\"townhall\",\"level\":1,\"hp\":0}]"))
                 .andReturn();
     }
-
 }

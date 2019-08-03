@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.service;
 
+import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.User;
@@ -20,8 +21,12 @@ public interface UserService {
 
     User getUserFromToken(HttpServletRequest httpServletRequest);
 
-    void register(User user) throws CustomException;
+    User register(RegisterObject registerObject) throws CustomException;
 
-    void updateUser(User user);
+    void saveUser(User user);
+
+    Kingdom updateKingdom(Kingdom kingdom, String name, int locationX, int locationY);
+
+//    void updateUser(User user);
 
 }

@@ -22,7 +22,6 @@ public class KingdomRestController {
 
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
-
     }
 
     @GetMapping("/kingdom/{userId}")
@@ -38,13 +37,9 @@ public class KingdomRestController {
                                                 @RequestParam(required = false) int locationX,
                                                 @RequestParam(required = false) int locationY) {
 
-        userService.getUserFromToken(httpServletRequest).getKingdom().setName(name);
-        userService.getUserFromToken(httpServletRequest).getKingdom().setLocationX(locationX);
-        userService.getUserFromToken(httpServletRequest).getKingdom().setLocationY(locationY);
-        userService.updateUser(userService.getUserFromToken(httpServletRequest));
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Kingdom updatedKingdom = userService.updateKingdom(kingdom, name, locationX, locationY);
 
-        Kingdom modifiedKingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(modifiedKingdom);
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(updatedKingdom);
     }
 }

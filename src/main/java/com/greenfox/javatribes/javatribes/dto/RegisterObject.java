@@ -23,9 +23,9 @@ public class RegisterObject {
     @NotNull
     private String kingdom;
 
-    public RegisterObject(String password, String username, String kingdom) {
-        this.password = password;
+    public RegisterObject(String username, String password, String kingdom) {
         this.username = username;
+        this.password = password;
         this.kingdom = kingdom;
     }
 }
