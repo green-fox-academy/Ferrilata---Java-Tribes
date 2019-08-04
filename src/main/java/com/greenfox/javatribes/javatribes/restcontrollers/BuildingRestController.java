@@ -49,10 +49,10 @@ public class BuildingRestController {
 
     @PostMapping("/buildings")
     public ResponseEntity<Object> newBuilding(HttpServletRequest httpServletRequest,
-                                              @RequestParam String buildingType) {
+                                              @RequestParam String type) {
 
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
-        Building newBuilding = buildingService.constructBuilding(kingdom, buildingType);
+        Building newBuilding = buildingService.constructBuilding(kingdom, type);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(newBuilding);
     }

@@ -8,8 +8,10 @@ public interface TroopService {
 
     Troop findById(long id);
 
-    void upgradeTroop(Troop troop, int level, long id);
+    Troop findByIdAndKingdom(long id, Kingdom kingdom);
 
-    void trainTroop(Kingdom kingdom, Troop troop) throws CustomException;
+    Troop upgradeTroop(Kingdom kingdom, int level, long id);
+
+    Troop trainTroop(Kingdom kingdom) throws CustomException;
 
 }

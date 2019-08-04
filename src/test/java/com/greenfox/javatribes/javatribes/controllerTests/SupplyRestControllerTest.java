@@ -5,6 +5,7 @@ import com.greenfox.javatribes.javatribes.restcontrollers.SupplyRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.SupplyService;
 import com.greenfox.javatribes.javatribes.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +46,26 @@ public class SupplyRestControllerTest {
     @MockBean
     AuthenticationManager manager;
 
-    private Supply gold = new Supply("gold");
-    private Kingdom testKingdom = new Kingdom("User's Kingdom");
-    private User user = new User("user", "password", testKingdom);
+    private User user;
+    private String expectJsonSupplies;
+
+    @Before
+    public void init() {
+        this.user = new User("user", "password");
+        Kingdom userKingdom = new Kingdom("user's kingdom");
+        this.user.setKingdom(userKingdom);
+        long goldUpdateAt = (userKingdom.getSupplies().get(0).getUpdateAt()).getTime();
+        long foodUpdateAt = userKingdom.getSupplies().get(0).getUpdateAt().getTime();
+        this.expectJsonSupplies = "[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0," +
+                "\"updateAt\":" + goldUpdateAt + "},{\"id\":0,\"type\":\"food\",\"amount\":1000," +
+                "\"generation\":0,\"updateAt\":" + foodUpdateAt + "}]";
+    }
 
     @Test
     @WithMockUser
     public void getKingdomSuppliesTest_basic() throws Exception {
 
-        this.testKingdom.addSupply(this.gold);
-        when(userService.getUserFromToken(anyObject())).thenReturn(user);
-        //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
+        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/kingdom/supplies")
@@ -63,9 +73,7 @@ public class SupplyRestControllerTest {
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":0,\"type\":\"gold\"}]"))
+                .andExpect(content().json(this.expectJsonSupplies))
                 .andReturn();
     }
-
-
 }

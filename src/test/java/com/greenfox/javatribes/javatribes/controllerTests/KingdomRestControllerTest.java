@@ -24,11 +24,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -51,6 +51,7 @@ public class KingdomRestControllerTest {
 
     private User user;
     private String expectJson;
+    private String expectJsonPatch;
 
     @Before
     public void init() {
@@ -59,10 +60,19 @@ public class KingdomRestControllerTest {
         userKingdom.setLocationX(1);
         userKingdom.setLocationY(5);
         this.user.setKingdom(userKingdom);
-        this.user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
+        this.user.addRole(Role.ROLE_ADMIN);
         userKingdom.setUser(this.user);
+        long goldUpdateAt = (userKingdom.getSupplies().get(0).getUpdateAt()).getTime();
+        long foodUpdateAt = userKingdom.getSupplies().get(0).getUpdateAt().getTime();
+        String expectJsonSupplies = "[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0," +
+                "\"updateAt\":" + goldUpdateAt + "},{\"id\":0,\"type\":\"food\",\"amount\":1000," +
+                "\"generation\":0,\"updateAt\":" + foodUpdateAt + "}]";
+
         this.expectJson = "{\"name\":\"user's kingdom\",\"locationX\":1,\"locationY\":5,\"user\":{\"id\":0," +
-                "\"username\":\"user\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
+                "\"username\":\"user\"},\"supplies\":" + expectJsonSupplies + ",\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
+
+        this.expectJsonPatch = "{\"name\":\"New Kingdom\",\"locationX\":10,\"locationY\":10,\"user\":{\"id\":0," +
+                "\"username\":\"user\"},\"supplies\":" + expectJsonSupplies + ",\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
     }
 
     @Test
@@ -80,10 +90,13 @@ public class KingdomRestControllerTest {
                 .andExpect(content().string(this.expectJson));
     }
 
+    //    REDUNDANT ENDPOINT FOR USERS IF WE HAVE ONLY ONE KINGDOM PER USER AND WE AUTHENTICATE USER FROM JWT TOKEN
+    //    SHOULD BE ACCESSED BY ADMIN ONLY
     @Test
     @WithMockUser
     public void successfulGetKingdomByUserIdTest() throws Exception {
 
+        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
         when(this.userService.findById(anyLong())).thenReturn(this.user);
 
         RequestBuilder request = get("/kingdom/{id}", 1L)
@@ -99,6 +112,7 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void unsuccessfulGetKingdomByUserIdTest() throws Exception {
 
+        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
         when(this.userService.findById(anyLong())).thenThrow(new CustomException("UserId not found", HttpStatus.valueOf(404)));
 
         RequestBuilder request = get("/kingdom/{id}", 1L)
@@ -112,23 +126,26 @@ public class KingdomRestControllerTest {
 
     @Test
     @WithMockUser
-    public void successfulPatchKingdomTest() throws Exception {
+    public void successfulUpdateKingdomTest() throws Exception {
 
-        this.expectJson = "{\"name\":\"newKingdom\",\"locationX\":10,\"locationY\":10,\"user\":{\"id\":0," +
-                "\"username\":\"user\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
+        this.user.getKingdom().setLocationX(10);
+        this.user.getKingdom().setLocationY(10);
+        this.user.getKingdom().setName("New Kingdom");
+
 
         when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
+        when(this.userService.updateKingdom(anyObject(), anyString(), anyInt(), anyInt())).thenReturn(this.user.getKingdom())
+                .thenReturn(this.user.getKingdom());
 
         RequestBuilder request = patch("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .param("name", "newKingdom")
+                .param("name", "New Kingdom")
                 .param("locationX", "10")
                 .param("locationY", "10");
 
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(this.expectJson));
+                .andExpect(content().string(this.expectJsonPatch));
     }
-
 }

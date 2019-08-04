@@ -35,16 +35,6 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
-    @Transactional
-    public void earnAll() {
-
-        supplyRepository.findAll().forEach(this::generationRecalculator);
-        supplyRepository.findAll().forEach(supply -> supply.setAmount(supply.getAmount() + supply.getGeneration()));
-        supplyRepository.findAll().forEach(supplyRepository::save);
-
-    }
-
-    @Override
     public Supply findByKingdomAndType(Kingdom kingdom, String type) {
 
         Optional<Supply> optionalSupply = supplyRepository.findByKingdomAndType(kingdom, type);
@@ -53,6 +43,16 @@ public class SupplyServiceImpl implements SupplyService {
             throw new CustomException("There is no such supply type in the kingdom!", HttpStatus.valueOf(404));
         }
         return optionalSupply.get();
+    }
+
+    @Override
+    @Transactional
+    public void earnAll() {
+
+        supplyRepository.findAll().forEach(this::generationRecalculator);
+        supplyRepository.findAll().forEach(supply -> supply.setAmount(supply.getAmount() + supply.getGeneration()));
+        supplyRepository.findAll().forEach(supplyRepository::save);
+
     }
 
     @Override

@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(String username, String password) throws CustomException {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, findByUsername(username).getRoles());
+            this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            return this.jwtTokenProvider.createToken(username, findByUsername(username).getRoles());
         } catch (AuthenticationException e) {
             throw new CustomException("No such user - wrong username or password.", HttpStatus.valueOf(401));
         }
@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserFromToken(HttpServletRequest httpServletRequest) {
 
-        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get();
-
+        return this.userRepository.findByUsername(this.jwtTokenProvider.getUsername(this.jwtTokenProvider.resolveToken(httpServletRequest))).get();
     }
 
     @Override
@@ -54,11 +53,11 @@ public class UserServiceImpl implements UserService {
         User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), newKingdom);
 
         if (!existsByUsername(newUser.getUsername()) && !existsByKingdomName(newUser.getKingdom().getName())) {
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            if (newUser.getRoles() == null) {
-                newUser.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
+            newUser.setPassword(this.passwordEncoder.encode(newUser.getPassword()));
+            if (newUser.getRoles().isEmpty() || newUser.getRoles() == null) {
+                newUser.addRole(Role.ROLE_USER);
             }
-            userRepository.save(newUser);
+            this.userRepository.save(newUser);
         }
         return newUser;
     }
@@ -74,14 +73,14 @@ public class UserServiceImpl implements UserService {
         kingdom.setName(name);
         kingdom.setLocationX(locationX);
         kingdom.setLocationY(locationY);
-        userRepository.save(kingdom.getUser());
+        this.userRepository.save(kingdom.getUser());
 
         return kingdom;
     }
 
     @Override
     public Boolean existsByUsername(String username) throws CustomException {
-        boolean optionalUser = userRepository.existsByUsername(username);
+        boolean optionalUser = this.userRepository.existsByUsername(username);
 
         if (optionalUser) {
             throw new CustomException("Username already taken, please choose an other one.", HttpStatus.valueOf(409));
@@ -91,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByKingdomName(String name) throws CustomException {
-        boolean isKingdomNamePresent = userRepository.existsByKingdomName(name);
+        boolean isKingdomNamePresent = this.userRepository.existsByKingdomName(name);
         if (isKingdomNamePresent) {
             throw new CustomException("Kingdom already taken, please choose an other one.", HttpStatus.valueOf(409));
         }
@@ -101,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) throws CustomException {
 
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<User> optionalUser = this.userRepository.findByUsername(username);
 
         if (!optionalUser.isPresent()) {
             throw new CustomException("No such user - wrong username.", HttpStatus.valueOf(401));
@@ -112,7 +111,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(long id) throws CustomException {
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = this.userRepository.findById(id);
 
         if (!optionalUser.isPresent()) {
             throw new CustomException("UserId not found!", HttpStatus.valueOf(404));

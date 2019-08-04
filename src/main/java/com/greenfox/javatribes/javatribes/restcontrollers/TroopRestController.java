@@ -29,9 +29,11 @@ public class TroopRestController {
     }
 
     @GetMapping("/troops/{troopId}")
-    public ResponseEntity<Object> displayTroopById(@PathVariable long troopId) throws CustomException {
+    public ResponseEntity<Object> displayTroopById(@PathVariable long troopId,
+                                                   HttpServletRequest httpServletRequest) throws CustomException {
 
-        Troop troop = troopService.findById(troopId);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Troop troop = troopService.findByIdAndKingdom(troopId, kingdom);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
     }
 
@@ -39,17 +41,16 @@ public class TroopRestController {
     public ResponseEntity<Object> trainTroop(HttpServletRequest httpServletRequest) {
 
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
-        Troop troop = new Troop(kingdom);
-        troopService.trainTroop(kingdom, troop);
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(troop);
+        Troop newTroop = troopService.trainTroop(kingdom);
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(newTroop);
     }
 
     @PatchMapping("/troops/{troopId}")
-    public ResponseEntity<Object> upgradeTroop(@PathVariable long troopId, @RequestParam int level) throws CustomException {
+    public ResponseEntity<Object> upgradeTroop(@PathVariable long troopId, @RequestParam int level,
+                                               HttpServletRequest httpServletRequest) throws CustomException {
 
-        Troop upgradedTroop = troopService.findById(troopId);
-        troopService.upgradeTroop(upgradedTroop, level, troopId);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Troop upgradedTroop = troopService.upgradeTroop(kingdom, level, troopId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedTroop);
     }
 }

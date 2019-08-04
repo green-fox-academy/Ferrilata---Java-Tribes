@@ -36,11 +36,10 @@ public class JavaTribesApplication implements CommandLineRunner {
         User admin = userService.register(adminObject);
         User user = userService.register(userObject);
 
-        admin.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_ADMIN)));
-        user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
+//        admin.addRole(Role.ROLE_ADMIN);
 
-        admin.getKingdom().addBuilding(new Building("townhall"));
-        admin.getKingdom().addTroop(new Troop());
+//        admin.getKingdom().addBuilding(new Building("townhall"));
+//        admin.getKingdom().addTroop(new Troop());
 
         userService.saveUser(user);
         userService.saveUser(admin);

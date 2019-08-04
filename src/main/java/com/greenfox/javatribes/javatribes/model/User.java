@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,11 +45,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.kingdom = kingdom;
+        this.roles = new ArrayList<>();
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.roles = new ArrayList<>();
     }
 
     @JsonIgnore
@@ -59,5 +62,9 @@ public class User {
     @JsonProperty
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addRole(Role role){
+        this.roles.add(role);
     }
 }
