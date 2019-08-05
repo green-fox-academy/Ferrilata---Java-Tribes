@@ -1,8 +1,8 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
+import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
-import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.KingdomRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
@@ -21,7 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -43,15 +44,17 @@ public class KingdomRestControllerTest {
     @MockBean
     AuthenticationManager manager;
 
-    Kingdom testKingdom = new Kingdom("Mordor", 1, 5);
-    User testUser = new User("Juraj", "GreenFox", testKingdom);
+    Kingdom testKingdom0 = new Kingdom("Mordor", 1, 5);
+    User testUser = new User("Juraj", "GreenFox",testKingdom0);
+    Kingdom testKingdom = new Kingdom(testUser,"Mordor", 1, 5);
     String testToken = "This is my secret sacred Token!";
 
     @Test
     @WithMockUser
     public void successfulGetKingdomTest() throws Exception {
 
-        when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
+        //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
+        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
 
         RequestBuilder request = get("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -60,7 +63,7 @@ public class KingdomRestControllerTest {
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"id\":0,\"kingdomId\":0}"));
+                .andExpect(content().string("{\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"user\":{\"id\":0,\"username\":\"Juraj\",\"password\":\"GreenFox\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"));
 
     }
 
@@ -75,7 +78,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"locationX\":1,\"locationY\":5,\"id\":0,\"kingdomId\":0}"))
+                .andExpect(content().string("{\"name\":\"Mordor\",\"locationX\":1,\"locationY\":5,\"user\":null,\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }
@@ -100,7 +103,8 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void successfulPutKingdomTest() throws Exception {
 
-        when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
+        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
+        //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = put("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -110,7 +114,7 @@ public class KingdomRestControllerTest {
 
         ResultActions resultActions = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"locationX\":10,\"locationY\":10,\"id\":0,\"kingdomId\":0}"))
+                .andExpect(content().string("{\"name\":\"Juraj\",\"locationX\":10,\"locationY\":10,\"user\":{\"id\":0,\"username\":\"Juraj\",\"password\":\"GreenFox\"},\"supplies\":[],\"buildings\":[],\"troops\":[],\"kingdomId\":0}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
 
     }

@@ -5,10 +5,12 @@ import javax.validation.constraints.NotNull;
 
 public class RegisterObject {
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String password;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String username;
 
     @NotNull

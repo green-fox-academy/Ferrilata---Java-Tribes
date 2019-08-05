@@ -1,6 +1,7 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.repositories.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -42,6 +44,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User identifyUserFromJWTToken(HttpServletRequest httpServletRequest) {
+
+        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get();
+
+    }
+
+    @Override
     public void register(User user) throws CustomException {
 
         if (!existsByUsername(user.getUsername()) && !existsByKingdomName(user.getKingdom().getName())) {
@@ -54,10 +63,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Kingdom identifyUserKingdomFromJWTToken(HttpServletRequest httpServletRequest) {
+
+        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get().getKingdom();
+
+    }
+
+    @Override
     public void updateUser(User user) {
-
         userRepository.save(user);
-
     }
 
     @Override
@@ -95,12 +109,10 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> optionalUser = userRepository.findById(id);
 
-        if(!optionalUser.isPresent()) {
+        if (!optionalUser.isPresent()) {
             throw new CustomException("UserId not found!", HttpStatus.valueOf(404));
         }
-
         return optionalUser.get();
-
     }
 
 }
