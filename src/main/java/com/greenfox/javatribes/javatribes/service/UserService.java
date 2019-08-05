@@ -1,9 +1,13 @@
 package com.greenfox.javatribes.javatribes.service;
 
+import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.User;
 
-public interface UserService{
+import javax.servlet.http.HttpServletRequest;
+
+public interface UserService {
 
     Boolean existsByUsername(String username) throws CustomException;
 
@@ -11,12 +15,15 @@ public interface UserService{
 
     User findByUsername(String username);
 
-    User findById (long id);
+    User findById(long id);
 
     String login(String username, String password) throws CustomException;
 
-    void register(User user) throws CustomException;
+    User getUserFromToken(HttpServletRequest httpServletRequest);
 
-    void updateUser(User user);
+    User register(RegisterObject registerObject) throws CustomException;
 
+    void saveUser(User user);
+
+    Kingdom updateKingdom(Kingdom kingdom, String name, int locationX, int locationY);
 }

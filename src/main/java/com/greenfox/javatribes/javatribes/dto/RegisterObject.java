@@ -1,49 +1,31 @@
 package com.greenfox.javatribes.javatribes.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class RegisterObject {
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String password;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String username;
 
     @NotNull
     private String kingdom;
 
-    public RegisterObject() {
-    }
-
-    public RegisterObject(String password, String username, String kingdom) {
-        this.password = password;
+    public RegisterObject(String username, String password, String kingdom) {
         this.username = username;
-        this.kingdom = kingdom;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getKingdom() {
-        return kingdom;
-    }
-
-    public void setKingdom(String kingdom) {
         this.kingdom = kingdom;
     }
 }

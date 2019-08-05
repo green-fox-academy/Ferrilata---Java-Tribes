@@ -1,53 +1,46 @@
 package com.greenfox.javatribes.javatribes;
 
+import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.model.Building;
-import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Role;
+import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 @SpringBootApplication
-public class JavaTribesApplication implements CommandLineRunner{
+public class JavaTribesApplication implements CommandLineRunner {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public JavaTribesApplication(UserService userService) {
+        this.userService = userService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(JavaTribesApplication.class, args);
     }
 
-
-//    DB POPULATION JUST FOR TESTING PURPOSES
+    //    DB POPULATION JUST FOR TESTING PURPOSES
     @Override
     public void run(String... args) throws Exception {
 
-        Kingdom adminKingdom = new Kingdom("admin's kingdom");
-        User admin = new User();
-        admin.setUsername("admin");
-        admin.setPassword("admin");
-        admin.setKingdom(adminKingdom);
-        admin.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_ADMIN)));
+        RegisterObject adminObject = new RegisterObject("admin", "admin", "admin's kingdom");
+        RegisterObject userObject = new RegisterObject("user", "user", "user's kingdom");
 
-        Kingdom userKingdom = new Kingdom("user's kingdom");
-        User user = new User();
-        user.setUsername("user");
-        user.setPassword("user");
-        user.setKingdom(userKingdom);
-        user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
+        User admin = userService.register(adminObject);
+        User user = userService.register(userObject);
+        userService.saveUser(user);
+        userService.saveUser(admin);
 
-        Building townhall = new Building();
-        townhall.setType("townhall");
+//        MAKE CONFLICT TO TESTS - APPLICATION CONTEXT FAILED, COMMAND LINE RUNNER ERROR - NEED TO SOLVE
+//        admin.addRole(Role.ROLE_ADMIN);
+//        admin.getKingdom().addBuilding(new Building("townhall"));
+//        admin.getKingdom().addTroop(new Troop());
 
-        adminKingdom.addBuilding(townhall);
-
-        userService.register(user);
-        userService.register(admin);
+        userService.saveUser(user);
+        userService.saveUser(admin);
     }
 }

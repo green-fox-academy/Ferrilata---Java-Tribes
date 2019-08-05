@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -40,41 +41,42 @@ public class UserRestControllerTestLogin {
     @MockBean
     AuthenticationManager manager;
 
-    User testUser = new User("Juraj", "GreenFox", new Kingdom("x"));
-    String testToken = "token";
-    ResponseObject testResponseObject = new ResponseObject();
+    private String username = "username";
+    private String password = "password";
+    private String jwt = "jwtSecurityToken";
+    private String reqContent = ("{\"username\":\"" + this.username + "\",\"password\":\"" + this.password + "\"}");
+    private String errMessage = "No such user - wrong username or password.";
 
     @Test
-    //@WithMockUser
+    @WithMockUser
     public void successfulLoginUserTest() throws Exception {
 
-        when(userService.login("Juraj", "GreenFox")).thenReturn(testToken);
+        when(this.userService.login(this.username, this.password)).thenReturn(this.jwt);
 
         RequestBuilder request = post("/login")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(testUser));
+                .content(this.reqContent);
 
-        ResultActions resultActions = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"status\":\"ok\",\"token\":\"token\"}"))
+                .andExpect(content().string("{\"status\":\"ok\",\"token\":\"jwtSecurityToken\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-
     }
 
     @Test
     public void unsuccessfulLoginUserTestThrowsEntityNotFoundException() throws Exception {
 
-        when(userService.login("Juraj", "GreenFox")).thenThrow(new CustomException("No such user - wrong username or password.", HttpStatus.valueOf(401)));
+        when(this.userService.login(this.username, this.password))
+                .thenThrow(new CustomException(this.errMessage, HttpStatus.valueOf(401)));
 
         RequestBuilder request = post("/login")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(testUser));
+                .content(this.reqContent);
 
-        ResultActions resultActions = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andExpect(status().is(401))
-                //.andExpect(status().reason(containsString("No such user - wrong username or password.")))
-                .andExpect(content().string("{\"status\":\"error\",\"message\":\"No such user - wrong username or password.\"}"))
+                .andExpect(content()
+                        .string("{\"status\":\"error\",\"message\":\"No such user - wrong username or password.\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-
     }
 }

@@ -28,19 +28,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-      http
-              .httpBasic().disable()
-              .cors()
-              .and()
-              .csrf().disable()
-              .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-              .and()
-              .authorizeRequests()
-              .antMatchers("/login*").permitAll()
-              .antMatchers("/register*").permitAll()
-              .anyRequest().authenticated()
-              .and()
-              .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+    http
+            .httpBasic().disable()
+            .cors()
+            .and()
+            .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+            .antMatchers("/login*").permitAll()
+            .antMatchers("/register*").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
   }
 
   @Override

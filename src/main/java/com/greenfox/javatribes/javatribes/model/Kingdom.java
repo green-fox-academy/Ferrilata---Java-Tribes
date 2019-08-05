@@ -1,13 +1,18 @@
 package com.greenfox.javatribes.javatribes.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Kingdom {
 
     @Id
@@ -16,12 +21,10 @@ public class Kingdom {
     @JsonProperty("kingdomId")
     private long Id;
 
-    @JsonIgnore
     private String name;
     private int locationX;
     private int locationY;
 
-    @JsonIgnore
     @OneToOne(mappedBy = "kingdom")
     private User user;
 
@@ -34,24 +37,10 @@ public class Kingdom {
     @OneToMany(mappedBy = "kingdom", cascade = CascadeType.ALL)
     private List<Troop> troops = new ArrayList<>();
 
-    public Kingdom() {
-    }
-
     public Kingdom(String name) {
         this.name = name;
-    }
-
-    public Kingdom(String name, List<Building> buildings, List<Supply> supplies, List<Troop> troops) {
-        this.name = name;
-        this.buildings = buildings;
-        this.supplies = supplies;
-        this.troops = troops;
-    }
-
-    public Kingdom(String name, int locationX, int locationY) {
-        this.name = name;
-        this.locationX = locationX;
-        this.locationY = locationY;
+        this.addSupply(new Supply("gold", 1000));
+        this.addSupply(new Supply("food", 1000));
     }
 
     public void addSupply(Supply supply) {
@@ -69,73 +58,10 @@ public class Kingdom {
         this.buildings.add(building);
     }
 
-    public long getId() {
-        return Id;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Supply> getSupplies() {
-        return supplies;
-    }
-
-    public void setSupplies(List<Supply> supplies) {
-        this.supplies = supplies;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Building> getBuildings() {
-        return buildings;
-    }
-
-    public void setBuildings(List<Building> buildings) {
-        this.buildings = buildings;
-    }
-
-    public List<Troop> getTroops() {
-        return troops;
-    }
-
-    public void setTroops(List<Troop> troops) {
-        this.troops = troops;
-    }
-
-    public int getLocationX() {
-        return locationX;
-    }
-
-    public void setLocationX(int locationX) {
-        this.locationX = locationX;
-    }
-
-    public int getLocationY() {
-        return locationY;
-    }
-
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
-    }
-
     @Override
     public String toString() {
 
         return ("Kingdom (id: " + this.getId() + ", name:" + this.getName() + ", Username:" + this.getUser().getUsername() + ")");
     }
+
 }
