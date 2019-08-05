@@ -26,7 +26,4 @@ public interface UserService {
     void saveUser(User user);
 
     Kingdom updateKingdom(Kingdom kingdom, String name, int locationX, int locationY);
-
-//    void updateUser(User user);
-
 }

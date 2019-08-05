@@ -1,17 +1,11 @@
 package com.greenfox.javatribes.javatribes;
 
 import com.greenfox.javatribes.javatribes.dto.RegisterObject;
-import com.greenfox.javatribes.javatribes.model.Building;
-import com.greenfox.javatribes.javatribes.model.Role;
-import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.model.User;
-import com.greenfox.javatribes.javatribes.repositories.UserRepository;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 @SpringBootApplication
 public class JavaTribesApplication implements CommandLineRunner {

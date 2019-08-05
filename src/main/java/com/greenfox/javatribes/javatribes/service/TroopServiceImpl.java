@@ -1,7 +1,6 @@
 package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
-import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
