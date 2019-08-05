@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Troop {
 
     @Id
@@ -26,6 +28,7 @@ public class Troop {
     private Timestamp startedAt = new java.sql.Timestamp(System.currentTimeMillis());
     private Timestamp finishedAt = new java.sql.Timestamp(startedAt.getTime() + (20 * 1000));
 
+    @ToString.Exclude
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "kingdom_id")
@@ -35,8 +38,5 @@ public class Troop {
         this.kingdom = kingdom;
     }
 
-//    public Troop(int level) {
-//        this.level = level;
-//    }
 }
 

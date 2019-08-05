@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Supply {
 
     @Id
@@ -22,9 +24,9 @@ public class Supply {
     private String type;
     private int amount;
     private int generation;
-    //might be not needed
     private Timestamp updateAt = new Timestamp(System.currentTimeMillis());
 
+    @ToString.Exclude
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "kingdom_id")
