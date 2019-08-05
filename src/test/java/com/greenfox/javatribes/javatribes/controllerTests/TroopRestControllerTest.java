@@ -3,6 +3,7 @@ package com.greenfox.javatribes.javatribes.controllerTests;
 import com.greenfox.javatribes.javatribes.model.*;
 import com.greenfox.javatribes.javatribes.restcontrollers.TroopRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
+import com.greenfox.javatribes.javatribes.service.LoggingService;
 import com.greenfox.javatribes.javatribes.service.TroopService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
@@ -36,17 +37,16 @@ public class TroopRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
     @MockBean
     TroopService troopService;
-
     @MockBean
     JwtTokenProvider jwtTokenProvider;
-
     @MockBean
     AuthenticationManager manager;
+    @MockBean
+    LoggingService loggingService;
 
     private Troop troop = new Troop();
     private Kingdom testKingdom = new Kingdom("User's Kingdom");

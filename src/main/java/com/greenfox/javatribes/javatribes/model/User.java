@@ -38,7 +38,7 @@ public class User {
     @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
-    
+
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "kingdom_id")

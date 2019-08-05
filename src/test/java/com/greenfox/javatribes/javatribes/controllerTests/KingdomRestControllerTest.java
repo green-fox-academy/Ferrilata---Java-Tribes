@@ -7,6 +7,7 @@ import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.KingdomRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
+import com.greenfox.javatribes.javatribes.service.LoggingService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +49,8 @@ public class KingdomRestControllerTest {
     JwtTokenProvider jwtTokenProvider;
     @MockBean
     AuthenticationManager manager;
+    @MockBean
+    LoggingService loggingService;
 
     private User user;
     private String expectJson;

@@ -7,6 +7,7 @@ import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.UserRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
+import com.greenfox.javatribes.javatribes.service.LoggingService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,13 +34,14 @@ public class UserRestControllerTestLogin {
 
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
     @MockBean
     AuthenticationManager manager;
+    @MockBean
+    LoggingService loggingService;
 
     private String username = "username";
     private String password = "password";

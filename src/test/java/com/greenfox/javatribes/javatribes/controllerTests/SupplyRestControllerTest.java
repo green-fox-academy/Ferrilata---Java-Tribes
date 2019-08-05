@@ -3,6 +3,7 @@ package com.greenfox.javatribes.javatribes.controllerTests;
 import com.greenfox.javatribes.javatribes.model.*;
 import com.greenfox.javatribes.javatribes.restcontrollers.SupplyRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
+import com.greenfox.javatribes.javatribes.service.LoggingService;
 import com.greenfox.javatribes.javatribes.service.SupplyService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Before;
@@ -45,6 +46,8 @@ public class SupplyRestControllerTest {
     JwtTokenProvider jwtTokenProvider;
     @MockBean
     AuthenticationManager manager;
+    @MockBean
+    LoggingService loggingService;
 
     private User user;
     private String expectJsonSupplies;

@@ -4,6 +4,7 @@ import com.greenfox.javatribes.javatribes.model.*;
 import com.greenfox.javatribes.javatribes.restcontrollers.BuildingRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.BuildingService;
+import com.greenfox.javatribes.javatribes.service.LoggingService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,8 @@ public class BuildingRestControllerTest {
     JwtTokenProvider jwtTokenProvider;
     @MockBean
     AuthenticationManager manager;
+    @MockBean
+    LoggingService loggingService;
 
     private Building townhall = new Building("townhall");
     private Kingdom testKingdom = new Kingdom("User's Kingdom");
