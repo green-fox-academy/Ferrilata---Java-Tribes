@@ -21,11 +21,11 @@ public class RegisterObject {
     private String username;
 
     @NotNull
-    private String kingdom;
+    private String kingdomName;
 
-    public RegisterObject(String username, String password, String kingdom) {
+    public RegisterObject(String username, String password, String kingdomName) {
         this.username = username;
         this.password = password;
-        this.kingdom = kingdom;
+        this.kingdomName = kingdomName;
     }
 }

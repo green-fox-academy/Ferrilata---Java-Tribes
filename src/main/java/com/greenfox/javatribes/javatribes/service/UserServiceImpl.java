@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(RegisterObject registerObject) throws CustomException {
 
-        Kingdom newKingdom = new Kingdom(registerObject.getKingdom());
+        Kingdom newKingdom = new Kingdom(registerObject.getKingdomName());
         User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), newKingdom);
 
         if (!existsByUsername(newUser.getUsername()) && !existsByKingdomName(newUser.getKingdom().getName())) {
