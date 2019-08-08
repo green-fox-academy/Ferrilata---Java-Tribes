@@ -58,7 +58,6 @@ public class TroopRestControllerTest {
 
         this.testKingdom.addTroop(this.troop);
         when(userService.getUserFromToken(anyObject())).thenReturn(user);
-        //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/kingdom/troops")

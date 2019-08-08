@@ -7,6 +7,8 @@ import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,16 +27,12 @@ public class KingdomRestController {
 
 //    REDUNDANT ENDPOINT FOR USERS IF WE HAVE ONLY ONE KINGDOM PER USER AND WE AUTHENTICATE USER FROM JWT TOKEN
 //    SHOULD BE ACCESSED BY ADMIN ONLY
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/kingdom/{userId}")
-    public ResponseEntity<Object> displayKingdomByUserId(@PathVariable long userId,
-                                                         HttpServletRequest httpServletRequest) throws CustomException {
+    public ResponseEntity<Object> displayKingdomByUserId(@PathVariable long userId) throws CustomException {
 
-        if (userService.getUserFromToken(httpServletRequest).getRoles().contains(Role.ROLE_ADMIN)){
             Kingdom kingdom = userService.findById(userId).getKingdom();
             return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom);
-        } else {
-            throw new CustomException("You are not authorized as ADMIN", HttpStatus.valueOf(403));
-        }
     }
 
     @PatchMapping("/kingdom")

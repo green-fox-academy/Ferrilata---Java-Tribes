@@ -58,8 +58,8 @@ public class TroopServiceImpl implements TroopService {
 
         kingdomService.spendGold(kingdom, (level - troopToUpgrade.getLevel()) * 5);
         troopToUpgrade.setLevel(level);
-        troopRepository.save(troopToUpgrade);
-        return troopToUpgrade;
+        return troopRepository.save(troopToUpgrade);
+
     }
 
     @Override
