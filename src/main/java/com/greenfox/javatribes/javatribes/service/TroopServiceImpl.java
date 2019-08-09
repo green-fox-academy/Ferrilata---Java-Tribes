@@ -43,7 +43,7 @@ public class TroopServiceImpl implements TroopService {
             throw new CustomException("There is no troop with this Id!", HttpStatus.valueOf(404));
         }
 
-        if (level < 0) {
+        if (level <= troop.getLevel()) {
             throw new CustomException("Invalid troop level!", HttpStatus.valueOf(400));
         }
 

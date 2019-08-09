@@ -77,17 +77,17 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public void upgradeBuilding(Building building, int level, long id) {
 
-        Optional<Building> optionalBuilding = buildingRepository.findById(id);
+        //Optional<Building> optionalBuilding = buildingRepository.findById(id);
 
-        if (!optionalBuilding.isPresent()) {
+        /*if (!optionalBuilding.isPresent()) {
             throw new CustomException("There is no building with this Id!", HttpStatus.valueOf(404));
-        }
+        }*/
 
-        if (level < 0) {
+        if (level <= building.getLevel()) {
             throw new CustomException("Invalid building level!", HttpStatus.valueOf(400));
         }
 
-        if (kingdomService.getGoldAmount(building.getKingdom()) < (level - building.getLevel()) * 100) {
+        if (kingdomService.getGoldAmount(building.getKingdom()) < ((level - building.getLevel()) * 100)) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
