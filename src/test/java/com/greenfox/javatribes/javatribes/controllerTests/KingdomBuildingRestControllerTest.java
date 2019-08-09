@@ -51,6 +51,7 @@ public class KingdomBuildingRestControllerTest {
     List<Troop> testTroops = new ArrayList<Troop>(Collections.singleton(new Troop(1)));
     Kingdom testKingdom = new Kingdom("admins", testBuildings, testSupplies, testTroops);
     User testUser = new User("admin", "admin", testKingdom);
+    Building testBuilding = new Building("townhall");
 
     @Test
     @WithMockUser
@@ -61,6 +62,23 @@ public class KingdomBuildingRestControllerTest {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/kingdom/buildings")
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{\"id\":0,\"type\":\"townhall\",\"level\":1,\"hp\":0}]"))
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser
+    public void postBuilding() throws Exception {
+
+        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
+        //when(buildingService.constructBuilding(anyObject(), anyObject())).thenReturn(testBuilding));
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/kingdom/buildings")
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)
