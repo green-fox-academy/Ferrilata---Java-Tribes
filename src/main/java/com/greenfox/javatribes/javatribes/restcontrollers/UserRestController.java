@@ -40,8 +40,8 @@ public class UserRestController {
 
         Kingdom newKingdom = new Kingdom(registerObject.getKingdom());
 
-        Supply gold = new Supply("gold", 1000, newKingdom);
-        Supply food = new Supply("food", 1000, newKingdom);
+        Supply gold = new Supply("gold", 10000, newKingdom);
+        Supply food = new Supply("food", 10000, newKingdom);
 
         newKingdom.addSupply(gold);
         newKingdom.addSupply(food);
