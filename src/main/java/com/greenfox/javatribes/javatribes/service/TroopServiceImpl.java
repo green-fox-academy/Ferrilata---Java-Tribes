@@ -60,6 +60,10 @@ public class TroopServiceImpl implements TroopService {
     @Override
     public void trainTroop(Kingdom kingdom, Troop troop) throws CustomException {
 
+        if (!kingdomService.hasBarracks(kingdom)) {
+            throw new CustomException("There are no barracks in the kingdom!", HttpStatus.valueOf(400));
+        }
+
         if (kingdomService.getGoldAmount(kingdom) < 10) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }

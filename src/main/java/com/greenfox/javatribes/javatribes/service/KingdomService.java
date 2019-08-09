@@ -8,6 +8,8 @@ public interface KingdomService {
 
     int getFoodAmount(Kingdom kingdom);
 
+    boolean hasBarracks(Kingdom kingdom);
+
     void spendGold(Kingdom kingdom, int amount);
 
 }

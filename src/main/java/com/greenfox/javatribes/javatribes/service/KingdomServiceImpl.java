@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.service;
 
+import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
@@ -45,6 +46,20 @@ public class KingdomServiceImpl implements KingdomService {
         }
 
         return foodAmount;
+    }
+
+    @Override
+    public boolean hasBarracks(Kingdom kingdom) {
+
+        List<Building> buildings = kingdom.getBuildings();
+
+        for (Building building : buildings) {
+
+            if (building.getType().equalsIgnoreCase("barracks")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
