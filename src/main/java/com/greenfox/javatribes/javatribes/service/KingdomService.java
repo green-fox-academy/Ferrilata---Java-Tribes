@@ -8,6 +8,8 @@ public interface KingdomService {
 
     int getFoodAmount(Kingdom kingdom);
 
+    int getStorage(Kingdom kingdom);
+
     boolean hasBarracks(Kingdom kingdom);
 
     boolean hasTownhall(Kingdom kingdom);
@@ -15,4 +17,5 @@ public interface KingdomService {
     void spendGold(Kingdom kingdom, int amount);
 
     int getTownhallLevel(Kingdom kingdom);
+
 }

@@ -38,9 +38,12 @@ public class SupplyServiceImpl implements SupplyService {
     @Transactional
     public void earnAll() {
 
-        supplyRepository.findAll().forEach(supply -> generationRecalculator(supply));
-        supplyRepository.findAll().forEach(supply -> supply.setAmount(supply.getAmount() + supply.getGeneration()));
-        supplyRepository.findAll().forEach(supply -> supplyRepository.save(supply));
+        Iterable<Supply> supplies = supplyRepository.findAll();
+
+        supplies.forEach(supply -> generationRecalculator(supply));
+        supplies.forEach(supply -> supply.setAmount(supply.getAmount() + supply.getGeneration()));
+        supplyRepository.saveAll(supplies);
+        //supplyRepository.findAll().forEach(supply -> supplyRepository.save(supply));
 
     }
 

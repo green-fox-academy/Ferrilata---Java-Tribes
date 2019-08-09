@@ -49,6 +49,11 @@ public class KingdomServiceImpl implements KingdomService {
     }
 
     @Override
+    public int getStorage(Kingdom kingdom) {
+        return 0;
+    }
+
+    @Override
     public boolean hasBarracks(Kingdom kingdom) {
 
         List<Building> buildings = kingdom.getBuildings();
