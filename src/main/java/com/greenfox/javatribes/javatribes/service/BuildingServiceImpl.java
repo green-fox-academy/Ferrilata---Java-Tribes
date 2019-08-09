@@ -42,6 +42,13 @@ public class BuildingServiceImpl implements BuildingService {
             throw new CustomException("Invalid building type!", HttpStatus.valueOf(400));
         }
 
+        if (building.getType().equalsIgnoreCase("townhall") &&
+            kingdomService.hasTownhall(building.getKingdom())) {
+
+            throw new CustomException("A kingdom can have only one townhall!", HttpStatus.valueOf(400));
+
+        }
+
         if (kingdomService.getGoldAmount(kingdom) < 250) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
