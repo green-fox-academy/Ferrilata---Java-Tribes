@@ -7,6 +7,8 @@ public interface SupplyService {
 
     Supply findById(long id);
 
+    void earnAmount(Supply supply);
+
     void earnAll();
 
     Supply findByKingdomAndType(Kingdom kingdom, String type);

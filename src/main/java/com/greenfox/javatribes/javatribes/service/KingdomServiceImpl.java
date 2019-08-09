@@ -50,7 +50,17 @@ public class KingdomServiceImpl implements KingdomService {
 
     @Override
     public int getStorage(Kingdom kingdom) {
-        return 0;
+        List<Building> buildings = kingdom.getBuildings();
+
+        for (Building building : buildings) {
+
+            if (building.getType().equalsIgnoreCase("townhall")) {
+                return building.getLevel() * 1000;
+            }
+        }
+
+        return 1000;
+
     }
 
     @Override

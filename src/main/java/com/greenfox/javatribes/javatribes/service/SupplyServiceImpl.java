@@ -20,6 +20,8 @@ public class SupplyServiceImpl implements SupplyService {
     TimerService timerService;
     @Autowired
     BuildingService buildingService;
+    @Autowired
+    KingdomService kingdomService;
 
     @Override
     public Supply findById(long id) throws CustomException {
@@ -35,15 +37,23 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
+    public void earnAmount(Supply supply) {
+
+        supply.setAmount(supply.getAmount() + supply.getGeneration());
+        if (supply.getAmount() > kingdomService.getStorage(supply.getKingdom())) {
+            supply.setAmount(kingdomService.getStorage(supply.getKingdom()));
+        }
+    }
+
+    @Override
     @Transactional
     public void earnAll() {
 
         Iterable<Supply> supplies = supplyRepository.findAll();
 
         supplies.forEach(supply -> generationRecalculator(supply));
-        supplies.forEach(supply -> supply.setAmount(supply.getAmount() + supply.getGeneration()));
+        supplies.forEach(supply -> earnAmount(supply));
         supplyRepository.saveAll(supplies);
-        //supplyRepository.findAll().forEach(supply -> supplyRepository.save(supply));
 
     }
 
