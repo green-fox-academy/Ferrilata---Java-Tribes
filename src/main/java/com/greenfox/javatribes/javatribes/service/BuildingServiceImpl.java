@@ -4,6 +4,7 @@ import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
+import com.greenfox.javatribes.javatribes.model.Troop;
 import com.greenfox.javatribes.javatribes.repositories.BuildingRepository;
 import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class BuildingServiceImpl implements BuildingService {
     private BuildingRepository buildingRepository;
     @Autowired
     TimerService timerService;
+    @Autowired
+    TroopService troopService;
 
     @Override
     public void constructBuilding(Kingdom kingdom, Building building) throws CustomException {
@@ -89,6 +92,14 @@ public class BuildingServiceImpl implements BuildingService {
 
         if (kingdomService.getGoldAmount(building.getKingdom()) < ((level - building.getLevel()) * 100)) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
+        }
+
+        if (building.getType().equalsIgnoreCase("barracks")) {
+
+            Iterable<Troop> troops = troopService.findAll();
+            troops.forEach(troop -> troop.setHp(level*10));
+            troopService.saveAll(troops);
+
         }
 
         kingdomService.spendGold(building.getKingdom(), (level - building.getLevel()) * 100);

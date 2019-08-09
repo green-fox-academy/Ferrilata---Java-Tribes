@@ -22,6 +22,16 @@ public class TroopServiceImpl implements TroopService {
     private KingdomService kingdomService;
 
     @Override
+    public Iterable<Troop> findAll() {
+        return troopRepository.findAll();
+    }
+
+    @Override
+    public void saveAll(Iterable<Troop> troops) {
+        troopRepository.saveAll(troops);
+    }
+
+    @Override
     public Troop findById(long id) throws CustomException {
 
         Optional<Troop> optionalTroop = troopRepository.findById(id);
