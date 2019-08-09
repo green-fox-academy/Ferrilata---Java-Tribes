@@ -10,6 +10,9 @@ public interface KingdomService {
 
     boolean hasBarracks(Kingdom kingdom);
 
+    boolean hasTownhall(Kingdom kingdom);
+
     void spendGold(Kingdom kingdom, int amount);
 
+    int getTownhallLevel(Kingdom kingdom);
 }

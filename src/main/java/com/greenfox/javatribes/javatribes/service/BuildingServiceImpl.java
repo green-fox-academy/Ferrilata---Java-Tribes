@@ -90,6 +90,12 @@ public class BuildingServiceImpl implements BuildingService {
             throw new CustomException("Invalid building level!", HttpStatus.valueOf(400));
         }
 
+        if (!building.getType().equalsIgnoreCase("townhall") &&
+                kingdomService.getTownhallLevel(building.getKingdom()) < level) {
+            throw new CustomException("In order to upgrade a building to a certain level, the kingdom must have a townhall of the same or higher level!", HttpStatus.valueOf(400));
+
+        }
+
         if (kingdomService.getGoldAmount(building.getKingdom()) < ((level - building.getLevel()) * 100)) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }

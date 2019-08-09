@@ -63,6 +63,20 @@ public class KingdomServiceImpl implements KingdomService {
     }
 
     @Override
+    public boolean hasTownhall(Kingdom kingdom) {
+
+        List<Building> buildings = kingdom.getBuildings();
+
+        for (Building building : buildings) {
+
+            if (building.getType().equalsIgnoreCase("townhall")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void spendGold(Kingdom kingdom, int amount) {
 
         List<Supply> supplies = kingdom.getSupplies();
@@ -72,6 +86,21 @@ public class KingdomServiceImpl implements KingdomService {
                 supply.setAmount(supply.getAmount() - amount);
             }
         }
+    }
+
+    @Override
+    public int getTownhallLevel(Kingdom kingdom) {
+
+        List<Building> buildings = kingdom.getBuildings();
+
+        for (Building building : buildings) {
+
+            if (building.getType().equalsIgnoreCase("townhall")) {
+                return building.getLevel();
+            }
+        }
+
+        return 0;
     }
 }
 
