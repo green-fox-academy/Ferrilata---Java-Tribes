@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
@@ -75,12 +77,25 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public int finishedBuildingCalculator(Supply supply, String type) {
 
-        int finishedBuildings = (int) supply.getKingdom().getBuildings().stream()
+        /*int finishedBuildings = (int) supply.getKingdom().getBuildings().stream()
                 .filter(building -> building.getType().equalsIgnoreCase(type))
                 .filter(building -> timerService.finishedBuilding(building))
-                .count();
+                .count();*/
 
-        return finishedBuildings;
+        List<Building> finishedBuildings = supply.getKingdom().getBuildings().stream()
+                .filter(building -> building.getType().equalsIgnoreCase(type))
+                .filter(building -> timerService.finishedBuilding(building))
+                .collect(Collectors.toList());
+
+        int supplyGenerationCoeficient = 0;
+
+        for (Building building : finishedBuildings) {
+
+            supplyGenerationCoeficient = supplyGenerationCoeficient + building.getLevel();
+
+        }
+
+        return supplyGenerationCoeficient;
 
     }
 
