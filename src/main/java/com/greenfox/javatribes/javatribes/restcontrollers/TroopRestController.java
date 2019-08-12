@@ -38,16 +38,15 @@ public class TroopRestController {
 
     @PostMapping("/troops")
     public ResponseEntity<Object> trainTroop(HttpServletRequest httpServletRequest) {
-
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Troop newTroop = troopService.trainTroop(kingdom);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(newTroop);
     }
 
     @PatchMapping("/troops/{troopId}")
-    public ResponseEntity<Object> upgradeTroop(@PathVariable long troopId, @RequestParam int level,
+    public ResponseEntity<Object> upgradeTroop(@PathVariable long troopId, @RequestBody Troop troop,
                                                HttpServletRequest httpServletRequest) throws CustomException {
-
+        int level = troop.getLevel();
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Troop upgradedTroop = troopService.upgradeTroop(kingdom, level, troopId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedTroop);

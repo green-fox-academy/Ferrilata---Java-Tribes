@@ -66,11 +66,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Kingdom updateKingdom(Kingdom kingdom, String name, int locationX, int locationY) {
+    public Kingdom updateKingdom(Kingdom kingdom, String name) {
 
         kingdom.setName(name);
-        kingdom.setLocationX(locationX);
-        kingdom.setLocationY(locationY);
         this.userRepository.save(kingdom.getUser());
 
         return kingdom;

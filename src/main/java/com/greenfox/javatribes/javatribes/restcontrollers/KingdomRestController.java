@@ -39,12 +39,10 @@ public class KingdomRestController {
 
     @PatchMapping("/kingdom")
     public ResponseEntity<Object> updateKingdom(HttpServletRequest httpServletRequest,
-                                                @RequestParam(required = false) String name,
-                                                @RequestParam(required = false) int locationX,
-                                                @RequestParam(required = false) int locationY) {
-
+                                                @RequestBody Kingdom requestKingdom) {
+        String name = requestKingdom.getName();
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
-        Kingdom updatedKingdom = userService.updateKingdom(kingdom, name, locationX, locationY);
+        Kingdom updatedKingdom = userService.updateKingdom(kingdom, name);
 
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(updatedKingdom);
     }

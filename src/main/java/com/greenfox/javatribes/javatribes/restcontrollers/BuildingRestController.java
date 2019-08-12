@@ -39,8 +39,8 @@ public class BuildingRestController {
     @PatchMapping("/buildings/{buildingId}")
     public ResponseEntity<Object> upgradeBuilding(HttpServletRequest httpServletRequest,
                                                   @PathVariable long buildingId,
-                                                  @RequestParam int level) throws CustomException {
-
+                                                  @RequestBody Building building) throws CustomException {
+        int level = building.getLevel();
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Building upgradedBuilding = buildingService.upgradeBuilding(kingdom, level, buildingId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedBuilding);
@@ -48,8 +48,8 @@ public class BuildingRestController {
 
     @PostMapping("/buildings")
     public ResponseEntity<Object> newBuilding(HttpServletRequest httpServletRequest,
-                                              @RequestParam String type) {
-
+                                              @RequestBody Building building) {
+        String type = building.getType();
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Building newBuilding = buildingService.constructBuilding(kingdom, type);
 
