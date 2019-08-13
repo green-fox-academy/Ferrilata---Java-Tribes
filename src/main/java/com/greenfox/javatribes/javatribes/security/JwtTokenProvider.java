@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-  private byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
-
   @Autowired
-  private MyUserDetails myUserDetails;
+  MyUserDetails myUserDetails;
+
+  private byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
   public String createToken(String username, List<Role> roles) {
 
@@ -53,9 +53,10 @@ public class JwtTokenProvider {
   }
 
   public String resolveToken(HttpServletRequest req) {
+
     String bearerToken = req.getHeader(SecurityConstants.TOKEN_HEADER);
 
-    //    IN CASE OF USING TOKEN PREFIX (IT IS USUAL BUT TRIBES FRONTEND DOES NOT USE PREFIX)
+    //    IN CASE OF USING TOKEN PREFIX (IT IS USUAL BUT FRONTEND DOES NOT USE PREFIX)
     //    if (bearerToken != null && bearerToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
 
     return bearerToken;

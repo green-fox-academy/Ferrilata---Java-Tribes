@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
+import com.greenfox.javatribes.javatribes.dto.RequestObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
@@ -9,55 +10,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
-public class KingdomBuildingRestController {
+@RequestMapping("/kingdom")
+public class BuildingRestController {
 
     @Autowired
     UserService userService;
     @Autowired
     BuildingService buildingService;
 
-    @GetMapping("/kingdom/buildings")
+    @GetMapping("/buildings")
     public ResponseEntity<Object> getBuildingsFromKingdom(HttpServletRequest httpServletRequest) {
 
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(kingdom.getBuildings());
     }
 
-    @GetMapping("/kingdom/buildings/{buildingId}")
+    @GetMapping("/buildings/{buildingId}")
     public ResponseEntity<Object> displayBuildingById(HttpServletRequest httpServletRequest,
                                                       @PathVariable long buildingId) throws CustomException {
 
-        Building building = buildingService.findById(buildingId);
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Building building = buildingService.findByIdAndKingdom(buildingId, kingdom);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
-
     }
 
-    @PutMapping("/kingdom/buildings/{buildingId}")
+    @PatchMapping("/buildings/{buildingId}")
     public ResponseEntity<Object> upgradeBuilding(HttpServletRequest httpServletRequest,
                                                   @PathVariable long buildingId,
-                                                  @RequestParam int level) throws CustomException {
+                                                  @RequestBody @Valid RequestObject requestObject) throws CustomException {
 
-        Building upgradedBuilding = buildingService.findById(buildingId);
-        buildingService.upgradeBuilding(upgradedBuilding, level, buildingId);
+        int level = Integer.parseInt(requestObject.getField());
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Building upgradedBuilding = buildingService.upgradeBuilding(kingdom, level, buildingId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedBuilding);
-
     }
 
-    @PostMapping("kingdom/buildings")
-    public ResponseEntity<Object> buildBuilding(HttpServletRequest httpServletRequest,
-                                                @RequestParam(required = true) String type) {
+    @PostMapping("/buildings")
+    public ResponseEntity<Object> newBuilding(HttpServletRequest httpServletRequest,
+                                              @RequestBody @Valid RequestObject requestObject) {
 
-        Kingdom kingdom = userService.identifyUserKingdomFromJWTToken(httpServletRequest);
+        String type = requestObject.getField();
+        Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
+        Building newBuilding = buildingService.constructBuilding(kingdom, type);
 
-        Building building = new Building(type, kingdom);
-        buildingService.constructBuilding(kingdom, building);
-
-        return ResponseEntity.status(HttpStatus.valueOf(200)).body(building);
-
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(newBuilding);
     }
-
 }

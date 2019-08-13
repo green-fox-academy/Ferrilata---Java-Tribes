@@ -2,20 +2,12 @@ package com.greenfox.javatribes.javatribes.service;
 
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Supply;
-import com.greenfox.javatribes.javatribes.repositories.KingdomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class KingdomServiceImpl implements KingdomService {
-
-    private KingdomRepository kingdomRepository;
-
-    public KingdomServiceImpl(KingdomRepository kingdomRepository) {
-        this.kingdomRepository = kingdomRepository;
-    }
-
 
     @Override
     public int getGoldAmount(Kingdom kingdom) {
@@ -28,7 +20,6 @@ public class KingdomServiceImpl implements KingdomService {
                 goldAmount = supply.getAmount();
             }
         }
-
         return goldAmount;
     }
 
@@ -43,7 +34,6 @@ public class KingdomServiceImpl implements KingdomService {
                 foodAmount = supply.getAmount();
             }
         }
-
         return foodAmount;
     }
 

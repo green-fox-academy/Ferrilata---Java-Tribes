@@ -3,29 +3,27 @@ package com.greenfox.javatribes.javatribes.controllerTests;
 import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
+import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.UserRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultActions;
-
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf();
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserRestController.class)
@@ -33,7 +31,6 @@ public class UserRestControllerTestRegister {
 
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
     @MockBean
@@ -41,60 +38,41 @@ public class UserRestControllerTestRegister {
     @MockBean
     AuthenticationManager manager;
 
-    RegisterObject registerObjectWithKingdomname = new RegisterObject("Juraj", "GreenFox", "kingdom");
-    RegisterObject registerObjectWithoutKingdomname = new RegisterObject("Juraj", "GreenFox", "");
-
-    String expectedResult1 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}";
-    String expectedResult2 = "{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}";
+    private RegisterObject registerObject = new RegisterObject("user", "password", "");
 
     @Test
-    public void successfulRegisterUserTestWithKingdomNameInput() throws Exception {
+    @WithMockUser
+    public void successfulRegisterUserTest() throws Exception {
 
-        ResultActions resultActions = mockMvc.perform(post("/register")
-                //.with(csrf())
+        User newUser = new User(registerObject.getUsername(), registerObject.getPassword());
+        when(userService.register(anyObject())).thenReturn(newUser);
+
+        String reqContent = ("{\"username\":\"username\",\"password\":\"password\", \"kingdom\":\"\"}");
+        RequestBuilder request = post("/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname)))
+                .content(reqContent);
+
+        mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}"))
+                .andExpect(content().string("{\"id\":0,\"username\":\"user\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-
-        MvcResult result = resultActions.andReturn();
-        JSONAssert.assertEquals(expectedResult1, result.getResponse().getContentAsString(), false);
-        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), false);
-
-    }
-
-    @Test
-    public void successfulRegisterUserTestWithoutKingdomNameInput() throws Exception {
-
-        ResultActions resultActions = mockMvc.perform(post("/register")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(registerObjectWithoutKingdomname)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":0,\"username\":\"GreenFox\",\"password\":\"Juraj\"}"))
-                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-
-        MvcResult result = resultActions.andReturn();
-        JSONAssert.assertEquals(expectedResult1, result.getResponse().getContentAsString(), false);
-        JSONAssert.assertEquals(expectedResult2, result.getResponse().getContentAsString(), false);
-
     }
 
     @Test
     public void unsuccessfulRegisterUserTestThrowsIdentityAlreadyUsedException() throws Exception {
 
-        doThrow(new CustomException("Username already taken, please choose an other one.", HttpStatus.valueOf(409))).when(userService).register(anyObject());
+        String errMessage = "Username already taken, please choose an other one.";
+        doThrow(new CustomException(errMessage, HttpStatus.valueOf(409))).when(userService).register(anyObject());
 
         RequestBuilder request = post("/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(registerObjectWithKingdomname));
+                .content(TestUtil.convertObjectToJsonBytes(registerObject));
 
-        ResultActions resultActions = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andExpect(status().is(409))
-                .andExpect(content().string("{\"status\":\"error\",\"message\":\"Username already taken, please choose an other one.\"}"))
+                .andExpect(content().string("{\"status\":\"error\",\"message\":" +
+                        "\"Username already taken, please choose an other one.\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-
     }
-
 }
 

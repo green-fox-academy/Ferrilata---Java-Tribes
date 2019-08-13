@@ -1,9 +1,9 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
 import com.greenfox.javatribes.javatribes.model.*;
-import com.greenfox.javatribes.javatribes.restcontrollers.KingdomSupplyRestController;
+import com.greenfox.javatribes.javatribes.restcontrollers.TroopRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
-import com.greenfox.javatribes.javatribes.service.SupplyService;
+import com.greenfox.javatribes.javatribes.service.TroopService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(KingdomSupplyRestController.class)
+@WebMvcTest(TroopRestController.class)
 @WebAppConfiguration
-public class KingdomSupplyRestControllerTest {
+public class TroopRestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -40,7 +40,7 @@ public class KingdomSupplyRestControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
-    SupplyService supplyService;
+    TroopService troopService;
 
     @MockBean
     JwtTokenProvider jwtTokenProvider;
@@ -48,28 +48,25 @@ public class KingdomSupplyRestControllerTest {
     @MockBean
     AuthenticationManager manager;
 
-    List<Building> testBuildings = new ArrayList<Building>(Collections.singleton(new Building("townhall")));
-    List<Supply> testSupplies = new ArrayList<Supply>(Collections.singleton(new Supply("gold")));
-    List<Troop> testTroops = new ArrayList<Troop>(Collections.singleton(new Troop(1)));
-    Kingdom testKingdom = new Kingdom("admins", testBuildings, testSupplies, testTroops);
-    User testUser = new User("admin", "admin", testKingdom);
+    private Troop troop = new Troop();
+    private Kingdom testKingdom = new Kingdom("User's Kingdom");
+    private User user = new User("user", "password", testKingdom);
 
     @Test
     @WithMockUser
-    public void getKingdomSuppliesTest_basic() throws Exception {
+    public void getKingdomTroopsTest_basic() throws Exception {
 
-        when(userService.identifyUserKingdomFromJWTToken(anyObject())).thenReturn(testKingdom);
-        //when(userService.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(anyObject())))).thenReturn(testUser);
+        this.testKingdom.addTroop(this.troop);
+        when(userService.getUserFromToken(anyObject())).thenReturn(user);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/kingdom/supplies")
+                .get("/kingdom/troops")
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().json("[{\"id\":0,\"type\":\"gold\"}]"))
+                .andExpect(content().json("[{\"id\":0,\"level\":1}]"))
                 .andReturn();
     }
-
 
 }

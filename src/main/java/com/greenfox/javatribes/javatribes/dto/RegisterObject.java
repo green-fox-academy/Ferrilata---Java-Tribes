@@ -1,8 +1,16 @@
 package com.greenfox.javatribes.javatribes.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class RegisterObject {
 
     @NotNull
@@ -14,38 +22,12 @@ public class RegisterObject {
     private String username;
 
     @NotNull
-    private String kingdom;
+    @JsonProperty("kingdom")
+    private String kingdomName;
 
-    public RegisterObject() {
-    }
-
-    public RegisterObject(String password, String username, String kingdom) {
-        this.password = password;
+    public RegisterObject(String username, String password, String kingdomName) {
         this.username = username;
-        this.kingdom = kingdom;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getKingdom() {
-        return kingdom;
-    }
-
-    public void setKingdom(String kingdom) {
-        this.kingdom = kingdom;
+        this.kingdomName = kingdomName;
     }
 }

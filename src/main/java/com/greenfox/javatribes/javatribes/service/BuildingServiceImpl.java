@@ -16,25 +16,25 @@ import java.util.Optional;
 public class BuildingServiceImpl implements BuildingService {
 
     @Autowired
-    private KingdomRepository kingdomRepository;
+    KingdomRepository kingdomRepository;
     @Autowired
-    private KingdomService kingdomService;
+    KingdomService kingdomService;
     @Autowired
-    private BuildingRepository buildingRepository;
+    BuildingRepository buildingRepository;
     @Autowired
     TimerService timerService;
 
     @Override
-    public void constructBuilding(Kingdom kingdom, Building building) throws CustomException {
+    public Building constructBuilding(Kingdom kingdom, String buildingType) throws CustomException {
 
-        if (building.getType().equalsIgnoreCase("")) {
+        if (buildingType.equalsIgnoreCase("")) {
             throw new CustomException("Missing parameter(s): type!", HttpStatus.valueOf(400));
         }
 
-        if (!(building.getType().equalsIgnoreCase("mine") ||
-                building.getType().equalsIgnoreCase("farm") ||
-                building.getType().equalsIgnoreCase("townhall") ||
-                building.getType().equalsIgnoreCase("barracks"))) {
+        if (!(buildingType.equalsIgnoreCase("mine") ||
+                buildingType.equalsIgnoreCase("farm") ||
+                buildingType.equalsIgnoreCase("townhall") ||
+                buildingType.equalsIgnoreCase("barracks"))) {
 
             throw new CustomException("Invalid building type!", HttpStatus.valueOf(400));
         }
@@ -42,59 +42,51 @@ public class BuildingServiceImpl implements BuildingService {
         if (kingdomService.getGoldAmount(kingdom) < 250) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
-
+        Building newBuilding = new Building(buildingType);
+        kingdom.addBuilding(newBuilding);
         kingdomService.spendGold(kingdom, 250);
-        kingdom.addBuilding(building);
         kingdomRepository.save(kingdom);
 
+        return newBuilding;
     }
 
     @Override
-    public Building findById(long id) throws CustomException {
+    public Building findByIdAndKingdom(long id, Kingdom kingdom) throws CustomException {
 
-        Optional<Building> optionalBuilding = buildingRepository.findById(id);
+        Optional<Building> optionalBuilding = buildingRepository.findByIdAndKingdom(id, kingdom);
 
         if (!optionalBuilding.isPresent()) {
             throw new CustomException("There is no building with this Id!", HttpStatus.valueOf(404));
         }
-
         return optionalBuilding.get();
-
     }
 
     @Override
     public int finishedBuildingCalculator(Supply supply, String type) {
 
-        int finishedBuildings = (int) supply.getKingdom().getBuildings().stream()
+        return (int) supply.getKingdom().getBuildings().stream()
                 .filter(building -> building.getType().equalsIgnoreCase(type))
-                .filter(building -> timerService.finishedBuilding(building))
+                .filter(timerService::finishedBuilding)
                 .count();
-
-        return finishedBuildings;
 
     }
 
     @Override
-    public void upgradeBuilding(Building building, int level, long id) {
+    public Building upgradeBuilding(Kingdom kingdom, int level, long id) {
 
-        Optional<Building> optionalBuilding = buildingRepository.findById(id);
-
-        if (!optionalBuilding.isPresent()) {
-            throw new CustomException("There is no building with this Id!", HttpStatus.valueOf(404));
-        }
+        Building building = findByIdAndKingdom(id, kingdom);
 
         if (level < 0) {
             throw new CustomException("Invalid building level!", HttpStatus.valueOf(400));
         }
 
-        if (kingdomService.getGoldAmount(building.getKingdom()) < (level - building.getLevel()) * 100) {
+        if (kingdomService.getGoldAmount(kingdom) < (level - building.getLevel()) * 100) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
-
-        kingdomService.spendGold(building.getKingdom(), (level - building.getLevel()) * 100);
+        kingdomService.spendGold(kingdom, (level - building.getLevel()) * 100);
         building.setLevel(level);
         buildingRepository.save(building);
 
+        return  building;
     }
-
 }

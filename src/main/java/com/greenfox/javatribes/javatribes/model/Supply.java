@@ -30,10 +30,9 @@ public class Supply {
     @JoinColumn(name = "kingdom_id")
     private Kingdom kingdom;
 
-    public Supply(String type, int amount, Kingdom kingdom) {
+    public Supply(String type, int amount) {
         this.type = type;
         this.amount = amount;
-        this.kingdom = kingdom;
     }
 
     public Supply(String type) {

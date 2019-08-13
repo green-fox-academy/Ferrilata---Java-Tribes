@@ -25,7 +25,6 @@ public class Kingdom {
     private int locationX;
     private int locationY;
 
-    //@JsonIgnore
     @OneToOne(mappedBy = "kingdom")
     private User user;
 
@@ -40,37 +39,8 @@ public class Kingdom {
 
     public Kingdom(String name) {
         this.name = name;
-        this.supplies = new ArrayList<Supply>();
-        this.buildings = new ArrayList<Building>();
-        this.troops = new ArrayList<Troop>();
-    }
-
-    public Kingdom(String name, List<Building> buildings, List<Supply> supplies, List<Troop> troops) {
-        this.name = name;
-        this.buildings = buildings;
-        this.supplies = supplies;
-        this.troops = troops;
-    }
-
-    public Kingdom(User user, String name, List<Building> buildings, List<Supply> supplies, List<Troop> troops) {
-        this.user = user;
-        this.name = name;
-        this.buildings = buildings;
-        this.supplies = supplies;
-        this.troops = troops;
-    }
-
-    public Kingdom(User user,String name, int locationX, int locationY) {
-        this.user = user;
-        this.name = name;
-        this.locationX = locationX;
-        this.locationY = locationY;
-    }
-
-    public Kingdom(String name, int locationX, int locationY) {
-        this.name = name;
-        this.locationX = locationX;
-        this.locationY = locationY;
+        this.addSupply(new Supply("gold", 1000));
+        this.addSupply(new Supply("food", 1000));
     }
 
     public void addSupply(Supply supply) {

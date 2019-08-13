@@ -15,11 +15,11 @@ import java.util.Optional;
 public class TroopServiceImpl implements TroopService {
 
     @Autowired
-    private KingdomRepository kingdomRepository;
+    KingdomRepository kingdomRepository;
     @Autowired
-    private TroopRepository troopRepository;
+    TroopRepository troopRepository;
     @Autowired
-    private KingdomService kingdomService;
+    KingdomService kingdomService;
 
     @Override
     public Troop findById(long id) throws CustomException {
@@ -29,37 +29,43 @@ public class TroopServiceImpl implements TroopService {
         if (!optionalTroop.isPresent()) {
             throw new CustomException("There is no troop with this Id!", HttpStatus.valueOf(404));
         }
-
         return optionalTroop.get();
-
     }
 
     @Override
-    public void upgradeTroop(Troop troop, int level, long id) {
+    public Troop findByIdAndKingdom(long id, Kingdom kingdom) throws CustomException {
 
-        Optional<Troop> optionalTroop = troopRepository.findById(id);
+        Optional<Troop> optionalTroop = troopRepository.findByIdAndKingdom(id, kingdom);
 
         if (!optionalTroop.isPresent()) {
             throw new CustomException("There is no troop with this Id!", HttpStatus.valueOf(404));
         }
+        return optionalTroop.get();
+    }
+
+    @Override
+    public Troop upgradeTroop(Kingdom kingdom, int level, long id) {
+
+        Troop troopToUpgrade = this.findByIdAndKingdom(id, kingdom);
 
         if (level < 0) {
             throw new CustomException("Invalid troop level!", HttpStatus.valueOf(400));
         }
 
-        if (kingdomService.getGoldAmount(troop.getKingdom()) < (level - troop.getLevel()) * 5) {
+        if (kingdomService.getGoldAmount(kingdom) < (level - troopToUpgrade.getLevel()) * 5) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
 
-        kingdomService.spendGold(troop.getKingdom(), (level - troop.getLevel()) * 5);
-        troop.setLevel(level);
-        troopRepository.save(troop);
+        kingdomService.spendGold(kingdom, (level - troopToUpgrade.getLevel()) * 5);
+        troopToUpgrade.setLevel(level);
+        return troopRepository.save(troopToUpgrade);
 
     }
 
     @Override
-    public void trainTroop(Kingdom kingdom, Troop troop) throws CustomException {
+    public Troop trainTroop(Kingdom kingdom) throws CustomException {
 
+        Troop troop = new Troop(kingdom);
         if (kingdomService.getGoldAmount(kingdom) < 10) {
             throw new CustomException("Not enough gold!", HttpStatus.valueOf(400));
         }
@@ -67,7 +73,6 @@ public class TroopServiceImpl implements TroopService {
         kingdomService.spendGold(kingdom, 10);
         kingdom.addTroop(troop);
         kingdomRepository.save(kingdom);
-
+        return troop;
     }
-
 }

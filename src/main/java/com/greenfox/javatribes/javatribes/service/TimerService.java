@@ -20,19 +20,16 @@ public class TimerService {
     public void scheduleFixedRateResourceEarning() {
 
         supplyService.earnAll();
-
     }
 
     public boolean finishedTroop(Troop troop) {
 
         return System.currentTimeMillis() > troop.getFinishedAt().getTime();
-
     }
 
     public boolean finishedBuilding(Building building) {
 
         return System.currentTimeMillis() > building.getFinishedAt().getTime();
-
     }
 
 }

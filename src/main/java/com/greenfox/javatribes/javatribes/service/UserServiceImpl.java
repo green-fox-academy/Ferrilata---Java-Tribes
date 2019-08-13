@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.service;
 
+import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Role;
@@ -14,24 +15,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     @Autowired
-    private UserRepository userRepository;
-
+    UserRepository userRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    PasswordEncoder passwordEncoder;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
+    JwtTokenProvider jwtTokenProvider;
     @Autowired
-    private AuthenticationManager authenticationManager;
+    AuthenticationManager authenticationManager;
 
     @Override
     public String login(String username, String password) throws CustomException {
@@ -44,34 +39,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User identifyUserFromJWTToken(HttpServletRequest httpServletRequest) {
+    public User getUserFromToken(HttpServletRequest httpServletRequest) {
 
         return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get();
-
     }
 
     @Override
-    public void register(User user) throws CustomException {
+    public User register(RegisterObject registerObject) throws CustomException {
 
-        if (!existsByUsername(user.getUsername()) && !existsByKingdomName(user.getKingdom().getName())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            if (user.getRoles() == null) {
-                user.setRoles(new ArrayList<>(Arrays.asList(Role.ROLE_USER)));
+        Kingdom newKingdom = new Kingdom(registerObject.getKingdomName());
+        User newUser = new User(registerObject.getUsername(), registerObject.getPassword(), newKingdom);
+
+        if (!existsByUsername(newUser.getUsername()) && !existsByKingdomName(newUser.getKingdom().getName())) {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            if (newUser.getRoles().isEmpty() || newUser.getRoles() == null) {
+                newUser.addRole(Role.ROLE_USER);
             }
-            userRepository.save(user);
+            userRepository.save(newUser);
         }
+        return newUser;
     }
 
     @Override
-    public Kingdom identifyUserKingdomFromJWTToken(HttpServletRequest httpServletRequest) {
-
-        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(httpServletRequest))).get().getKingdom();
-
-    }
-
-    @Override
-    public void updateUser(User user) {
+    public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public Kingdom updateKingdom(Kingdom kingdom, String name) {
+
+        kingdom.setName(name);
+        userRepository.save(kingdom.getUser());
+
+        return kingdom;
     }
 
     @Override
