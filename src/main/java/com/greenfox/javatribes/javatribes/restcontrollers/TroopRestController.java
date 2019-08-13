@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
+import com.greenfox.javatribes.javatribes.dto.RequestObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.model.Troop;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/kingdom")
@@ -45,9 +47,10 @@ public class TroopRestController {
     }
 
     @PatchMapping("/troops/{troopId}")
-    public ResponseEntity<Object> upgradeTroop(@PathVariable long troopId, @RequestParam int level,
+    public ResponseEntity<Object> upgradeTroop(@PathVariable long troopId, @RequestBody @Valid RequestObject requestObject,
                                                HttpServletRequest httpServletRequest) throws CustomException {
 
+        int level = Integer.parseInt(requestObject.getField());
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Troop upgradedTroop = troopService.upgradeTroop(kingdom, level, troopId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedTroop);
