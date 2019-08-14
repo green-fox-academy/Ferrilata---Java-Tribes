@@ -4,6 +4,8 @@ import com.greenfox.javatribes.javatribes.dto.RegisterObject;
 import com.greenfox.javatribes.javatribes.dto.ResponseObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.User;
+import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
+import com.greenfox.javatribes.javatribes.service.LoggingService;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,12 @@ import javax.validation.Valid;
 @RestController
 public class UserRestController {
 
-
     @Autowired
-    UserService userService;
+    private UserService userService;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    LoggingService loggingService;
 
     @PostMapping("/login")
     public ResponseEntity<Object> loginUser(@RequestBody @Valid User user) throws CustomException {

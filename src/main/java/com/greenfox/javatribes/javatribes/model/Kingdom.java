@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Kingdom {
 
     @Id
@@ -25,6 +27,7 @@ public class Kingdom {
     private int locationX;
     private int locationY;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "kingdom")
     private User user;
 
@@ -57,5 +60,4 @@ public class Kingdom {
         building.setKingdom(this);
         this.buildings.add(building);
     }
-
 }

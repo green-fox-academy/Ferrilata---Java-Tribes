@@ -41,4 +41,6 @@ dependencies {
     runtime 'io.jsonwebtoken:jjwt-impl:0.10.5'
     runtime 'io.jsonwebtoken:jjwt-jackson:0.10.5'
     compile group: 'org.flywaydb', name: 'flyway-core', version: '5.2.4'
+    compile 'org.apache.logging.log4j:log4j-api:2.12.0'
+    compile 'org.apache.logging.log4j:log4j-core:2.12.0'
 }

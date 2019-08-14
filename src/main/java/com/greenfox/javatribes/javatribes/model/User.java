@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @Table(name = "user")
 public class User {
 
@@ -30,6 +32,7 @@ public class User {
 
     @NotNull
     @NotEmpty
+    @ToString.Exclude
     private String password;
 
     @JsonIgnore
@@ -64,7 +67,7 @@ public class User {
         this.password = password;
     }
 
-    public void addRole(Role role){
+    public void addRole(Role role) {
         this.roles.add(role);
     }
 }
