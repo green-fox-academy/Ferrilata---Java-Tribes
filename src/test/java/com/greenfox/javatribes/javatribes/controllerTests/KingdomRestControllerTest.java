@@ -52,6 +52,7 @@ public class KingdomRestControllerTest {
     AuthenticationManager manager;
 
     private User user;
+    private String reqObject = ("{\"name\":\"New Kingdom\"}");
     private String expectJsonKingdom;
     private String expectJsonUpdatedKingdom;
 
@@ -66,8 +67,8 @@ public class KingdomRestControllerTest {
         userKingdom.setUser(this.user);
 
         Kingdom updatedKingdom = userKingdom;
-        updatedKingdom.setLocationX(10);
-        updatedKingdom.setLocationY(10);
+//        updatedKingdom.setLocationX(10);
+//        updatedKingdom.setLocationY(10);
         updatedKingdom.setName("New Kingdom");
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -128,20 +129,20 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void successfulUpdateKingdomTest() throws Exception {
 
-        this.user.getKingdom().setLocationX(10);
-        this.user.getKingdom().setLocationY(10);
+//        this.user.getKingdom().setLocationX(10);
+//        this.user.getKingdom().setLocationY(10);
         this.user.getKingdom().setName("New Kingdom");
 
 
         when(userService.getUserFromToken(anyObject())).thenReturn(this.user);
-        when(userService.updateKingdom(anyObject(), anyString(), anyInt(), anyInt())).thenReturn(this.user.getKingdom())
+        when(userService.updateKingdom(anyObject(), anyString())).thenReturn(this.user.getKingdom())
                 .thenReturn(this.user.getKingdom());
 
         RequestBuilder request = patch("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .param("name", "New Kingdom")
-                .param("locationX", "10")
-                .param("locationY", "10");
+                .content(this.reqObject);
+//                .param("locationX", "10")
+//                .param("locationY", "10");
 
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())

@@ -3,6 +3,7 @@ package com.greenfox.javatribes.javatribes.restcontrollers;
 import com.greenfox.javatribes.javatribes.dto.RequestObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
+import com.greenfox.javatribes.javatribes.model.Role;
 import com.greenfox.javatribes.javatribes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,8 @@ public class KingdomRestController {
 
 //    REDUNDANT ENDPOINT FOR USERS IF WE HAVE ONLY ONE KINGDOM PER USER AND WE AUTHENTICATE USER FROM JWT TOKEN
 //    SHOULD BE ACCESSED BY ADMIN ONLY
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     @GetMapping("/kingdom/{userId}")
     public ResponseEntity<Object> displayKingdomByUserId(@PathVariable long userId) throws CustomException {
 
