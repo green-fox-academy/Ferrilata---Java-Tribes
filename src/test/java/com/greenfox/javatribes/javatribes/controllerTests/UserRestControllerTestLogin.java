@@ -1,10 +1,7 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
-import com.greenfox.javatribes.javatribes.dto.ResponseObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
-import com.greenfox.javatribes.javatribes.model.Kingdom;
 import com.greenfox.javatribes.javatribes.TestUtil;
-import com.greenfox.javatribes.javatribes.model.User;
 import com.greenfox.javatribes.javatribes.restcontrollers.UserRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
 import com.greenfox.javatribes.javatribes.service.LoggingService;
@@ -20,8 +17,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultActions;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -53,7 +48,7 @@ public class UserRestControllerTestLogin {
     @WithMockUser
     public void successfulLoginUserTest() throws Exception {
 
-        when(this.userService.login(this.username, this.password)).thenReturn(this.jwt);
+        when(userService.login(this.username, this.password)).thenReturn(this.jwt);
 
         RequestBuilder request = post("/login")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -68,7 +63,7 @@ public class UserRestControllerTestLogin {
     @Test
     public void unsuccessfulLoginUserTestThrowsEntityNotFoundException() throws Exception {
 
-        when(this.userService.login(this.username, this.password))
+        when(userService.login(this.username, this.password))
                 .thenThrow(new CustomException(this.errMessage, HttpStatus.valueOf(401)));
 
         RequestBuilder request = post("/login")

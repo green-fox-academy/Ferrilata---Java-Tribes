@@ -48,7 +48,7 @@ public class UserRestControllerTestRegister {
     public void successfulRegisterUserTest() throws Exception {
 
         User newUser = new User(registerObject.getUsername(), registerObject.getPassword());
-        when(this.userService.register(anyObject())).thenReturn(newUser);
+        when(userService.register(anyObject())).thenReturn(newUser);
 
         String reqContent = ("{\"username\":\"username\",\"password\":\"password\", \"kingdom\":\"\"}");
         RequestBuilder request = post("/register")
@@ -60,22 +60,6 @@ public class UserRestControllerTestRegister {
                 .andExpect(content().string("{\"id\":0,\"username\":\"user\"}"))
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
     }
-
-
-//    @Test
-//    public void successfulRegisterUserTest() throws Exception {
-//
-//        ResultActions resultActions = mockMvc.perform(post("/register")
-//                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-//                .content(TestUtil.convertObjectToJsonBytes(registerObject)))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string("{\"id\":0,\"username\":\"user\"}"))
-//                .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8));
-//
-//        MvcResult result = resultActions.andReturn();
-//        String expectedResult = "{\"id\":0,\"username\":\"user\"}";
-//        JSONAssert.assertEquals(expectedResult, result.getResponse().getContentAsString(), false);
-//    }
 
     @Test
     public void unsuccessfulRegisterUserTestThrowsIdentityAlreadyUsedException() throws Exception {

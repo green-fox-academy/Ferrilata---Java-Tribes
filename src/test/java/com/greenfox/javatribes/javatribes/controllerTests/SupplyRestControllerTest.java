@@ -1,5 +1,7 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfox.javatribes.javatribes.model.*;
 import com.greenfox.javatribes.javatribes.restcontrollers.SupplyRestController;
 import com.greenfox.javatribes.javatribes.security.JwtTokenProvider;
@@ -53,22 +55,21 @@ public class SupplyRestControllerTest {
     private String expectJsonSupplies;
 
     @Before
-    public void init() {
+    public void init() throws JsonProcessingException {
         this.user = new User("user", "password");
         Kingdom userKingdom = new Kingdom("user's kingdom");
         this.user.setKingdom(userKingdom);
-        long goldUpdateAt = (userKingdom.getSupplies().get(0).getUpdateAt()).getTime();
-        long foodUpdateAt = userKingdom.getSupplies().get(0).getUpdateAt().getTime();
-        this.expectJsonSupplies = "[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0," +
-                "\"updateAt\":" + goldUpdateAt + "},{\"id\":0,\"type\":\"food\",\"amount\":1000," +
-                "\"generation\":0,\"updateAt\":" + foodUpdateAt + "}]";
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        this.expectJsonSupplies = objectMapper.writeValueAsString(userKingdom.getSupplies());
+
     }
 
     @Test
     @WithMockUser
     public void getKingdomSuppliesTest_basic() throws Exception {
 
-        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
+        when(userService.getUserFromToken(anyObject())).thenReturn(this.user);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/kingdom/supplies")

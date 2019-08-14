@@ -35,8 +35,8 @@ public class UserRestController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody @Valid RegisterObject registerObject) throws CustomException {
 
-        if (registerObject.getKingdom().isEmpty()) {
-            registerObject.setKingdom(registerObject.getUsername() + "'s kingdom");
+        if (registerObject.getKingdomName().isEmpty()) {
+            registerObject.setKingdomName(registerObject.getUsername() + "'s kingdom");
         }
 
         User newUser = userService.register(registerObject);

@@ -1,5 +1,6 @@
 package com.greenfox.javatribes.javatribes.restcontrollers;
 
+import com.greenfox.javatribes.javatribes.dto.RequestObject;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Building;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/kingdom")
@@ -39,8 +41,9 @@ public class BuildingRestController {
     @PatchMapping("/buildings/{buildingId}")
     public ResponseEntity<Object> upgradeBuilding(HttpServletRequest httpServletRequest,
                                                   @PathVariable long buildingId,
-                                                  @RequestParam int level) throws CustomException {
+                                                  @RequestBody @Valid RequestObject requestObject) throws CustomException {
 
+        int level = Integer.parseInt(requestObject.getField());
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Building upgradedBuilding = buildingService.upgradeBuilding(kingdom, level, buildingId);
         return ResponseEntity.status(HttpStatus.valueOf(200)).body(upgradedBuilding);
@@ -48,8 +51,9 @@ public class BuildingRestController {
 
     @PostMapping("/buildings")
     public ResponseEntity<Object> newBuilding(HttpServletRequest httpServletRequest,
-                                              @RequestParam String type) {
+                                              @RequestBody @Valid RequestObject requestObject) {
 
+        String type = requestObject.getField();
         Kingdom kingdom = userService.getUserFromToken(httpServletRequest).getKingdom();
         Building newBuilding = buildingService.constructBuilding(kingdom, type);
 

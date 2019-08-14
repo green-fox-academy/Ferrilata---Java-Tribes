@@ -47,7 +47,7 @@ public class BuildingServiceImpl implements BuildingService {
         kingdomService.spendGold(kingdom, 250);
         kingdomRepository.save(kingdom);
 
-        return newBuilding;
+        return buildingRepository.save(newBuilding);
     }
 
     @Override

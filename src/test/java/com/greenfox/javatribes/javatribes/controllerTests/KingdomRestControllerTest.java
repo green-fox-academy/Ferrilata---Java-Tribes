@@ -1,5 +1,7 @@
 package com.greenfox.javatribes.javatribes.controllerTests;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greenfox.javatribes.javatribes.TestUtil;
 import com.greenfox.javatribes.javatribes.exceptions.CustomException;
 import com.greenfox.javatribes.javatribes.model.Kingdom;
@@ -53,11 +55,12 @@ public class KingdomRestControllerTest {
     LoggingService loggingService;
 
     private User user;
-    private String expectJson;
-    private String expectJsonPatch;
+    private String reqObject = ("{\"name\":\"New Kingdom\"}");
+    private String expectJsonKingdom;
+    private String expectJsonUpdatedKingdom;
 
     @Before
-    public void init() {
+    public void init() throws JsonProcessingException {
         this.user = new User("user", "password");
         Kingdom userKingdom = new Kingdom("user's kingdom");
         userKingdom.setLocationX(1);
@@ -65,24 +68,22 @@ public class KingdomRestControllerTest {
         this.user.setKingdom(userKingdom);
         this.user.addRole(Role.ROLE_ADMIN);
         userKingdom.setUser(this.user);
-        long goldUpdateAt = (userKingdom.getSupplies().get(0).getUpdateAt()).getTime();
-        long foodUpdateAt = userKingdom.getSupplies().get(0).getUpdateAt().getTime();
-        String expectJsonSupplies = "[{\"id\":0,\"type\":\"gold\",\"amount\":1000,\"generation\":0," +
-                "\"updateAt\":" + goldUpdateAt + "},{\"id\":0,\"type\":\"food\",\"amount\":1000," +
-                "\"generation\":0,\"updateAt\":" + foodUpdateAt + "}]";
 
-        this.expectJson = "{\"name\":\"user's kingdom\",\"locationX\":1,\"locationY\":5,\"user\":{\"id\":0," +
-                "\"username\":\"user\"},\"supplies\":" + expectJsonSupplies + ",\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
+        Kingdom updatedKingdom = userKingdom;
+//        updatedKingdom.setLocationX(10);
+//        updatedKingdom.setLocationY(10);
+        updatedKingdom.setName("New Kingdom");
 
-        this.expectJsonPatch = "{\"name\":\"New Kingdom\",\"locationX\":10,\"locationY\":10,\"user\":{\"id\":0," +
-                "\"username\":\"user\"},\"supplies\":" + expectJsonSupplies + ",\"buildings\":[],\"troops\":[],\"kingdomId\":0}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        this.expectJsonKingdom = objectMapper.writeValueAsString(userKingdom);
+        this.expectJsonUpdatedKingdom = objectMapper.writeValueAsString(updatedKingdom);
     }
 
     @Test
     @WithMockUser
     public void successfulGetKingdomTest() throws Exception {
 
-        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
+        when(userService.getUserFromToken(anyObject())).thenReturn(this.user);
 
         RequestBuilder request = get("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8);
@@ -90,7 +91,7 @@ public class KingdomRestControllerTest {
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(this.expectJson));
+                .andExpect(content().string(this.expectJsonKingdom));
     }
 
     //    REDUNDANT ENDPOINT FOR USERS IF WE HAVE ONLY ONE KINGDOM PER USER AND WE AUTHENTICATE USER FROM JWT TOKEN
@@ -99,8 +100,8 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void successfulGetKingdomByUserIdTest() throws Exception {
 
-        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
-        when(this.userService.findById(anyLong())).thenReturn(this.user);
+        when(userService.getUserFromToken(anyObject())).thenReturn(this.user);
+        when(userService.findById(anyLong())).thenReturn(this.user);
 
         RequestBuilder request = get("/kingdom/{id}", 1L)
                 .contentType(TestUtil.APPLICATION_JSON_UTF8);
@@ -108,15 +109,15 @@ public class KingdomRestControllerTest {
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(this.expectJson));
+                .andExpect(content().string(this.expectJsonKingdom));
     }
 
     @Test
     @WithMockUser
     public void unsuccessfulGetKingdomByUserIdTest() throws Exception {
 
-        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
-        when(this.userService.findById(anyLong())).thenThrow(new CustomException("UserId not found", HttpStatus.valueOf(404)));
+        when(userService.getUserFromToken(anyObject())).thenReturn(this.user);
+        when(userService.findById(anyLong())).thenThrow(new CustomException("UserId not found", HttpStatus.valueOf(404)));
 
         RequestBuilder request = get("/kingdom/{id}", 1L)
                 .contentType(TestUtil.APPLICATION_JSON_UTF8);
@@ -131,24 +132,24 @@ public class KingdomRestControllerTest {
     @WithMockUser
     public void successfulUpdateKingdomTest() throws Exception {
 
-        this.user.getKingdom().setLocationX(10);
-        this.user.getKingdom().setLocationY(10);
+//        this.user.getKingdom().setLocationX(10);
+//        this.user.getKingdom().setLocationY(10);
         this.user.getKingdom().setName("New Kingdom");
 
 
-        when(this.userService.getUserFromToken(anyObject())).thenReturn(this.user);
-        when(this.userService.updateKingdom(anyObject(), anyString(), anyInt(), anyInt())).thenReturn(this.user.getKingdom())
+        when(userService.getUserFromToken(anyObject())).thenReturn(this.user);
+        when(userService.updateKingdom(anyObject(), anyString())).thenReturn(this.user.getKingdom())
                 .thenReturn(this.user.getKingdom());
 
         RequestBuilder request = patch("/kingdom")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .param("name", "New Kingdom")
-                .param("locationX", "10")
-                .param("locationY", "10");
+                .content(this.reqObject);
+//                .param("locationX", "10")
+//                .param("locationY", "10");
 
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(TestUtil.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(this.expectJsonPatch));
+                .andExpect(content().string(this.expectJsonUpdatedKingdom));
     }
 }
