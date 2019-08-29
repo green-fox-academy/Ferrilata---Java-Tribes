@@ -14,4 +14,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     boolean existsByKingdomName(String name);
 
     Optional<User> findByUsername(String username);
+
 }
